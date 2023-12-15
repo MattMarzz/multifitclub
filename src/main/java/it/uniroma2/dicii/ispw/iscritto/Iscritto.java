@@ -13,7 +13,7 @@ public class Iscritto implements Serializable {
     private String cf;
     private Date birthDate;
 
-    public Iscritto(){};
+    public Iscritto(){}
 
     public Iscritto(String name, String surname, String cf, Date birthDate) {
         this.name = name;

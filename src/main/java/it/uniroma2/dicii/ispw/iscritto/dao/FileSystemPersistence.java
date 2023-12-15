@@ -3,7 +3,6 @@ package it.uniroma2.dicii.ispw.iscritto.dao;
 import it.uniroma2.dicii.ispw.iscritto.Iscritto;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FileSystemPersistence implements IscrittoDAO {
@@ -27,7 +26,7 @@ public class FileSystemPersistence implements IscrittoDAO {
 
     @Override
     public List<Iscritto> getAllIscritti() {
-        List<Iscritto> iscrittoList = new ArrayList<>();
+        List<Iscritto> iscrittoList;
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH));
             iscrittoList = (List<Iscritto>) ois.readObject();

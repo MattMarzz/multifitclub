@@ -32,6 +32,7 @@ public class GestioneIscrittiController {
     public void getAllIscritti(){
         Iscritto iscritto = new Iscritto();
         List<Iscritto> iscrittoList = iscritto.getAllIscritti();
+        //TODO: here we have the list we need but probaby we need to covert it in a bean list to put it back on the view
     }
 
     public void deleteIscritto(/*bean con i dati dell'iscritto*/){
