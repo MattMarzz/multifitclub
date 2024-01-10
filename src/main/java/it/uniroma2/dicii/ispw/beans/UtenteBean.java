@@ -1,6 +1,6 @@
 package it.uniroma2.dicii.ispw.beans;
 
-public class IscrittoBean {
+public class UtenteBean {
     private String name;
     private String surname;
     private String cf;
