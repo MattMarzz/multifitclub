@@ -1,7 +1,7 @@
-package it.uniroma2.dicii.ispw.controller;
+package it.uniroma2.dicii.ispw.controllers;
 
 
-import it.uniroma2.dicii.ispw.bean.IscrittoBean;
+import it.uniroma2.dicii.ispw.beans.IscrittoBean;
 import it.uniroma2.dicii.ispw.iscritto.Iscritto;
 
 import java.text.ParseException;

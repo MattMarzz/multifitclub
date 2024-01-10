@@ -1,4 +1,4 @@
-package it.uniroma2.dicii.ispw.bean;
+package it.uniroma2.dicii.ispw.beans;
 
 public class IscrittoBean {
     private String name;

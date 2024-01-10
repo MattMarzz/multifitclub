@@ -1,7 +1,6 @@
 package it.uniroma2.dicii.ispw;
 
-import it.uniroma2.dicii.ispw.bean.IscrittoBean;
-import it.uniroma2.dicii.ispw.controller.GestioneIscrittiController;
+import it.uniroma2.dicii.ispw.controllers.GestioneIscrittiController;
 
 public class Main {
     public static void main(String[] args) {
