@@ -1,11 +1,7 @@
 package it.uniroma2.dicii.ispw.utente;
 
-import it.uniroma2.dicii.ispw.utente.dao.FileSystemPersistence;
-import it.uniroma2.dicii.ispw.utente.dao.UtenteDAO;
-
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 public class Utente implements Serializable {
     private String name;
@@ -22,14 +18,19 @@ public class Utente implements Serializable {
         this.birthDate = birthDate;
     }
 
-    public void storeIscritto(){
-        //need to clarify in which point make decision
-        UtenteDAO utenteDAO = new FileSystemPersistence();
-        utenteDAO.insertIscritto(this);
+    public String getName() {
+        return name;
     }
 
-    public List<Utente> getAllIscritti(){
-        UtenteDAO utenteDAO = new FileSystemPersistence();
-        return utenteDAO.getAllIscritti();
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getCf() {
+        return cf;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
     }
 }
