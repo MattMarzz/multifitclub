@@ -11,9 +11,7 @@ public class UtenteDBMS implements UtenteDAO{
     @Override
     public void insertUtente(Utente utente) {
 
-        try {
-            DbConnection dbConnection = DbConnection.getDbConnectionInstance();
-            Connection conn = dbConnection.getConn();
+        try (Connection conn = DbConnection.getDbConnectionInstance().getConn()){
 
             String sql = " insert into utente (cf, nome, cognome, data_nascita)"
                     + " values (?, ?, ?, ?)";

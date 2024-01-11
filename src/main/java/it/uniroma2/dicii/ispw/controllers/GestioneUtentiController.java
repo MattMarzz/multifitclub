@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class GestioneUtentiController {
-
+    //TODO: handle the exceptions
     public void insertUtente(UtenteBean utenteBean){
         try {
             int CF_LENGTH = 16;

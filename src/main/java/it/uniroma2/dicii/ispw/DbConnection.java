@@ -42,7 +42,7 @@ public class DbConnection {
         return conn;
     }
 
-    public synchronized static DbConnection getDbConnectionInstance() throws DbConnectionException {
+    public static synchronized  DbConnection getDbConnectionInstance() throws DbConnectionException {
         if(DbConnection.instance == null)
             DbConnection.instance = new DbConnection();
         return instance;

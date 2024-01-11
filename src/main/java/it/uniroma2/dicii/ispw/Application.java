@@ -20,9 +20,5 @@ public class Application {
         utente.setCf("BNCMRA70A20H501B");
         utente.setBirthDate("20/01/1970");
         gestioneUtentiController.insertUtente(utente);
-        //gestioneUtentiController.getAllIscritti();
-
-        //DbConnection dbConnection = DbConnection.getDbConnectionInstance();
-        //Connection conn = dbConnection.getConn();
     }
 }
