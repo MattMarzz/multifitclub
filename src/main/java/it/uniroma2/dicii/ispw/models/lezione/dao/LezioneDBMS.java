@@ -4,6 +4,7 @@ import it.uniroma2.dicii.ispw.utils.DbConnection;
 import it.uniroma2.dicii.ispw.exceptions.DbConnectionException;
 import it.uniroma2.dicii.ispw.exceptions.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.models.lezione.Lezione;
+import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +21,7 @@ public class LezioneDBMS implements LezioneDAO{
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try{
-            conn = DbConnection.getInstance().getConnection();
+            conn = DbConnection.getConnection();
             String sql = "SELECT * FROM lezione WHERE corso=?";
             statement = conn.prepareStatement(sql);
             statement.setString(1, nomeCorso);
@@ -40,14 +41,15 @@ public class LezioneDBMS implements LezioneDAO{
             }while(resultSet.next());
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LoggerManager.logSevereException("Errore nel dialogo con il database.", e);
+            return lezioniList;
         } finally {
             try {
                 if(statement != null) statement.close();
                 if(resultSet != null) resultSet.close();
                 if(conn != null) conn.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
             }
         }
         return lezioniList;

@@ -18,7 +18,7 @@ public class UtenteDBMS implements UtenteDAO{
         PreparedStatement statement = null;
         String res = null;
         try {
-            conn = DbConnection.getInstance().getConnection();
+            conn = DbConnection.getConnection();
             String sql = " insert into utente (cf, nome, cognome, data_nascita, ruolo, email, password)"
                     + " values (?, ?, ?, ?, ?, ?, ?)";
 
@@ -57,7 +57,7 @@ public class UtenteDBMS implements UtenteDAO{
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            conn = DbConnection.getInstance().getConnection();
+            conn = DbConnection.getConnection();
 
             String query = "SELECT * FROM utente WHERE email = ? AND password = ?";
 
@@ -90,17 +90,19 @@ public class UtenteDBMS implements UtenteDAO{
             } else throw new ItemNotFoundException("Accesso fallito!");
         } catch (DbConnectionException e) {
             //connection failed
-            e.printStackTrace();
+            LoggerManager.logSevereException("Errore di connessione al database.", e);
+            return utente;
         } catch (SQLException e){
             //sql exception
-            e.printStackTrace();
+            LoggerManager.logSevereException("Errore nel dialogo con il database.", e);
+            return utente;
         } finally {
             try {
                 if(statement != null) statement.close();
                 if(resultSet != null) statement.close();
                 if(conn != null) conn.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
             }
         }
         return utente;
@@ -113,7 +115,7 @@ public class UtenteDBMS implements UtenteDAO{
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try{
-            conn = DbConnection.getInstance().getConnection();
+            conn = DbConnection.getConnection();
             String sql = "SELECT * FROM utente WHERE cf=?";
             statement = conn.prepareStatement(sql);
             statement.setString(1, cf);
@@ -144,14 +146,15 @@ public class UtenteDBMS implements UtenteDAO{
             } else
                 throw new ItemNotFoundException("Nessun utente trovato con cf: " + cf);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LoggerManager.logSevereException("Errore nel dialogo con il database.", e);
+            return utente;
         } finally {
             try {
                 if(statement != null) statement.close();
                 if(resultSet != null) resultSet.close();
                 if(conn != null) conn.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
             }
         }
         return utente;
