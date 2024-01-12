@@ -6,6 +6,7 @@ import it.uniroma2.dicii.ispw.enums.Ruolo;
 import it.uniroma2.dicii.ispw.enums.TypersOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.exceptions.InvalidDataException;
 import it.uniroma2.dicii.ispw.models.utente.Utente;
+import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -60,7 +61,9 @@ public class App extends Application {
                     break;
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LoggerManager.logSevereException("Impossibile leggere il layer di persistenza dal file di configurazione.\n" +
+                    "Si procede con la scelta di default: JDBC", e);
+            App.persistenceLayer = TypersOfPersistenceLayer.JDBC;
         }
     }
 }

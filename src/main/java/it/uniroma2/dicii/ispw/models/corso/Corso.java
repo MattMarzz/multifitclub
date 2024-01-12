@@ -9,9 +9,9 @@ import it.uniroma2.dicii.ispw.models.lezione.Lezione;
 import it.uniroma2.dicii.ispw.models.lezione.dao.LezioneDAO;
 import it.uniroma2.dicii.ispw.models.lezione.dao.LezioneDBMS;
 import it.uniroma2.dicii.ispw.models.utente.Utente;
+import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -22,8 +22,8 @@ public class Corso implements Serializable {
     private List<Utente> enrolledUsers;
     private List<Utente> teachers;
 
-    private UtenteCorsoDAO utenteCorsoDAO;
-    private LezioneDAO lezioneDAO;
+    private transient UtenteCorsoDAO utenteCorsoDAO;
+    private transient LezioneDAO lezioneDAO;
 
     public Corso() {
         if(App.getPersistenceLayer().equals(TypersOfPersistenceLayer.JDBC)){
@@ -73,7 +73,8 @@ public class Corso implements Serializable {
             try {
                 this.lezioneList = lezioneDAO.getLezioniByCourseId(this.name);
             }catch (Exception e) {
-                e.printStackTrace();
+                LoggerManager.logInfoException(e.getMessage(), e);
+                return lezioneList;
             }
         }
         return lezioneList;
@@ -88,8 +89,8 @@ public class Corso implements Serializable {
             try {
                 this.enrolledUsers = utenteCorsoDAO.getUsersByCourseId(this.name, UserRoleInCourse.ENROLLMENT);
             } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                LoggerManager.logInfoException(e.getMessage(), e);
+                return enrolledUsers;
             }
         }
         return enrolledUsers;
@@ -104,8 +105,8 @@ public class Corso implements Serializable {
             try {
                 this.teachers = utenteCorsoDAO.getUsersByCourseId(this.name, UserRoleInCourse.TEACHING);
             } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                LoggerManager.logInfoException(e.getMessage(), e);
+                return teachers;
             }
         }
         return teachers;

@@ -21,7 +21,7 @@ public class DbConnection {
         return instance;
     }
 
-    public Connection getConnection() throws DbConnectionException {
+    public static Connection getConnection() throws DbConnectionException {
         try (InputStream input = DbConnection.class.getClassLoader().getResourceAsStream("config.properties")){
             if(conn == null || conn.isClosed()){
                 if(input == null) throw new DbConnectionException("Configurazione della connessione al database non trovata!");

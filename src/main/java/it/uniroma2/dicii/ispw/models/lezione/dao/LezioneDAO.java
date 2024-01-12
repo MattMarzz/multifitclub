@@ -5,5 +5,5 @@ import it.uniroma2.dicii.ispw.models.lezione.Lezione;
 import java.util.List;
 
 public interface LezioneDAO {
-    public List<Lezione> getLezioniByCourseId(String nome_corso) throws Exception;
+    public List<Lezione> getLezioniByCourseId(String nomeCorso) throws Exception;
 }

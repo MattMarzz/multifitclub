@@ -9,12 +9,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class LoginViewController {
-    public PasswordField password;
-    public Button loginBtn;
-    public TextField email;
-    public Label errorMsg;
+    private PasswordField password;
+    private Button loginBtn;
+    private TextField email;
+    private Label errorMsg;
 
-    public void onLoginClick() {
+    protected void onLoginClick() {
         try {
             if (!email.getText().isBlank() && !password.getText().isBlank()) {
                 UtenteBean utenteBean = new UtenteBean(email.getText(), password.getText());
@@ -36,7 +36,7 @@ public class LoginViewController {
         }
     }
 
-    public void handleError(String msg){
+    private void handleError(String msg){
         this.errorMsg.setText(msg);
     }
 }

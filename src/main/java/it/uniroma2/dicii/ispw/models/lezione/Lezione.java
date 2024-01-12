@@ -2,8 +2,6 @@ package it.uniroma2.dicii.ispw.models.lezione;
 
 import java.io.Serializable;
 import java.sql.Time;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class Lezione implements Serializable {
     private  String day;

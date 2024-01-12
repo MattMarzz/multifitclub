@@ -7,6 +7,7 @@ import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
 import it.uniroma2.dicii.ispw.models.corso.Corso;
 import it.uniroma2.dicii.ispw.models.corso.dao.UtenteCorsoDAO;
 import it.uniroma2.dicii.ispw.models.corso.dao.UtenteCorsoDBMS;
+import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,7 +24,7 @@ public class Utente implements Serializable {
     private List<Corso> enrollments;
     private List<Corso> teachings;
 
-    private UtenteCorsoDAO utenteCorsoDAO;
+    private transient UtenteCorsoDAO utenteCorsoDAO;
 
     public Utente(){
         if(App.getPersistenceLayer().equals(TypersOfPersistenceLayer.JDBC))
@@ -106,7 +107,7 @@ public class Utente implements Serializable {
                 this.enrollments = utenteCorsoDAO.getCoursesByUserId(this.cf, UserRoleInCourse.ENROLLMENT);
             } catch (Exception e) {
                 enrollments = null;
-                System.out.println(e.getMessage());
+                LoggerManager.logInfoException(e.getMessage(), e);
             }
         }
         return enrollments;
@@ -122,7 +123,7 @@ public class Utente implements Serializable {
                 this.teachings = utenteCorsoDAO.getCoursesByUserId(this.cf, UserRoleInCourse.TEACHING);
             } catch (Exception e) {
                 teachings = null;
-                System.out.println(e.getMessage());
+                LoggerManager.logInfoException(e.getMessage(), e);
             }
         }
         return teachings;

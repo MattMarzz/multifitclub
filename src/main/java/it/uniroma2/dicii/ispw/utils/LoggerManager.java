@@ -9,6 +9,7 @@ import java.util.logging.SimpleFormatter;
 public class LoggerManager {
     //specific logger for LoggerManager class
     private static final Logger logger = Logger.getLogger(LoggerManager.class.getName());
+    private LoggerManager(){}
 
     //need to execute only the very first time
     static {
