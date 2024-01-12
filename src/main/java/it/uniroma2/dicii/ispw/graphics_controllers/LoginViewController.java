@@ -1,10 +1,8 @@
-package it.uniroma2.dicii.ispw.graphicsControllers;
+package it.uniroma2.dicii.ispw.graphics_controllers;
 
 import it.uniroma2.dicii.ispw.beans.UtenteBean;
 import it.uniroma2.dicii.ispw.controllers.LoginController;
-import it.uniroma2.dicii.ispw.exceptions.InvalidDataException;
-import it.uniroma2.dicii.ispw.exceptions.ItemNotFoundException;
-import it.uniroma2.dicii.ispw.utente.Utente;
+import it.uniroma2.dicii.ispw.models.utente.Utente;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;

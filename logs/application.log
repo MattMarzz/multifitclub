@@ -1,0 +1,18 @@
+gen 12, 2024 10:11:08 PM it.uniroma2.dicii.ispw.utils.LoggerManager logSevereException
+SEVERE: Errore SQL non previsto!
+java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'BNCMRA70A20H501B' for key 'utente.PRIMARY'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.execute(ClientPreparedStatement.java:354)
+	at multifitclub/it.uniroma2.dicii.ispw.models.utente.dao.UtenteDBMS.insertUtente(UtenteDBMS.java:34)
+	at multifitclub/it.uniroma2.dicii.ispw.controllers.GestioneUtentiController.insertUtente(GestioneUtentiController.java:59)
+	at multifitclub/it.uniroma2.dicii.ispw.App.main(App.java:30)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at javafx.graphics@21-ea/com.sun.javafx.application.LauncherImpl.launchApplicationWithArgs(LauncherImpl.java:464)
+	at javafx.graphics@21-ea/com.sun.javafx.application.LauncherImpl.launchApplication(LauncherImpl.java:364)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/sun.launcher.LauncherHelper$FXHelper.main(LauncherHelper.java:1135)
+

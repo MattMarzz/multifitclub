@@ -3,11 +3,12 @@ package it.uniroma2.dicii.ispw.controllers;
 
 import it.uniroma2.dicii.ispw.App;
 import it.uniroma2.dicii.ispw.beans.UtenteBean;
+import it.uniroma2.dicii.ispw.enums.TypersOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.exceptions.InvalidDataException;
-import it.uniroma2.dicii.ispw.utente.Utente;
-import it.uniroma2.dicii.ispw.utente.dao.UtenteDAO;
-import it.uniroma2.dicii.ispw.utente.dao.UtenteDBMS;
-import it.uniroma2.dicii.ispw.utente.dao.UtenteFS;
+import it.uniroma2.dicii.ispw.models.utente.Utente;
+import it.uniroma2.dicii.ispw.models.utente.dao.UtenteDAO;
+import it.uniroma2.dicii.ispw.models.utente.dao.UtenteDBMS;
+import it.uniroma2.dicii.ispw.models.utente.dao.UtenteFS;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,10 +25,10 @@ public class GestioneUtentiController {
     private UtenteDAO utenteDAO;
 
     public GestioneUtentiController() {
-        switch (App.persistenceLayer){
-            case JDBC -> utenteDAO = new UtenteDBMS();
-            case FileSystem -> utenteDAO = new UtenteFS();
-        }
+        if(App.getPersistenceLayer().equals(TypersOfPersistenceLayer.JDBC))
+            utenteDAO = new UtenteDBMS();
+        else
+            utenteDAO = new UtenteFS();
     }
 
     public static boolean validate(String email) {
@@ -35,7 +36,7 @@ public class GestioneUtentiController {
         return matcher.matches();
     }
 
-    //insert new user
+    //TODO: if we are adding a istructor or user we need to specify the courses
     public String insertUtente(UtenteBean utenteBean) throws InvalidDataException{
         String res = null;
         if(utenteBean.getCf().length() != CF_LENGTH) throw new InvalidDataException("Il codice fiscale non è valido!");

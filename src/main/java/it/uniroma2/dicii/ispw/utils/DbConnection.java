@@ -1,4 +1,4 @@
-package it.uniroma2.dicii.ispw;
+package it.uniroma2.dicii.ispw.utils;
 
 import it.uniroma2.dicii.ispw.exceptions.DbConnectionException;
 

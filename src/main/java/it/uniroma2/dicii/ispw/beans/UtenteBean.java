@@ -19,13 +19,14 @@ public class UtenteBean {
         this.password = password;
     }
 
-    public UtenteBean(String name, String surname, String cf, String birthDate, String email, String password) {
+    public UtenteBean(String name, String surname, String cf, String birthDate, String email, String password, Ruolo ruolo) {
         this.name = name;
         this.surname = surname;
         this.cf = cf;
         this.birthDate = birthDate;
         this.email = email;
         this.password = password;
+        this.ruolo = ruolo;
     }
 
     public String getEmail() {

@@ -34,6 +34,14 @@
             <version>21-ea+24</version>
         </dependency>
         <!-- end dependencies for javafx -->
+        <!-- start dependencies for junit -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- end dependencies for junit -->
     </dependencies>
     <build>
         <plugins>
