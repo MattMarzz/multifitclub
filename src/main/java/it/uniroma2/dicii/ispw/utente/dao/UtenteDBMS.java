@@ -1,7 +1,10 @@
 package it.uniroma2.dicii.ispw.utente.dao;
 
 import it.uniroma2.dicii.ispw.DbConnection;
+import it.uniroma2.dicii.ispw.beans.UtenteBean;
+import it.uniroma2.dicii.ispw.enums.Ruolo;
 import it.uniroma2.dicii.ispw.exceptions.DbConnectionException;
+import it.uniroma2.dicii.ispw.exceptions.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.utente.Utente;
 
 import java.sql.*;
@@ -9,25 +12,98 @@ import java.sql.*;
 public class UtenteDBMS implements UtenteDAO{
 
     @Override
-    public void insertUtente(Utente utente) {
+    public String insertUtente(Utente utente) throws DbConnectionException{
+        Connection conn = null;
+        PreparedStatement statement = null;
+        String res = null;
+        try {
+            conn = DbConnection.getInstance().getConnection();
+            String sql = " insert into utente (cf, nome, cognome, data_nascita, ruolo, email, password)"
+                    + " values (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DbConnection.getDbConnectionInstance().getConn()){
+            statement = conn.prepareStatement(sql);
+            statement.setString(1, utente.getCf());
+            statement.setString(2, utente.getName());
+            statement.setString(3, utente.getSurname());
+            statement.setDate(4, new java.sql.Date(utente.getBirthDate().getTime()));
+            statement.setInt(5, utente.getRuolo().ordinal());
+            statement.setString(6, utente.getEmail());
+            statement.setString(7, utente.getPassword());
 
-            String sql = " insert into utente (cf, nome, cognome, data_nascita)"
-                    + " values (?, ?, ?, ?)";
+            statement.execute();
 
-            PreparedStatement preparedStmt = conn.prepareStatement(sql);
-            preparedStmt.setString (1, utente.getCf());
-            preparedStmt.setString (2, utente.getName());
-            preparedStmt.setString   (3, utente.getSurname());
-            preparedStmt.setDate(4, new java.sql.Date(utente.getBirthDate().getTime()));
+            res = "Utente inserito correttamente!";
 
-            preparedStmt.execute();
+        } catch (SQLException e) {
+            res = "Errore nell'inserimento del nuovo utente";
+            e.printStackTrace();
+            return res;
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-        } catch (SQLException | DbConnectionException e) {
-            //TODO: return message
-            throw new RuntimeException(e);
         }
+        return res;
+    }
+
+    @Override
+    public Utente auth(UtenteBean utenteBean) throws ItemNotFoundException{
+        Utente utente = new Utente();
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            conn = DbConnection.getInstance().getConnection();
+
+            String query = "SELECT * FROM utente WHERE email = ? AND password = ?";
+
+            statement = conn.prepareStatement(query);
+            statement.setString(1, utenteBean.getEmail());
+            statement.setString(2, utenteBean.getPassword());
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                utente.setName(resultSet.getString("nome"));
+                utente.setCf(resultSet.getString("cf"));
+                utente.setSurname(resultSet.getString("cognome"));
+                utente.setBirthDate(resultSet.getDate("data_nascita"));
+                utente.setEmail(resultSet.getString("email"));
+                utente.setPassword(resultSet.getString("password"));
+                switch (resultSet.getInt("ruolo")) {
+                    case 0:
+                        utente.setRuolo(Ruolo.UTENTE);
+                        break;
+                    case 1:
+                        utente.setRuolo(Ruolo.ISTRUTTORE);
+                        break;
+                    case 2:
+                        utente.setRuolo(Ruolo.SEGRETERIA);
+                        break;
+                    default:
+                        utente.setRuolo(Ruolo.UTENTE);
+                        break;
+                }
+            } else throw new ItemNotFoundException("Accesso fallito!");
+        } catch (DbConnectionException e) {
+            //connection failed
+            e.printStackTrace();
+        } catch (SQLException e){
+            //sql exception
+            e.printStackTrace();
+        } finally {
+            try {
+                if(statement != null) statement.close();
+                if(resultSet != null) statement.close();
+                if(conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return utente;
     }
 
 }

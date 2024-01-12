@@ -1,10 +1,48 @@
 package it.uniroma2.dicii.ispw.beans;
 
+import it.uniroma2.dicii.ispw.enums.Ruolo;
+
 public class UtenteBean {
     private String name;
     private String surname;
     private String cf;
     private String birthDate;
+    private String email;
+    private String password;
+    private Ruolo ruolo;
+
+    public UtenteBean() {
+    }
+
+    public UtenteBean(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public UtenteBean(String name, String surname, String cf, String birthDate, String email, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.cf = cf;
+        this.birthDate = birthDate;
+        this.email = email;
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getName() {
         return name;
@@ -36,5 +74,13 @@ public class UtenteBean {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public Ruolo getRuolo() {
+        return ruolo;
+    }
+
+    public void setRuolo(Ruolo ruolo) {
+        this.ruolo = ruolo;
     }
 }
