@@ -1,25 +1,22 @@
 package it.uniroma2.dicii.ispw;
 
-import it.uniroma2.dicii.ispw.beans.UtenteBean;
-import it.uniroma2.dicii.ispw.controllers.GestioneUtentiController;
-import it.uniroma2.dicii.ispw.enums.Ruolo;
-import it.uniroma2.dicii.ispw.enums.TypersOfPersistenceLayer;
-import it.uniroma2.dicii.ispw.exceptions.InvalidDataException;
-import it.uniroma2.dicii.ispw.models.utente.Utente;
+import atlantafx.base.theme.PrimerDark;
+import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class App extends Application {
-    private static TypersOfPersistenceLayer persistenceLayer;
+    private static TypesOfPersistenceLayer persistenceLayer;
 
-    public static TypersOfPersistenceLayer getPersistenceLayer(){
+    public static TypesOfPersistenceLayer getPersistenceLayer(){
         return persistenceLayer;
     }
 
@@ -37,33 +34,34 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("views/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Hello!");
+        stage.setTitle("MultiFitClub");
         stage.setScene(scene);
         stage.show();
     }
 
     private static void setPersistenceLayer() {
-        try (InputStream input = App.class.getClassLoader().getResourceAsStream("config.properties")){
+        try (InputStream input = App.class.getClassLoader().getResourceAsStream("application.properties")){
             Properties properties = new Properties();
             properties.load(input);
 
             switch(properties.getProperty("persistence.layer")){
                 case "JDBC":
-                    App.persistenceLayer = TypersOfPersistenceLayer.JDBC;
+                    App.persistenceLayer = TypesOfPersistenceLayer.JDBC;
                     break;
                 case "FileSystem":
-                    App.persistenceLayer = TypersOfPersistenceLayer.FILE_SYSTEM;
+                    App.persistenceLayer = TypesOfPersistenceLayer.FILE_SYSTEM;
                     break;
                 default:
-                    App.persistenceLayer = TypersOfPersistenceLayer.JDBC;
+                    App.persistenceLayer = TypesOfPersistenceLayer.JDBC;
                     break;
             }
         } catch (IOException e) {
             LoggerManager.logSevereException("Impossibile leggere il layer di persistenza dal file di configurazione.\n" +
                     "Si procede con la scelta di default: JDBC", e);
-            App.persistenceLayer = TypersOfPersistenceLayer.JDBC;
+            App.persistenceLayer = TypesOfPersistenceLayer.JDBC;
         }
     }
 }

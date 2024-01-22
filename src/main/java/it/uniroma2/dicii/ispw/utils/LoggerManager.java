@@ -25,7 +25,9 @@ public class LoggerManager {
     public static void logSevereException(String message, Exception e){
         logger.log(Level.SEVERE, message, e);
     }
-
+    public static void logSevereException(String message){
+        logger.log(Level.SEVERE, message);
+    }
     public static void logInfoException(String message, Exception e){
         logger.log(Level.INFO, message, e);
     }
