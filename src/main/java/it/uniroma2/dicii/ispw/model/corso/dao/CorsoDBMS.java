@@ -69,4 +69,48 @@ public class CorsoDBMS implements CorsoDAO {
         }
         return corsoList;
     }
+
+    @Override
+    public String addCorso(Corso corso) throws Exception {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String res = "Errore nell'inserimento";
+        try {
+            conn = DbConnection.getConnection();
+            String sql = "insert into corso(nome, data_inizio) values(?, ?)";
+
+            statement = conn.prepareStatement(sql);
+            statement.setString(1, corso.getName());
+            statement.setDate(2, new java.sql.Date(corso.getStartDate().getTime()));
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            LoggerManager.logSevereException("Errore di connessione al db", e);
+            return res;
+        }
+        return "Corso aggiunto correttamente";
+    }
+
+    @Override
+    public String removeCorso(Corso corso) throws Exception {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String res = "Errore nella rimozione";
+        try {
+            conn = DbConnection.getConnection();
+            String sql = "delete from corso where nome=? and data_inizio=?";
+
+            statement = conn.prepareStatement(sql);
+            statement.setString(1, corso.getName());
+            statement.setDate(2, new java.sql.Date(corso.getStartDate().getTime()));
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            LoggerManager.logSevereException("Errore di connessione al db", e);
+            return res;
+        }
+        return "Corso rimosso correttamente";
+    }
 }

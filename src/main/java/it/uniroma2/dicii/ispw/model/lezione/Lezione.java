@@ -6,6 +6,7 @@ import java.sql.Time;
 public class Lezione implements Serializable {
     private  String day;
     private Time startTime;
+    private String sala;
     private String courseName;
     private String cfUtente;
 
@@ -47,5 +48,17 @@ public class Lezione implements Serializable {
 
     public void setCfUtente(String cfUtente) {
         this.cfUtente = cfUtente;
+    }
+
+    public Time getStartTime() {
+        return startTime;
+    }
+
+    public String getSala() {
+        return sala;
+    }
+
+    public void setSala(String sala) {
+        this.sala = sala;
     }
 }

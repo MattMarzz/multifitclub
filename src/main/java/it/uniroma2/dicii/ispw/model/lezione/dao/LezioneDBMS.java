@@ -28,15 +28,16 @@ public class LezioneDBMS implements LezioneDAO{
 
             resultSet = statement.executeQuery();
 
-            if(!resultSet.first())
+            if(!resultSet.next())
                 throw new ItemNotFoundException("Non esiste alcuna lezione per il corso: " + nomeCorso);
 
             do{
                 Lezione l = new Lezione();
-                l.setCfUtente(resultSet.getString("utente"));
-                l.setDay(resultSet.getString("data"));
+                l.setCfUtente(resultSet.getString("istruttore"));
+                l.setDay(resultSet.getString("giorno"));
                 l.setStartTime(resultSet.getTime("ora"));
                 l.setCourseName(resultSet.getString("corso"));
+                l.setSala(resultSet.getString("sala"));
                 lezioniList.add(l);
             }while(resultSet.next());
 
