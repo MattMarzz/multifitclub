@@ -1,4 +1,4 @@
 package it.uniroma2.dicii.ispw.view.segreteria;
 
-public class DashboardController {
+public class ReservationController {
 }

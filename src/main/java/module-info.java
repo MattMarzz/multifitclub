@@ -6,7 +6,7 @@ module multifitclub {
     requires de.jensd.fx.glyphs.fontawesome;
 
 
-    opens it.uniroma2.dicii.ispw.view to javafx.fxml;
+
     exports it.uniroma2.dicii.ispw;
     exports it.uniroma2.dicii.ispw.exception;
     exports it.uniroma2.dicii.ispw.bean;
@@ -19,5 +19,8 @@ module multifitclub {
     exports it.uniroma2.dicii.ispw.enums;
     exports it.uniroma2.dicii.ispw.utils;
     exports it.uniroma2.dicii.ispw.view.segreteria;
+
+    opens it.uniroma2.dicii.ispw.view to javafx.fxml;
     opens it.uniroma2.dicii.ispw.view.segreteria to javafx.fxml;
+    opens it.uniroma2.dicii.ispw.view.utente to javafx.fxml;
 }

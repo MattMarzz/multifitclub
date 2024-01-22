@@ -6,11 +6,15 @@ import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.Objects;
 import java.util.Properties;
 
 public class App extends Application {
@@ -36,6 +40,14 @@ public class App extends Application {
     public void start(Stage stage) throws Exception {
         Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("views/login.fxml"));
+        InputStream url = getClass().getResourceAsStream("/images/icon.png");
+
+        if(url != null) {
+            Image icon = new Image(url);
+            stage.getIcons().add(icon);
+        }
+
+        stage.initStyle(StageStyle.UNIFIED);
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("MultiFitClub");
         stage.setScene(scene);

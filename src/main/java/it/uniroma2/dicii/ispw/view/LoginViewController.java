@@ -5,7 +5,7 @@ import it.uniroma2.dicii.ispw.bean.LoginBean;
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.controller.LoginController;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
-import it.uniroma2.dicii.ispw.view.segreteria.DashboardController;
+import it.uniroma2.dicii.ispw.view.segreteria.StructuralController;
 import it.uniroma2.dicii.ispw.view.utente.HomepageController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,9 +32,8 @@ public class LoginViewController {
                 if (utenteBean != null) {
                     //navigate to new page
                     switch (utenteBean.getRuolo()){
-                        case SEGRETERIA ->  PageHelper.changeScene(event, "views/segreteria/dashboard.fxml", "Dashboard", utenteBean, new DashboardController());
-                        case ISTRUTTORE ->  PageHelper.changeScene(event, "views/utente/homepage.fxml", "Home", utenteBean, new HomepageController());
-                        case UTENTE -> PageHelper.changeScene(event, "views/utente/homepage.fxml", "Home", utenteBean, new HomepageController());
+                        case SEGRETERIA ->  PageHelper.changeScene(event, "views/segreteria/structure.fxml", "Dashboard", utenteBean);
+                        case ISTRUTTORE, UTENTE ->  PageHelper.changeScene(event, "views/utente/homepage.fxml", "Homepage", utenteBean);
                     }
                 } else {
                     handleError("Credenziali errate!");

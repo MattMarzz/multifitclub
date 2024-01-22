@@ -182,7 +182,7 @@ public class UtenteDBMS implements UtenteDAO{
 
             statement.execute();
 
-            res = "L'Utente" + utente.getName() + "è stato modificato correttamente!";
+            res = "L'Utente " + utente.getName() + " è stato modificato correttamente!";
 
         } catch (SQLException e) {
             res = "Errore nell'inserimento del nuovo utente";

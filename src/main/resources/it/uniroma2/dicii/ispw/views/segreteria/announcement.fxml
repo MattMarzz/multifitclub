@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="657.0" prefWidth="1018.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.dicii.ispw.view.segreteria.AnnouncementController">
+    <AnchorPane prefHeight="570.0" prefWidth="853.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <children>
+            <Text layoutX="415.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="pubblica annuncio work in progress..." wrappingWidth="174.466796875" />
+        </children>
+    </AnchorPane>
+
+</AnchorPane>

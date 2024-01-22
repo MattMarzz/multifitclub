@@ -62,7 +62,6 @@ public class GestioneUtentiController {
         return date;
     }
 
-    //TODO: if we are adding a istructor or user we need to specify the courses
     public String insertUtente(UtenteBean utenteBean) throws InvalidDataException{
         String res = null;
         if(utenteBean.getCf().length() != CF_LENGTH) throw new InvalidDataException("Il codice fiscale non è valido!");

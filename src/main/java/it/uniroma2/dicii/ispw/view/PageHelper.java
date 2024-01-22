@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.net.URL;
 
 public class PageHelper {
 
-    public static void changeScene(ActionEvent event, String fxmlFile, String title, UtenteBean utente, AuthenticatedUser controller) throws IOException {
+    public static void changeScene(ActionEvent event, String fxmlFile, String title, UtenteBean utente) throws IOException {
         try {
             URL url = App.class.getResource(fxmlFile);
             if(url == null){
@@ -27,9 +28,11 @@ public class PageHelper {
             Parent root = loader.load();
 
             //pass the information of the logged user to the proper controller
-            controller = loader.getController();
-            controller.setUtenteBean(utente);
-            controller.initUserData();
+            if(utente != null) {
+                AuthenticatedUser controller = loader.getController();
+                controller.setUtenteBean(utente);
+                controller.initUserData();
+            }
 
             Scene scene = new Scene(root);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -40,5 +43,14 @@ public class PageHelper {
             LoggerManager.logSevereException("Errore nel loader: " + e.getMessage(), e);
             throw new IOException("Errore non previsto. Si prega di riprovare");
         }
+    }
+
+    public static void launchAlert(Alert.AlertType alertType, String title, String msg) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+
+        alert.showAndWait();
     }
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import atlantafx.base.controls.Card?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="657.0" prefWidth="1018.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.dicii.ispw.view.segreteria.AddUserController">
+    <AnchorPane fx:id="addUserView" layoutX="10.0" layoutY="10.0" prefHeight="642.0" prefWidth="1004.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <children>
+            <HBox prefHeight="61.0" prefWidth="1004.0">
+                <children>
+                    <AnchorPane prefHeight="78.0" prefWidth="1004.0">
+                        <children>
+                            <Text layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Gestione Utenti &gt; Inserisci Utente" wrappingWidth="250.0" />
+                        </children>
+                    </AnchorPane>
+                </children>
+            </HBox>
+            <AnchorPane layoutX="112.0" layoutY="110.0" prefHeight="499.0" prefWidth="808.0">
+                <children>
+                    <Card prefHeight="497.0" prefWidth="778.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    <Label layoutX="29.0" layoutY="123.0" prefHeight="17.0" prefWidth="70.0" styleClass="fg-default" text="Nome" />
+                    <Label layoutX="283.0" layoutY="119.0" prefHeight="17.0" prefWidth="70.0" styleClass="fg-default" text="Cognome" />
+                    <Label layoutX="562.0" layoutY="119.0" prefHeight="17.0" prefWidth="122.0" styleClass="fg-default" text="Data di Nascita" />
+                    <DatePicker fx:id="dateIn" layoutX="555.0" layoutY="153.0" prefHeight="25.0" prefWidth="197.0" />
+                    <Label layoutX="29.0" layoutY="230.0" prefHeight="17.0" prefWidth="122.0" styleClass="fg-default" text="Codice Fiscale" />
+                    <Label layoutX="283.0" layoutY="226.0" prefHeight="17.0" prefWidth="122.0" styleClass="fg-default" text="E-mail" />
+                    <Label layoutX="29.0" layoutY="337.0" prefHeight="17.0" prefWidth="122.0" styleClass="fg-default" text="Password" />
+                    <ComboBox fx:id="roleIn" layoutX="555.0" layoutY="262.0" prefHeight="25.0" prefWidth="197.0" />
+                    <Label layoutX="562.0" layoutY="226.0" prefHeight="17.0" prefWidth="62.0" text="Ruolo" />
+                    <Button fx:id="addBtn" layoutX="593.0" layoutY="445.0" mnemonicParsing="false" onAction="#onAddBtnClick" prefHeight="25.0" prefWidth="154.0" styleClass="success" text="Aggiungi">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor></Button>
+                    <Label layoutX="29.0" layoutY="34.0" prefHeight="17.0" prefWidth="250.0" styleClass="accent" text="Nuovo Utente" />
+               <TextField fx:id="nameIn" layoutX="25.0" layoutY="153.0" prefHeight="25.0" prefWidth="197.0" />
+               <TextField fx:id="surnameIn" layoutX="283.0" layoutY="153.0" prefHeight="25.0" prefWidth="197.0" />
+               <TextField fx:id="cfIn" layoutX="25.0" layoutY="262.0" prefHeight="25.0" prefWidth="197.0" />
+               <TextField fx:id="emailIn" layoutX="279.0" layoutY="262.0" prefHeight="25.0" prefWidth="197.0" />
+               <TextField fx:id="pwdIn" editable="false" layoutX="25.0" layoutY="366.0" prefHeight="25.0" prefWidth="197.0" />
+               <Label layoutX="283.0" layoutY="337.0" prefHeight="17.0" prefWidth="122.0" styleClass="danger" text="Attenzione:" />
+               <Text layoutX="279.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="La password è autogenerata e dovrà essere cambiata dall'utente al momento del primo accesso." wrappingWidth="445.13671875" />
+               <Button layoutX="433.0" layoutY="445.0" mnemonicParsing="false" onAction="#onClearBtnClick" prefHeight="25.0" prefWidth="154.0" styleClass="danger" text="Svuota">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+               </Button>
+                </children>
+            </AnchorPane>
+        </children>
+    </AnchorPane>
+</AnchorPane>

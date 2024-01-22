@@ -50,7 +50,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
             resultSet = statement.executeQuery();
 
             if(!resultSet.next())
-                throw new ItemNotFoundException("Non esiste alcun corso per l'utente con c.f.: " + cf);
+                return courses;
 
             do{
                 courses.add(getCourseById(resultSet.getString("corso")));
@@ -87,7 +87,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
             resultSet = statement.executeQuery();
 
             if(!resultSet.first())
-                throw new ItemNotFoundException("Non esiste alcun utente per il corso: " + nomeCorso);
+                return utenteList;
 
             do{
                 utenteList.add(utenteDAO.getUtenteById(resultSet.getString("utente")));
