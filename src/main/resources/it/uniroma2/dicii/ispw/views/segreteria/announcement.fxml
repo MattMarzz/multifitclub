@@ -1,13 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import atlantafx.base.controls.Card?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="657.0" prefWidth="1018.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.dicii.ispw.view.segreteria.AnnouncementController">
     <AnchorPane prefHeight="570.0" prefWidth="853.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <children>
-            <Text layoutX="415.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="pubblica annuncio work in progress..." wrappingWidth="174.466796875" />
-        </children>
+      <children>
+         <HBox prefHeight="61.0" prefWidth="1004.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0">
+            <children>
+               <AnchorPane prefHeight="78.0" prefWidth="1004.0">
+                  <children>
+                     <Text layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Amministrazione &gt; Pubblica Annuncio" wrappingWidth="250.0" />
+                  </children>
+               </AnchorPane>
+            </children>
+         </HBox>
+         <AnchorPane layoutY="61.0" prefHeight="597.0" prefWidth="1018.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="61.0">
+            <children>
+               <AnchorPane layoutX="30.0" layoutY="44.0" prefHeight="518.0" prefWidth="567.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="44.0">
+                  <children>
+                     <Card prefHeight="518.0" prefWidth="567.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     <TextField fx:id="titleIn" layoutX="36.0" layoutY="110.0" prefHeight="25.0" prefWidth="226.0" />
+                     <Label layoutX="36.0" layoutY="77.0" prefHeight="17.0" prefWidth="83.0" styleClass="fg-default" text="Titolo" />
+                     <Text layoutX="35.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fg-default" text="Testo" wrappingWidth="98.751953125" />
+                     <TextArea fx:id="textIn" layoutX="35.0" layoutY="223.0" prefHeight="186.0" prefWidth="497.0" />
+                     <Button layoutX="434.0" layoutY="451.0" mnemonicParsing="false" onAction="#onSendBtnClick" prefHeight="25.0" prefWidth="99.0" styleClass="success" text="Invia">
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor>
+                     </Button>
+                     <Button layoutX="298.0" layoutY="451.0" mnemonicParsing="false" onAction="#onClearBtnClick" prefHeight="25.0" prefWidth="99.0" styleClass="danger" text="Svuota">
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor>
+                     </Button>
+                     <Label fx:id="titleLbl" layoutX="36.0" layoutY="151.0" prefHeight="17.0" prefWidth="210.0" styleClass="danger" />
+                     <Label fx:id="textLbl" layoutX="36.0" layoutY="421.0" prefHeight="17.0" prefWidth="210.0" styleClass="danger" />
+                     <Label layoutX="30.0" layoutY="22.0" prefHeight="17.0" prefWidth="178.0" styleClass="accent" text="Scrivi nuovo annuncio" />
+                  </children>
+               </AnchorPane>
+               <AnchorPane layoutX="630.0" layoutY="44.0" prefHeight="518.0" prefWidth="360.0" AnchorPane.bottomAnchor="34.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="44.0">
+                  <children>
+                     <Card prefHeight="518.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     <Label layoutX="20.0" layoutY="20.0" prefHeight="17.0" prefWidth="178.0" styleClass="accent" text="Lista annunci" />
+                     <Label layoutX="57.0" layoutY="251.0" prefHeight="17.0" prefWidth="261.0" styleClass="fg-default" text="working in progress" />
+                  </children>
+               </AnchorPane>
+            </children>
+         </AnchorPane>
+      </children>
     </AnchorPane>
 
 </AnchorPane>

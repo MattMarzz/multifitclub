@@ -45,12 +45,16 @@ public class StructuralController extends AuthenticatedUser {
     @FXML
     private AnchorPane usersListView;
 
+    @FXML
+    private AnnouncementController announcementController;
+
     @Override
     public void initUserData() {
-        nameLbl.setText(this.utenteBean.getName());
+        nameLbl.setText(AuthenticatedUser.utenteBean.getName());
         //land on dashboard
         switchView(new ActionEvent(dashboardBtn, null));
     }
+
 
     public void switchView(ActionEvent event) {
 
@@ -83,7 +87,7 @@ public class StructuralController extends AuthenticatedUser {
 
     @FXML
     private void onLogoutBtnClick (ActionEvent event) {
-        this.utenteBean = null;
+        AuthenticatedUser.utenteBean = null;
         try {
             PageHelper.changeScene(event, "views/login.fxml", "Login", null );
         } catch (IOException e) {
@@ -91,5 +95,6 @@ public class StructuralController extends AuthenticatedUser {
             Platform.exit();
         }
     }
+
 
 }

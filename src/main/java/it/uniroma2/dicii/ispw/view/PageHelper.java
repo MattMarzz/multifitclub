@@ -3,6 +3,7 @@ package it.uniroma2.dicii.ispw.view;
 import it.uniroma2.dicii.ispw.App;
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
+import it.uniroma2.dicii.ispw.view.segreteria.AnnouncementController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

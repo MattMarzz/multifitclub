@@ -2,11 +2,13 @@ package it.uniroma2.dicii.ispw.controller;
 
 
 import it.uniroma2.dicii.ispw.App;
+import it.uniroma2.dicii.ispw.bean.AnnouncementBean;
 import it.uniroma2.dicii.ispw.bean.CorsoBean;
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
+import it.uniroma2.dicii.ispw.model.announcement.Announcement;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.corso.dao.CorsoDAO;
 import it.uniroma2.dicii.ispw.model.corso.dao.CorsoDBMS;
@@ -153,4 +155,5 @@ public class GestioneUtentiController {
         }
         return corsoBeanList;
     }
+
 }

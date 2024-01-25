@@ -5,8 +5,6 @@ module multifitclub {
     requires atlantafx.base;
     requires de.jensd.fx.glyphs.fontawesome;
 
-
-
     exports it.uniroma2.dicii.ispw;
     exports it.uniroma2.dicii.ispw.exception;
     exports it.uniroma2.dicii.ispw.bean;
@@ -16,6 +14,8 @@ module multifitclub {
     exports it.uniroma2.dicii.ispw.model.utente;
     exports it.uniroma2.dicii.ispw.model.lezione;
     exports it.uniroma2.dicii.ispw.model.corso;
+    exports it.uniroma2.dicii.ispw.model.announcement;
+    exports it.uniroma2.dicii.ispw.model.announcement.dao;
     exports it.uniroma2.dicii.ispw.enums;
     exports it.uniroma2.dicii.ispw.utils;
     exports it.uniroma2.dicii.ispw.view.segreteria;

@@ -2,6 +2,7 @@ package it.uniroma2.dicii.ispw.model.utente.dao;
 
 import it.uniroma2.dicii.ispw.bean.LoginBean;
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
+import it.uniroma2.dicii.ispw.model.announcement.Announcement;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.utente.Utente;
 

@@ -13,8 +13,6 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.util.Objects;
 import java.util.Properties;
 
 public class App extends Application {
@@ -34,6 +32,17 @@ public class App extends Application {
 //            throw new RuntimeException(e);
 //        }
         launch();
+//        AnnouncementController controller = new AnnouncementController();
+//        AnnouncementBean ab = new AnnouncementBean();
+//        ab.setTitle("Annuncio");
+//        ab.setText("bellissimo testo");
+//        ab.setDate(Timestamp.valueOf(LocalDateTime.now()));
+//        ab.setSender("BNCMRA70A20H501B");
+//        try {
+//            controller.publishNewAnnouncement(ab);
+//        } catch (InvalidDataException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @Override

@@ -1,9 +1,13 @@
 package it.uniroma2.dicii.ispw.model.utente;
 
 import it.uniroma2.dicii.ispw.App;
+import it.uniroma2.dicii.ispw.controller.GestioneUtentiController;
+import it.uniroma2.dicii.ispw.controller.ManageAnnouncementController;
+import it.uniroma2.dicii.ispw.controller.Observer;
 import it.uniroma2.dicii.ispw.enums.Ruolo;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
+import it.uniroma2.dicii.ispw.model.announcement.Announcement;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDAO;
 import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDBMS;
@@ -14,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Utente implements Serializable {
+public class Utente implements Serializable, Observer {
     private String name;
     private String surname;
     private String cf;
@@ -24,12 +28,15 @@ public class Utente implements Serializable {
     private Ruolo ruolo;
     private List<Corso> enrollments;
     private List<Corso> teachings;
+    private List<Announcement> announcementList;
+
 
     private transient UtenteCorsoDAO utenteCorsoDAO;
 
     public Utente(){
-        if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC))
+        if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC)) {
             utenteCorsoDAO = new UtenteCorsoDBMS();
+        }
 //        else
 //            utenteCorsoDAO = new UtenteCorsoFS();
     }
@@ -132,5 +139,15 @@ public class Utente implements Serializable {
 
     public void setTeachings(List<Corso> teachings) {
         this.teachings = teachings;
+    }
+
+    @Override
+    public void update() {
+        ManageAnnouncementController manageAnnouncementController = new ManageAnnouncementController();
+        GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
+
+        this.announcementList = manageAnnouncementController.getAllAnnouncement();
+
+
     }
 }
