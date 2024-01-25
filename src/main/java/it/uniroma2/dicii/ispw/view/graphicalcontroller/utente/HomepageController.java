@@ -1,11 +1,10 @@
-package it.uniroma2.dicii.ispw.view.utente;
+package it.uniroma2.dicii.ispw.view.graphicalcontroller.utente;
 
-import it.uniroma2.dicii.ispw.view.AuthenticatedUser;
+import it.uniroma2.dicii.ispw.view.graphicalcontroller.AuthenticatedUser;
+import it.uniroma2.dicii.ispw.view.graphicalcontroller.PageHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 
 public class HomepageController extends AuthenticatedUser {
 
@@ -20,6 +19,8 @@ public class HomepageController extends AuthenticatedUser {
 
     @FXML
     void onLogoutBtnClick(ActionEvent event) {
+        AuthenticatedUser.utenteBean = null;
+        PageHelper.logout(event);
     }
 
 

@@ -21,43 +21,33 @@ public class Lezione implements Serializable {
     public String getDay() {
         return day;
     }
-
     public void setDay(String day) {
         this.day = day;
     }
-
     public Time getStarTime() {
         return startTime;
     }
-
     public void setStartTime(Time startTime) {
         this.startTime = startTime;
     }
-
     public String getCourseName() {
         return courseName;
     }
-
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
-
     public String getCfUtente() {
         return cfUtente;
     }
-
     public void setCfUtente(String cfUtente) {
         this.cfUtente = cfUtente;
     }
-
     public Time getStartTime() {
         return startTime;
     }
-
     public String getSala() {
         return sala;
     }
-
     public void setSala(String sala) {
         this.sala = sala;
     }

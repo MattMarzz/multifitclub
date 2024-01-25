@@ -6,7 +6,6 @@ import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.lezione.Lezione;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,21 +14,19 @@ import java.util.List;
 
 public class LezioneDBMS implements LezioneDAO{
     @Override
-    public List<Lezione> getLezioniByCourseId(String nomeCorso) throws ItemNotFoundException, DbConnectionException {
+    public List<Lezione> getLezioniByCourseId(String nomeCorso) throws ItemNotFoundException {
         List<Lezione> lezioniList = new ArrayList<>();
-        Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try{
-            conn = DbConnection.getConnection();
             String sql = "SELECT * FROM lezione WHERE corso=?";
-            statement = conn.prepareStatement(sql);
-            statement.setString(1, nomeCorso);
 
+            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement.setString(1, nomeCorso);
             resultSet = statement.executeQuery();
 
             if(!resultSet.next())
-                throw new ItemNotFoundException("Non esiste alcuna lezione per il corso: " + nomeCorso);
+                return lezioniList;
 
             do{
                 Lezione l = new Lezione();
@@ -42,13 +39,16 @@ public class LezioneDBMS implements LezioneDAO{
             }while(resultSet.next());
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore nel dialogo con il database.", e);
+            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+            return lezioniList;
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
             return lezioniList;
         } finally {
             try {
-                if(statement != null) statement.close();
-                if(resultSet != null) resultSet.close();
-                if(conn != null) conn.close();
+                if (statement != null) statement.close();
+                if (resultSet != null) resultSet.close();
+                DbConnection.closeConnection();
             } catch (SQLException e) {
                 LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
             }

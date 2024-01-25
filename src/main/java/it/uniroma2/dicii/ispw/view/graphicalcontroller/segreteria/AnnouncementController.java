@@ -1,11 +1,13 @@
-package it.uniroma2.dicii.ispw.view.segreteria;
+package it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria;
 
 
 import it.uniroma2.dicii.ispw.bean.AnnouncementBean;
 import it.uniroma2.dicii.ispw.controller.ManageAnnouncementController;
+import it.uniroma2.dicii.ispw.controller.Observer;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
-import it.uniroma2.dicii.ispw.view.AuthenticatedUser;
-import it.uniroma2.dicii.ispw.view.PageHelper;
+import it.uniroma2.dicii.ispw.model.AnnouncementManager;
+import it.uniroma2.dicii.ispw.view.graphicalcontroller.AuthenticatedUser;
+import it.uniroma2.dicii.ispw.view.graphicalcontroller.PageHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -17,7 +19,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 
-public class AnnouncementController {
+public class AnnouncementController implements Observer {
 
     @FXML
     private TextArea textIn;
@@ -53,9 +55,11 @@ public class AnnouncementController {
             announcementBean.setDate(Timestamp.valueOf(LocalDateTime.now()));
             announcementBean.setSender(AuthenticatedUser.getUtenteBean().getCf());
             ManageAnnouncementController manageAnnouncementController = new ManageAnnouncementController();
+            AnnouncementManager.getInstance().attach(this);
             try {
                 res = manageAnnouncementController.publishNewAnnouncement(announcementBean);
             } catch (InvalidDataException e) {
+                AnnouncementManager.getInstance().detach(this);
                 PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", e.getMessage());
             }
             PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Successo", res);
@@ -64,4 +68,8 @@ public class AnnouncementController {
 
     }
 
+    @Override
+    public void update() {
+        System.out.println("bene ma non benissimo");
+    }
 }

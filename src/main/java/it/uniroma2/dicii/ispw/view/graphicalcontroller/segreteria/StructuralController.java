@@ -1,8 +1,8 @@
-package it.uniroma2.dicii.ispw.view.segreteria;
+package it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria;
 
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
-import it.uniroma2.dicii.ispw.view.AuthenticatedUser;
-import it.uniroma2.dicii.ispw.view.PageHelper;
+import it.uniroma2.dicii.ispw.view.graphicalcontroller.AuthenticatedUser;
+import it.uniroma2.dicii.ispw.view.graphicalcontroller.PageHelper;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -88,12 +88,7 @@ public class StructuralController extends AuthenticatedUser {
     @FXML
     private void onLogoutBtnClick (ActionEvent event) {
         AuthenticatedUser.utenteBean = null;
-        try {
-            PageHelper.changeScene(event, "views/login.fxml", "Login", null );
-        } catch (IOException e) {
-            LoggerManager.logSevereException("Errore nel logout", e);
-            Platform.exit();
-        }
+        PageHelper.logout(event);
     }
 
 

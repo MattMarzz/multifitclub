@@ -1,12 +1,10 @@
-package it.uniroma2.dicii.ispw.view;
+package it.uniroma2.dicii.ispw.view.graphicalcontroller;
 
 
 import it.uniroma2.dicii.ispw.bean.LoginBean;
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.controller.LoginController;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
-import it.uniroma2.dicii.ispw.view.segreteria.StructuralController;
-import it.uniroma2.dicii.ispw.view.utente.HomepageController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

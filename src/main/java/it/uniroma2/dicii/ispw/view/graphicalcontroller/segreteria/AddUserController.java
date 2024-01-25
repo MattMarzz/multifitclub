@@ -1,12 +1,14 @@
-package it.uniroma2.dicii.ispw.view.segreteria;
+package it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria;
 
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.controller.GestioneUtentiController;
 import it.uniroma2.dicii.ispw.enums.Ruolo;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
-import it.uniroma2.dicii.ispw.view.PageHelper;
+import it.uniroma2.dicii.ispw.view.graphicalcontroller.PageHelper;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -63,8 +65,7 @@ public class AddUserController implements Initializable {
             try {
                 res = gestioneUtentiController.insertUtente(utenteBean);
             } catch (InvalidDataException e) {
-                LoggerManager.logInfoException("Impossibile inserire l'utente. ", e);
-                PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", "Impossibile aggiungere l'utente.");
+                PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", e.getMessage());
             }
         }
         PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Info", res);

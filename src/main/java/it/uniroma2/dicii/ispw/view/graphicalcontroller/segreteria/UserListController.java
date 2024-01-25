@@ -1,12 +1,13 @@
-package it.uniroma2.dicii.ispw.view.segreteria;
+package it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria;
 
 import it.uniroma2.dicii.ispw.bean.CorsoBean;
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.controller.GestioneCorsiController;
 import it.uniroma2.dicii.ispw.controller.GestioneUtentiController;
 import it.uniroma2.dicii.ispw.enums.Ruolo;
+import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
-import it.uniroma2.dicii.ispw.view.PageHelper;
+import it.uniroma2.dicii.ispw.view.graphicalcontroller.PageHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,7 +22,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -84,6 +84,7 @@ public class UserListController implements Initializable {
         teachingView.setVisible(false);
     }
 
+
     public ObservableList<CorsoBean> corsoBeanObservableListEnroll;
     public void loadEnrollmentsList(UtenteBean utenteBean) {
         deleteEnrollmentInfo.setText("");
@@ -123,13 +124,7 @@ public class UserListController implements Initializable {
         addEnrollmentInfo.setText("");
         GestioneCorsiController gestioneCorsiController = new GestioneCorsiController();
         ObservableList<CorsoBean> corsoBeanObservableList = FXCollections.observableArrayList();
-        List<CorsoBean> allCorsi = new ArrayList<>();
-        try {
-            allCorsi = gestioneCorsiController.getAllCorsi();
-        } catch (Exception e) {
-            LoggerManager.logSevereException(e.getMessage(), e);
-            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", "Impossibile caricare la lista dei corsi");
-        }
+        List<CorsoBean> allCorsi = gestioneCorsiController.getAllCorsi();
 
         List<CorsoBean> corsiNonInscritti = allCorsi.stream()
                 .filter(corso -> corsoBeanObservableListEnroll.stream().noneMatch(iscritto -> iscritto.getName().equals(corso.getName())))
@@ -166,9 +161,8 @@ public class UserListController implements Initializable {
         ObservableList<CorsoBean> corsoBeanObservableList = FXCollections.observableArrayList();
         try {
             corsoBeanObservableList.addAll(gestioneUtentiController.getTeachingByUtente(utenteBean));
-        } catch (Exception e) {
-            LoggerManager.logSevereException(e.getMessage(), e);
-            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", "Impossibile trovare gli insegnamenti dell'utente " + utenteBean.getName());
+        } catch (ItemNotFoundException e) {
+            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore",  e.getMessage());
         }
 
         teachingList.setCellFactory(param -> new ListCell<CorsoBean>() {
@@ -204,9 +198,8 @@ public class UserListController implements Initializable {
         utenteBean.setCf(cfIn.getText());
         try {
             gestioneUtentiController.removeEnrollmentByUtente(utenteBean, corsoBean);
-        } catch (Exception e) {
-            LoggerManager.logSevereException("Errore nell'eliminazione dell'iscrizione ", e);
-            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", "Eliminazione non riuscita!");
+        } catch (ItemNotFoundException e) {
+            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", e.getMessage());
         }
         loadEnrollmentsList(utenteBean);
         loadAvailableCourse(utenteBean);
@@ -314,10 +307,9 @@ public class UserListController implements Initializable {
         GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
         String esito = "";
         try {
-            esito = gestioneUtentiController.editUtente(utenteBean);
+            esito = gestioneUtentiController.updateUtente(utenteBean);
         } catch (Exception e) {
-            LoggerManager.logSevereException(e.getMessage(), e);
-            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", "Errore in fase di aggiornamento!");
+            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", e.getMessage());
         }
 
         if(!esito.isEmpty()) {

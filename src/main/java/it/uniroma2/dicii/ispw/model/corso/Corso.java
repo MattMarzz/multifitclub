@@ -3,6 +3,7 @@ package it.uniroma2.dicii.ispw.model.corso;
 import it.uniroma2.dicii.ispw.App;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
+import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDAO;
 import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDBMS;
 import it.uniroma2.dicii.ispw.model.lezione.Lezione;
@@ -52,36 +53,16 @@ public class Corso implements Serializable {
         this.lezioneList = lezioneList;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public List<Lezione> getLezioneList() {
-        if(this.lezioneList == null) {
+    public List<Utente> getTeachers() {
+        if(this.teachers == null) {
             try {
-                this.lezioneList = lezioneDAO.getLezioniByCourseId(this.name);
-            }catch (Exception e) {
+                this.teachers = utenteCorsoDAO.getUsersByCourseId(this.name, UserRoleInCourse.TEACHING);
+            } catch (Exception e) {
                 LoggerManager.logInfoException(e.getMessage(), e);
-                return lezioneList;
+                return teachers;
             }
         }
-        return lezioneList;
-    }
-
-    public void setLezioneList(List<Lezione> lezioneList) {
-        this.lezioneList = lezioneList;
+        return teachers;
     }
 
     public List<Utente> getEnrolledUsers() {
@@ -96,22 +77,36 @@ public class Corso implements Serializable {
         return enrolledUsers;
     }
 
+    public List<Lezione> getLezioneList() {
+        if(this.lezioneList == null) {
+            try {
+                this.lezioneList = lezioneDAO.getLezioniByCourseId(this.name);
+            }catch (ItemNotFoundException e) {
+                LoggerManager.logInfoException(e.getMessage(), e);
+                return lezioneList;
+            }
+        }
+        return lezioneList;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public Date getStartDate() {
+        return startDate;
+    }
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+    public void setLezioneList(List<Lezione> lezioneList) {
+        this.lezioneList = lezioneList;
+    }
     public void setEnrolledUsers(List<Utente> enrolledUsers) {
         this.enrolledUsers = enrolledUsers;
     }
-
-    public List<Utente> getTeachers() {
-        if(this.teachers == null) {
-            try {
-                this.teachers = utenteCorsoDAO.getUsersByCourseId(this.name, UserRoleInCourse.TEACHING);
-            } catch (Exception e) {
-                LoggerManager.logInfoException(e.getMessage(), e);
-                return teachers;
-            }
-        }
-        return teachers;
-    }
-
     public void setTeachers(List<Utente> teachers) {
         this.teachers = teachers;
     }

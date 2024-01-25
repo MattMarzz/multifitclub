@@ -1,9 +1,9 @@
-package it.uniroma2.dicii.ispw.view;
+package it.uniroma2.dicii.ispw.view.graphicalcontroller;
 
 import it.uniroma2.dicii.ispw.App;
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
-import it.uniroma2.dicii.ispw.view.segreteria.AnnouncementController;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -53,5 +53,14 @@ public class PageHelper {
         alert.setContentText(msg);
 
         alert.showAndWait();
+    }
+
+    public static void logout(ActionEvent event) {
+        try {
+            changeScene(event, "views/login.fxml", "Login", null );
+        } catch (IOException e) {
+            LoggerManager.logSevereException("Errore nel logout", e);
+            Platform.exit();
+        }
     }
 }

@@ -3,28 +3,24 @@ package it.uniroma2.dicii.ispw.controller;
 import it.uniroma2.dicii.ispw.App;
 import it.uniroma2.dicii.ispw.bean.CorsoBean;
 import it.uniroma2.dicii.ispw.bean.LezioneBean;
-import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
+import it.uniroma2.dicii.ispw.exception.ItemAlreadyExistsException;
+import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.corso.dao.CorsoDAO;
 import it.uniroma2.dicii.ispw.model.corso.dao.CorsoDBMS;
-import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDAO;
-import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDBMS;
 import it.uniroma2.dicii.ispw.model.lezione.Lezione;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GestioneCorsiController {
-
     private CorsoDAO corsoDAO;
-    private UtenteCorsoDAO utenteCorsoDAO;
 
     public GestioneCorsiController() {
         if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC)) {
             corsoDAO = new CorsoDBMS();
-            utenteCorsoDAO = new UtenteCorsoDBMS();
         }
 //       else {
 //            corsoDAO = new CorsoFS();
@@ -32,7 +28,7 @@ public class GestioneCorsiController {
 //        }
     }
 
-    public List<CorsoBean> getAllCorsi() throws Exception {
+    public List<CorsoBean> getAllCorsi() {
         List<CorsoBean> corsoBeanList = new ArrayList<>();
         for (Corso c: corsoDAO.getAllCorsi()) {
             CorsoBean cb = new CorsoBean(c.getName(), c.getStartDate());
@@ -41,7 +37,7 @@ public class GestioneCorsiController {
         return corsoBeanList;
     }
 
-    public String addCourse(CorsoBean corsoBean) throws Exception {
+    public void insertCourse(CorsoBean corsoBean) throws InvalidDataException, ItemAlreadyExistsException {
         Corso corso = new Corso();
         if (corsoBean.getName().isBlank())
             throw new InvalidDataException("Il nome non può essere vuoto.");
@@ -50,20 +46,22 @@ public class GestioneCorsiController {
 
         corso.setName(corsoBean.getName());
         corso.setStartDate(corsoBean.getStartDate());
-        return corsoDAO.addCorso(corso);
+        corsoDAO.insertCorso(corso);
     }
 
-    public String removeCorso(CorsoBean corsoBean) throws Exception {
+    public void removeCorso(CorsoBean corsoBean) throws InvalidDataException, ItemNotFoundException {
         if (corsoBean.getName().isBlank())
             throw new InvalidDataException("Il nome non può essere vuoto.");
         Corso corso = corsoDAO.getCorsoByNome(corsoBean.getName());
-        return corsoDAO.removeCorso(corso);
+        if(corso == null) throw new ItemNotFoundException("Corso non trovato.");
+        corsoDAO.removeCorso(corso);
     }
 
-    public List<LezioneBean> getLezioniByCorsoId(CorsoBean corsoBean) throws Exception {
+    public List<LezioneBean> getLezioniByCorsoId(CorsoBean corsoBean) throws InvalidDataException, ItemNotFoundException {
         if (corsoBean.getName().isBlank())
             throw new InvalidDataException("Il nome non può essere vuoto.");
         Corso corso = corsoDAO.getCorsoByNome(corsoBean.getName());
+        if(corso == null) throw new ItemNotFoundException("Corso non trovato.");
         List<LezioneBean> lezioneBeanList = new ArrayList<>();
         for (Lezione l: corso.getLezioneList()) {
             LezioneBean lb = new LezioneBean();
@@ -74,7 +72,5 @@ public class GestioneCorsiController {
         }
         return lezioneBeanList;
     }
-
-
 
 }
