@@ -1,4 +1,4 @@
-package it.uniroma2.dicii.ispw.view;
+package it.uniroma2.dicii.ispw.view.graphicalcontroller;
 
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
 

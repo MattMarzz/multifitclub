@@ -25,9 +25,10 @@ public class ManageAnnouncementController {
     public ManageAnnouncementController() {
         if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC)) {
             announcementDAO = new AnnouncementDBMS();
-        } else {
-            announcementDAO = new AnnouncementDBMS();
         }
+//        else {
+//            announcementDAO = new AnnouncementFS();
+//        }
     }
 
     public String publishNewAnnouncement(AnnouncementBean announcementBean) throws InvalidDataException {
@@ -36,7 +37,7 @@ public class ManageAnnouncementController {
         if(announcementBean.getText().isBlank())
             throw new InvalidDataException("Inseire testo dell'annuncio");
         if(announcementBean.getTitle().isBlank())
-            throw new InvalidDataException("Inseire titolo dell'annuncio");
+            throw new InvalidDataException("Inserire titolo dell'annuncio");
         if(announcementBean.getSender() == null)
             throw new InvalidDataException("Mittente non specificato");
 
@@ -55,21 +56,23 @@ public class ManageAnnouncementController {
         }
 
         //load all observer
-        GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
-        List<UtenteBean> utenteBeanList = gestioneUtentiController.getAllUtenti();
-        List<Observer> utenteList = new ArrayList<>();
-        try {
-            for (UtenteBean ub: utenteBeanList) {
-                Utente u = new Utente(ub.getName(), ub.getSurname(), ub.getCf(),
-                        new SimpleDateFormat("yyyy-MM-dd").parse(ub.getBirthDate()), ub.getEmail(), null, ub.getRuolo());
-                utenteList.add(u);
-            }
-        } catch (ParseException e) {
-            LoggerManager.logSevereException("Impossibile convertire la data", e);
-            return "annuncio inviato ma non notificato!";
-        }
-        ann.attachFullList(utenteList);
-        ann.notifyChanges();
+//        GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
+//        List<UtenteBean> utenteBeanList = gestioneUtentiController.getAllUtenti();
+//        List<Observer> utenteList = new ArrayList<>();
+//        try {
+//            for (UtenteBean ub: utenteBeanList) {
+//                Utente u = new Utente(ub.getName(), ub.getSurname(), ub.getCf(),
+//                        new SimpleDateFormat("yyyy-MM-dd").parse(ub.getBirthDate()), ub.getEmail(), null, ub.getRuolo());
+//                utenteList.add(u);
+//            }
+//        } catch (ParseException e) {
+//            LoggerManager.logSevereException("Impossibile convertire la data", e);
+//            return "annuncio inviato ma non notificato!";
+//        }
+//        ann.attachFullList(utenteList);
+//        ann.notifyChanges();
+        ann.appendAnnouncement();
+
         return res;
     }
 
@@ -84,9 +87,10 @@ public class ManageAnnouncementController {
         return announcementList;
     }
 
-    public List<AnnouncementBean> toAnnouncementBean(List<Announcement> announcementList) {
+    public List<AnnouncementBean> getAllAnnouncementBean() {
+        List<Announcement> al = getAllAnnouncement();
         List<AnnouncementBean> announcementBeanList = new ArrayList<>();
-        for (Announcement a: announcementList ) {
+        for (Announcement a: al ) {
             AnnouncementBean ab = new AnnouncementBean();
             ab.setTitle(a.getTitle());
             ab.setText(a.getText());
@@ -96,4 +100,5 @@ public class ManageAnnouncementController {
         }
         return announcementBeanList;
     }
+
 }

@@ -1,12 +1,10 @@
-package it.uniroma2.dicii.ispw.view.segreteria;
+package it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria;
 
 import it.uniroma2.dicii.ispw.bean.CorsoBean;
 import it.uniroma2.dicii.ispw.bean.LezioneBean;
-import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.controller.GestioneCorsiController;
-import it.uniroma2.dicii.ispw.controller.GestioneUtentiController;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
-import it.uniroma2.dicii.ispw.view.PageHelper;
+import it.uniroma2.dicii.ispw.view.graphicalcontroller.PageHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,13 +17,9 @@ import javafx.scene.layout.AnchorPane;
 import java.time.Instant;
 
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class CoursesController implements Initializable {
@@ -68,11 +62,9 @@ public class CoursesController implements Initializable {
     public void loadCoursesTable() {
         GestioneCorsiController gestioneCorsiController = new GestioneCorsiController();
         ObservableList<CorsoBean> corsoBeanObservableList = FXCollections.observableArrayList();
-        try {
-            corsoBeanObservableList.addAll(gestioneCorsiController.getAllCorsi());
-        } catch (Exception e) {
-            LoggerManager.logInfoException("Errore nel caricamento dei corsi ", e);
-        }
+
+        corsoBeanObservableList.addAll(gestioneCorsiController.getAllCorsi());
+
 
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         dateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
@@ -102,7 +94,7 @@ public class CoursesController implements Initializable {
         try {
             lezioneBeanObservableList.addAll(gestioneCorsiController.getLezioniByCorsoId(cb));
         } catch (Exception e) {
-            LoggerManager.logInfoException("Errore nel caricamento dei corsi ", e);
+            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", e.getMessage());
         }
 
         dayCol.setCellValueFactory(new PropertyValueFactory<>("giorno"));
@@ -110,7 +102,6 @@ public class CoursesController implements Initializable {
         salaCol.setCellValueFactory(new PropertyValueFactory<>("sala"));
 
         lezioniTable.setItems(lezioneBeanObservableList);
-
     }
 
     public void deleteCourseForm(CorsoBean corsoBean) {
@@ -136,7 +127,7 @@ public class CoursesController implements Initializable {
         }
         GestioneCorsiController gestioneCorsiController = new GestioneCorsiController();
         try {
-            gestioneCorsiController.addCourse(corsoBean);
+            gestioneCorsiController.insertCourse(corsoBean);
         } catch (Exception e) {
             PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", e.getMessage());
         }

@@ -9,7 +9,7 @@ import java.util.List;
 public interface UtenteCorsoDAO {
     public List<Corso> getCoursesByUserId(String cf, UserRoleInCourse userRoleInCourse) throws Exception;
     public List<Utente> getUsersByCourseId(String nomeCorso, UserRoleInCourse userRoleInCourse) throws Exception;
-    public String removeEnrollmentByUtente(Utente utente, Corso corso) throws Exception;
-    public String addEnrollmentToUtente(Utente utente, Corso corso) throws Exception;
+    public void removeEnrollmentByUtente(Utente utente, Corso corso);
+    public void addEnrollmentToUtente(Utente utente, Corso corso);
 
 }

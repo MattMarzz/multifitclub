@@ -1,12 +1,12 @@
 package it.uniroma2.dicii.ispw.model.corso.dao;
 
 import it.uniroma2.dicii.ispw.exception.DbConnectionException;
+import it.uniroma2.dicii.ispw.exception.ItemAlreadyExistsException;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.utils.DbConnection;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,18 +17,15 @@ import java.util.List;
 public class CorsoDBMS implements CorsoDAO {
 
     @Override
-    public Corso getCorsoByNome(String nome) throws ItemNotFoundException, DbConnectionException {
-        Connection conn = null;
+    public Corso getCorsoByNome(String nome) throws ItemNotFoundException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         Corso corso = new Corso();
         try {
-            conn = DbConnection.getConnection();
             String sql = "select * from corso where nome=?";
 
-            statement = conn.prepareStatement(sql);
+            statement = DbConnection.getConnection().prepareStatement(sql);
             statement.setString(1, nome);
-
             resultSet = statement.executeQuery();
 
             if(!resultSet.next()) throw new ItemNotFoundException("Nessun corso con nome: " + nome);
@@ -37,26 +34,35 @@ public class CorsoDBMS implements CorsoDAO {
             corso.setStartDate(resultSet.getDate("data_inizio"));
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore di connessione al db", e);
-            return corso;
+            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+            return null;
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            return null;
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (resultSet != null) resultSet.close();
+                DbConnection.closeConnection();
+            } catch (SQLException e) {
+                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+            }
         }
         return corso;
     }
 
     @Override
-    public List<Corso> getAllCorsi() throws Exception {
-        Connection conn = null;
+    public List<Corso> getAllCorsi() {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<Corso> corsoList = new ArrayList<>();
         try {
-            conn = DbConnection.getConnection();
             String sql = "select * from corso";
 
-            statement = conn.prepareStatement(sql);
+            statement = DbConnection.getConnection().prepareStatement(sql);
             resultSet = statement.executeQuery();
 
-            if(!resultSet.next()) throw new ItemNotFoundException("Nessun corso presente");
+            if(!resultSet.next()) return corsoList;
 
             do {
                 Corso c = new Corso(resultSet.getString("nome"), resultSet.getDate("data_inizio"));
@@ -64,53 +70,76 @@ public class CorsoDBMS implements CorsoDAO {
             } while (resultSet.next());
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore di connessione al db", e);
+            LoggerManager.logSevereException("Errore nel reperire corsi. ", e);
             return corsoList;
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            return corsoList;
+        }
+        finally {
+            try {
+                if(statement != null) statement.close();
+                if(resultSet != null) resultSet.close();
+                DbConnection.closeConnection();
+            } catch (SQLException e) {
+                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+            }
         }
         return corsoList;
     }
 
     @Override
-    public String addCorso(Corso corso) throws Exception {
-        Connection conn = null;
+    public void insertCorso(Corso corso) throws ItemAlreadyExistsException {
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        String res = "Errore nell'inserimento";
         try {
-            conn = DbConnection.getConnection();
             String sql = "insert into corso(nome, data_inizio) values(?, ?)";
 
-            statement = conn.prepareStatement(sql);
+            statement = DbConnection.getConnection().prepareStatement(sql);
             statement.setString(1, corso.getName());
             statement.setDate(2, new java.sql.Date(corso.getStartDate().getTime()));
             statement.executeUpdate();
 
-        } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore di connessione al db", e);
-            return res;
+        }  catch (SQLException e) {
+            if(e.getErrorCode() == 1062)
+                throw new ItemAlreadyExistsException("L'utente con cf: " + corso.getName() + " esiste già");
+
+            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                DbConnection.closeConnection();
+            } catch (SQLException e) {
+                LoggerManager.logSevereException("Errore nella chiusura della connessione", e);
+            }
         }
-        return "Corso aggiunto correttamente";
     }
 
     @Override
-    public String removeCorso(Corso corso) throws Exception {
-        Connection conn = null;
+    public void removeCorso(Corso corso) {
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        String res = "Errore nella rimozione";
+
         try {
-            conn = DbConnection.getConnection();
             String sql = "delete from corso where nome=? and data_inizio=?";
 
-            statement = conn.prepareStatement(sql);
+            statement = DbConnection.getConnection().prepareStatement(sql);
             statement.setString(1, corso.getName());
             statement.setDate(2, new java.sql.Date(corso.getStartDate().getTime()));
             statement.executeUpdate();
 
-        } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore di connessione al db", e);
-            return res;
+        }  catch (SQLException e) {
+            LoggerManager.logSevereException("Errore nel reperire corsi. ", e);
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
         }
-        return "Corso rimosso correttamente";
+        finally {
+            try {
+                if(statement != null) statement.close();
+                DbConnection.closeConnection();
+            } catch (SQLException e) {
+                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+            }
+        }
     }
 }

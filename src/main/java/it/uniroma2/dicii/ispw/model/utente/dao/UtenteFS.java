@@ -1,9 +1,6 @@
 package it.uniroma2.dicii.ispw.model.utente.dao;
 
 import it.uniroma2.dicii.ispw.bean.LoginBean;
-import it.uniroma2.dicii.ispw.bean.UtenteBean;
-import it.uniroma2.dicii.ispw.model.announcement.Announcement;
-import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.utente.Utente;
 
 import java.util.List;
@@ -20,7 +17,7 @@ public class UtenteFS implements UtenteDAO {
     }
 
     @Override
-    public Utente getUtenteById(String cf) throws Exception {
+    public Utente getUtenteByCf(String cf) {
         return null;
     }
 
@@ -30,7 +27,7 @@ public class UtenteFS implements UtenteDAO {
     }
 
     @Override
-    public String editUtente(Utente utente) throws Exception {
+    public String editUtente(Utente utente) {
         return null;
     }
 

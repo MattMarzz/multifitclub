@@ -11,15 +11,8 @@ import java.util.Properties;
 
 public class DbConnection {
     private static Connection conn = null;
-    //private static DbConnection instance = null;
 
     protected DbConnection(){}
-//    public static synchronized DbConnection getInstance(){
-//        if(instance == null){
-//            instance = new DbConnection();
-//        }
-//        return instance;
-//    }
 
     public static Connection getConnection() throws DbConnectionException {
         try (InputStream input = DbConnection.class.getClassLoader().getResourceAsStream("application.properties")){
@@ -42,13 +35,9 @@ public class DbConnection {
         return conn;
     }
 
-    public void closeConnection() throws DbConnectionException{
-        try {
-            if(conn != null && !conn.isClosed()){
-                conn.close();
-            }
-        } catch (SQLException e) {
-            throw new DbConnectionException("Si è verificato un errore nella chiusura della connessione." + e.getMessage());
+    public static void closeConnection() throws SQLException{
+        if(conn != null && !conn.isClosed()){
+            conn.close();
         }
     }
 }

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="691.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.dicii.ispw.view.utente.ReadAnnouncementController">
+<AnchorPane prefHeight="691.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.dicii.ispw.view.graphicalcontroller.utente.ReadAnnouncementController">
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <children>
             <VBox prefHeight="694.0" prefWidth="392.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -37,21 +37,21 @@
                     <Card prefHeight="666.0" prefWidth="864.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                     <Label layoutX="28.0" layoutY="20.0" prefHeight="17.0" prefWidth="191.0" styleClass="accent" text="Informazioni" />
                     <Label layoutX="28.0" layoutY="76.0" prefHeight="17.0" prefWidth="72.0" styleClass="fg-default" text="Titolo" />
-                    <TextField disable="true" layoutX="26.0" layoutY="104.0" prefHeight="25.0" prefWidth="226.0">
+                    <TextField fx:id="titleIn" disable="true" layoutX="26.0" layoutY="104.0" prefHeight="25.0" prefWidth="226.0">
                         <cursor>
                             <Cursor fx:constant="CROSSHAIR" />
                         </cursor>
                     </TextField>
                     <Label layoutX="332.0" layoutY="76.0" prefHeight="17.0" prefWidth="72.0" styleClass="fg-default" text="Data" />
-                    <DatePicker disable="true" layoutX="332.0" layoutY="104.0" prefHeight="25.0" prefWidth="166.0" />
+                    <DatePicker fx:id="dateIn" disable="true" layoutX="332.0" layoutY="104.0" prefHeight="25.0" prefWidth="166.0" />
                     <Label layoutX="580.0" layoutY="76.0" prefHeight="17.0" prefWidth="134.0" styleClass="fg-default" text="Da" />
-                    <TextField disable="true" layoutX="573.0" layoutY="104.0" prefHeight="25.0" prefWidth="226.0">
+                    <TextField fx:id="senderIn" disable="true" layoutX="573.0" layoutY="104.0" prefHeight="25.0" prefWidth="226.0">
                         <cursor>
                             <Cursor fx:constant="CROSSHAIR" />
                         </cursor>
                     </TextField>
                     <Label layoutX="28.0" layoutY="166.0" prefHeight="17.0" prefWidth="72.0" styleClass="fg-default" text="Messaggio" />
-                    <TextArea disable="true" layoutX="28.0" layoutY="200.0" prefHeight="381.0" prefWidth="773.0" />
+                    <TextArea fx:id="textIn" disable="true" layoutX="28.0" layoutY="200.0" prefHeight="381.0" prefWidth="773.0" />
                 </children>
             </AnchorPane>
         </children>

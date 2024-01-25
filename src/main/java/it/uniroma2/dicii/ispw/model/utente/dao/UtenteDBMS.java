@@ -1,10 +1,8 @@
 package it.uniroma2.dicii.ispw.model.utente.dao;
 
 import it.uniroma2.dicii.ispw.bean.LoginBean;
-import it.uniroma2.dicii.ispw.model.announcement.Announcement;
-import it.uniroma2.dicii.ispw.model.corso.Corso;
+import it.uniroma2.dicii.ispw.exception.ItemAlreadyExistsException;
 import it.uniroma2.dicii.ispw.utils.DbConnection;
-import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.enums.Ruolo;
 import it.uniroma2.dicii.ispw.exception.DbConnectionException;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
@@ -18,16 +16,14 @@ import java.util.List;
 public class UtenteDBMS implements UtenteDAO{
 
     @Override
-    public String insertUtente(Utente utente) throws DbConnectionException{
-        Connection conn = null;
+    public String insertUtente(Utente utente) throws ItemAlreadyExistsException {
         PreparedStatement statement = null;
-        String res = null;
+        String res = "Errore imprevisto in inserimento.";
         try {
-            conn = DbConnection.getConnection();
             String sql = " insert into utente (cf, nome, cognome, data_nascita, ruolo, email, password)"
                     + " values (?, ?, ?, ?, ?, ?, ?)";
 
-            statement = conn.prepareStatement(sql);
+            statement = DbConnection.getConnection().prepareStatement(sql);
             statement.setString(1, utente.getCf());
             statement.setString(2, utente.getName());
             statement.setString(3, utente.getSurname());
@@ -41,13 +37,18 @@ public class UtenteDBMS implements UtenteDAO{
             res = "Utente inserito correttamente!";
 
         } catch (SQLException e) {
-            res = "Errore nell'inserimento del nuovo utente";
-            LoggerManager.logSevereException("Errore SQL non previsto!", e);
+            if(e.getErrorCode() == 1062)
+                throw new ItemAlreadyExistsException("L'utente con cf: " + utente.getCf() + " esiste già");
+
+            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+            return res;
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
             return res;
         } finally {
             try {
                 if (statement != null) statement.close();
-                if (conn != null) conn.close();
+                DbConnection.closeConnection();
             } catch (SQLException e) {
                 LoggerManager.logSevereException("Errore nella chiusura della connessione", e);
             }
@@ -57,36 +58,31 @@ public class UtenteDBMS implements UtenteDAO{
 
     @Override
     public Utente auth(LoginBean loginBean) throws ItemNotFoundException{
-        Utente utente = new Utente();
-        Connection conn = null;
+        Utente utente = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            conn = DbConnection.getConnection();
-
             String query = "SELECT * FROM utente WHERE email = ? AND password = ?";
 
-            statement = conn.prepareStatement(query);
+            statement = DbConnection.getConnection().prepareStatement(query);
             statement.setString(1, loginBean.getEmail());
             statement.setString(2, loginBean.getPassword());
 
             resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                utente = setUtenteFromResultSet(resultSet);
-            } else throw new ItemNotFoundException("Credenziali errate!");
+            if(!resultSet.next()) throw new ItemNotFoundException("Credenziali errate!");
+            utente = setUtenteFromResultSet(resultSet);
+
         } catch (DbConnectionException e) {
-            //connection failed
-            LoggerManager.logSevereException("Errore di connessione al database.", e);
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
             return utente;
         } catch (SQLException e){
-            //sql exception
-            LoggerManager.logSevereException("Errore nel dialogo con il database.", e);
+            LoggerManager.logSevereException("Errore SQL non previsto: ", e);;
             return utente;
         } finally {
             try {
                 if(statement != null) statement.close();
                 if(resultSet != null) statement.close();
-                if(conn != null) conn.close();
+                DbConnection.closeConnection();
             } catch (SQLException e) {
                 LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
             }
@@ -95,30 +91,32 @@ public class UtenteDBMS implements UtenteDAO{
     }
 
     @Override
-    public Utente getUtenteById(String cf) throws DbConnectionException, ItemNotFoundException {
-        Utente utente = new Utente();
-        Connection conn = null;
+    public Utente getUtenteByCf(String cf) throws ItemNotFoundException {
+        Utente utente;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try{
-            conn = DbConnection.getConnection();
             String sql = "SELECT * FROM utente WHERE cf=?";
-            statement = conn.prepareStatement(sql);
-            statement.setString(1, cf);
 
+            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement.setString(1, cf);
             resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                utente = setUtenteFromResultSet(resultSet);
-            } else
-                throw new ItemNotFoundException("Nessun utente trovato con cf: " + cf);
+
+            if(!resultSet.next())
+                throw new ItemNotFoundException("Non esiste utente con cf: " + cf);
+
+            utente = setUtenteFromResultSet(resultSet);
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore nel dialogo con il database.", e);
-            return utente;
+            LoggerManager.logSevereException("Errore SQL non previsto. ", e);
+            return null;
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            return null;
         } finally {
             try {
                 if(statement != null) statement.close();
                 if(resultSet != null) resultSet.close();
-                if(conn != null) conn.close();
+                DbConnection.closeConnection();
             } catch (SQLException e) {
                 LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
             }
@@ -127,35 +125,36 @@ public class UtenteDBMS implements UtenteDAO{
     }
 
     @Override
-    public List<Utente> getAllUtenti() throws DbConnectionException, ItemNotFoundException{
+    public List<Utente> getAllUtenti() {
         List<Utente> users = new ArrayList<>();
-        Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            conn = DbConnection.getConnection();
             String sql = "SELECT * FROM utente";
 
-            statement = conn.prepareStatement(sql);
+            statement = DbConnection.getConnection().prepareStatement(sql);
             resultSet = statement.executeQuery();
 
             if(!resultSet.next())
-                throw new ItemNotFoundException("Non è presente nessun utente.");
+                return users;
 
             do {
                 Utente utente = setUtenteFromResultSet(resultSet);
                 users.add(utente);
             } while (resultSet.next());
 
-
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore nel dialogo con il database.", e);
+            LoggerManager.logSevereException("Errore nel reperire utenti. ", e);
             return users;
-        }finally {
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            return users;
+        }
+        finally {
             try {
                 if(statement != null) statement.close();
                 if(resultSet != null) resultSet.close();
-                if(conn != null) conn.close();
+                DbConnection.closeConnection();
             } catch (SQLException e) {
                 LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
             }
@@ -164,16 +163,14 @@ public class UtenteDBMS implements UtenteDAO{
     }
 
     @Override
-    public String editUtente(Utente utente) throws Exception {
-        Connection conn = null;
+    public String editUtente(Utente utente) {
         PreparedStatement statement = null;
-        String res = null;
+        String res = "Impossibile modificare l'utente.";
         try {
-            conn = DbConnection.getConnection();
             String sql = " update utente set nome=?, cognome=?, data_nascita=?, ruolo=?, email=?"
                     + " where cf=?";
 
-            statement = conn.prepareStatement(sql);
+            statement = DbConnection.getConnection().prepareStatement(sql);
             statement.setString(1, utente.getName());
             statement.setString(2, utente.getSurname());
             statement.setDate(3, new java.sql.Date(utente.getBirthDate().getTime()));
@@ -186,15 +183,17 @@ public class UtenteDBMS implements UtenteDAO{
             res = "L'Utente " + utente.getName() + " è stato modificato correttamente!";
 
         } catch (SQLException e) {
-            res = "Errore nell'inserimento del nuovo utente";
-            LoggerManager.logSevereException("Errore SQL non previsto!", e);
+            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+            return res;
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
             return res;
         } finally {
             try {
                 if (statement != null) statement.close();
-                if (conn != null) conn.close();
+                DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione", e);
+                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
             }
         }
         return res;
@@ -209,9 +208,6 @@ public class UtenteDBMS implements UtenteDAO{
         utente.setEmail(resultSet.getString("email"));
         utente.setPassword(resultSet.getString("password"));
         switch (resultSet.getInt("ruolo")) {
-            case 0:
-                utente.setRuolo(Ruolo.UTENTE);
-                break;
             case 1:
                 utente.setRuolo(Ruolo.ISTRUTTORE);
                 break;

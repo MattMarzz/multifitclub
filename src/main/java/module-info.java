@@ -9,7 +9,7 @@ module multifitclub {
     exports it.uniroma2.dicii.ispw.exception;
     exports it.uniroma2.dicii.ispw.bean;
     exports it.uniroma2.dicii.ispw.controller;
-    exports it.uniroma2.dicii.ispw.view;
+    exports it.uniroma2.dicii.ispw.view.graphicalcontroller;
     exports it.uniroma2.dicii.ispw.model.utente.dao;
     exports it.uniroma2.dicii.ispw.model.utente;
     exports it.uniroma2.dicii.ispw.model.lezione;
@@ -18,9 +18,9 @@ module multifitclub {
     exports it.uniroma2.dicii.ispw.model.announcement.dao;
     exports it.uniroma2.dicii.ispw.enums;
     exports it.uniroma2.dicii.ispw.utils;
-    exports it.uniroma2.dicii.ispw.view.segreteria;
+    exports it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria;
 
-    opens it.uniroma2.dicii.ispw.view to javafx.fxml;
-    opens it.uniroma2.dicii.ispw.view.segreteria to javafx.fxml;
-    opens it.uniroma2.dicii.ispw.view.utente to javafx.fxml;
+    opens it.uniroma2.dicii.ispw.view.graphicalcontroller to javafx.fxml;
+    opens it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria to javafx.fxml;
+    opens it.uniroma2.dicii.ispw.view.graphicalcontroller.utente to javafx.fxml;
 }

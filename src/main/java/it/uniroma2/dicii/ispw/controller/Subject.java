@@ -10,10 +10,6 @@ public abstract class Subject {
         this.observers.add(observer);
     }
 
-    public void attachFullList(List<Observer> obList) {
-        observers.addAll(obList);
-    }
-
     public void detach(Observer observer) {
         this.observers.remove(observer);
     }

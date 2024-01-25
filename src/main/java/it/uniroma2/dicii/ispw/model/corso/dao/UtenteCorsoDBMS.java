@@ -90,7 +90,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
                 return utenteList;
 
             do{
-                utenteList.add(utenteDAO.getUtenteById(resultSet.getString("utente")));
+                utenteList.add(utenteDAO.getUtenteByCf(resultSet.getString("utente")));
             }while(resultSet.next());
 
         } catch (SQLException e) {
@@ -109,43 +109,53 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
     }
 
     @Override
-    public String removeEnrollmentByUtente(Utente utente, Corso corso) throws DbConnectionException, SQLException {
-        Connection conn = null;
+    public void removeEnrollmentByUtente(Utente utente, Corso corso) {
         PreparedStatement statement = null;
         try{
-            conn = DbConnection.getConnection();
             String sql = "delete from iscrizione WHERE corso=? and utente=?";
-            statement = conn.prepareStatement(sql);
+
+            statement = DbConnection.getConnection().prepareStatement(sql);
             statement.setString(1, corso.getName());
             statement.setString(2, utente.getCf());
-
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore nel dialogo con il database. Eliminazione non riuscita", e);
-            throw e;
+            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                DbConnection.closeConnection();
+            } catch (SQLException e) {
+                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+            }
         }
-        return "Operazione effettuata correttamente!";
     }
 
     @Override
-    public String addEnrollmentToUtente(Utente utente, Corso corso) throws DbConnectionException, SQLException {
-        Connection conn = null;
+    public void addEnrollmentToUtente(Utente utente, Corso corso){
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
         try{
-            conn = DbConnection.getConnection();
             String sql = "insert into iscrizione(corso, utente) values(?, ?)";
-            statement = conn.prepareStatement(sql);
+
+            statement = DbConnection.getConnection().prepareStatement(sql);
             statement.setString(1, corso.getName());
             statement.setString(2, utente.getCf());
-
             statement.executeUpdate();
+
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Impossibile inserire nuova iscrizione", e);
-            throw e;
+            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                DbConnection.closeConnection();
+            } catch (SQLException e) {
+                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+            }
         }
-        return "Iscrizione registrata correttamente";
     }
 
     public Corso getCourseById(String nomeCorso) throws DbConnectionException, ItemNotFoundException{
