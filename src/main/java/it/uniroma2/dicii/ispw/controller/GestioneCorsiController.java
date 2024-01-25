@@ -15,6 +15,8 @@ import it.uniroma2.dicii.ispw.model.lezione.Lezione;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.uniroma2.dicii.ispw.utils.ConstantMsg.NAME_NOT_EMPTY;
+
 public class GestioneCorsiController {
     private CorsoDAO corsoDAO;
 
@@ -40,7 +42,7 @@ public class GestioneCorsiController {
     public void insertCourse(CorsoBean corsoBean) throws InvalidDataException, ItemAlreadyExistsException {
         Corso corso = new Corso();
         if (corsoBean.getName().isBlank())
-            throw new InvalidDataException("Il nome non può essere vuoto.");
+            throw new InvalidDataException(NAME_NOT_EMPTY);
         if(corsoBean.getStartDate() == null)
             throw new InvalidDataException("La data non può essere vuota.");
 
@@ -51,7 +53,7 @@ public class GestioneCorsiController {
 
     public void removeCorso(CorsoBean corsoBean) throws InvalidDataException, ItemNotFoundException {
         if (corsoBean.getName().isBlank())
-            throw new InvalidDataException("Il nome non può essere vuoto.");
+            throw new InvalidDataException(NAME_NOT_EMPTY);
         Corso corso = corsoDAO.getCorsoByNome(corsoBean.getName());
         if(corso == null) throw new ItemNotFoundException("Corso non trovato.");
         corsoDAO.removeCorso(corso);
@@ -59,14 +61,14 @@ public class GestioneCorsiController {
 
     public List<LezioneBean> getLezioniByCorsoId(CorsoBean corsoBean) throws InvalidDataException, ItemNotFoundException {
         if (corsoBean.getName().isBlank())
-            throw new InvalidDataException("Il nome non può essere vuoto.");
+            throw new InvalidDataException(NAME_NOT_EMPTY);
         Corso corso = corsoDAO.getCorsoByNome(corsoBean.getName());
         if(corso == null) throw new ItemNotFoundException("Corso non trovato.");
         List<LezioneBean> lezioneBeanList = new ArrayList<>();
         for (Lezione l: corso.getLezioneList()) {
             LezioneBean lb = new LezioneBean();
             lb.setGiorno(l.getDay());
-            lb.setOra(l.getStarTime().toString());
+            lb.setOra(l.getStartTime().toString());
             lb.setSala(l.getSala());
             lezioneBeanList.add(lb);
         }

@@ -42,12 +42,12 @@ public class AnnouncementController implements Observer {
     void onSendBtnClick(ActionEvent event) {
         String res  = "";
         if(titleIn.getText().isBlank() && textIn.getText().isBlank()) {
-            titleLbl.setText("Il campo non può essere vuoto.");
-            textLbl.setText("Il campo non può essere vuoto.");
+            titleLbl.setText(PageHelper.EMPTY_FIELDS);
+            textLbl.setText(PageHelper.EMPTY_FIELDS);
         } else if(titleIn.getText().isBlank() && !textIn.getText().isBlank()) {
-            titleLbl.setText("Il campo non può essere vuoto.");
+            titleLbl.setText(PageHelper.EMPTY_FIELDS);
         } else if (textIn.getText().isBlank() && !titleIn.getText().isBlank()) {
-            textLbl.setText("Il campo non può essere vuoto.");
+            textLbl.setText(PageHelper.EMPTY_FIELDS);
         } else if (!textIn.getText().isBlank() && !titleIn.getText().isBlank()){
             AnnouncementBean announcementBean = new AnnouncementBean();
             announcementBean.setTitle(titleIn.getText());
@@ -60,9 +60,9 @@ public class AnnouncementController implements Observer {
                 res = manageAnnouncementController.publishNewAnnouncement(announcementBean);
             } catch (InvalidDataException e) {
                 AnnouncementManager.getInstance().detach(this);
-                PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", e.getMessage());
+                PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
             }
-            PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Successo", res);
+            PageHelper.launchAlert(Alert.AlertType.INFORMATION, PageHelper.SUCCESS, res);
             onClearBtnClick(new ActionEvent());
         }
 

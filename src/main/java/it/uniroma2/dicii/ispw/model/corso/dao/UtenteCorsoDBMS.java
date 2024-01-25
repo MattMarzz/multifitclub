@@ -1,6 +1,7 @@
 package it.uniroma2.dicii.ispw.model.corso.dao;
 
 import it.uniroma2.dicii.ispw.App;
+import it.uniroma2.dicii.ispw.exception.ItemAlreadyExistsException;
 import it.uniroma2.dicii.ispw.utils.DbConnection;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
@@ -19,6 +20,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.uniroma2.dicii.ispw.utils.ConstantMsg.*;
+
 public class UtenteCorsoDBMS implements UtenteCorsoDAO{
     private UtenteDAO utenteDAO;
     private CorsoDAO corsoDAO;
@@ -35,17 +38,14 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
 
 
     @Override
-    public List<Corso> getCoursesByUserId(String cf, UserRoleInCourse userRoleInCourse) throws DbConnectionException, ItemNotFoundException {
+    public List<Corso> getCoursesByUserId(String cf, UserRoleInCourse userRoleInCourse) throws  ItemNotFoundException {
         List<Corso> courses = new ArrayList<>();
-        Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try{
-            conn = DbConnection.getConnection();
-            String sql;
-            sql = userRoleInCourse.equals(UserRoleInCourse.ENROLLMENT) ? "SELECT * FROM iscrizione WHERE utente=?" : "SELECT * FROM insegnato WHERE utente=?";
+            String sql = userRoleInCourse.equals(UserRoleInCourse.ENROLLMENT) ? "SELECT * FROM iscrizione WHERE utente=?" : "SELECT * FROM insegnato WHERE utente=?";
 
-            statement = conn.prepareStatement(sql);
+            statement = DbConnection.getConnection().prepareStatement(sql);
             statement.setString(1, cf);
             resultSet = statement.executeQuery();
 
@@ -56,33 +56,34 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
                 courses.add(getCourseById(resultSet.getString("corso")));
             }while(resultSet.next());
 
-        } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore nel dialogo con il database.", e);
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
+            return courses;
+        } catch (SQLException e){
+            LoggerManager.logSevereException(ERROR_SQL, e);;
             return courses;
         } finally {
             try {
                 if(statement != null) statement.close();
-                if(resultSet != null) resultSet.close();
-                if(conn != null) conn.close();
+                if(resultSet != null) statement.close();
+                DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
         return courses;
     }
 
     @Override
-    public List<Utente> getUsersByCourseId(String nomeCorso, UserRoleInCourse userRoleInCourse) throws Exception {
+    public List<Utente> getUsersByCourseId(String nomeCorso, UserRoleInCourse userRoleInCourse) throws ItemNotFoundException {
         List<Utente> utenteList = new ArrayList<>();
-        Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try{
-            conn = DbConnection.getConnection();
             String sql;
             sql = userRoleInCourse.equals(UserRoleInCourse.ENROLLMENT) ? "SELECT * FROM iscrizione WHERE corso=?" : "SELECT * FROM insegnato WHERE corso=?";
 
-            statement = conn.prepareStatement(sql);
+            statement = DbConnection.getConnection().prepareStatement(sql);
             statement.setString(1, nomeCorso);
             resultSet = statement.executeQuery();
 
@@ -93,16 +94,19 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
                 utenteList.add(utenteDAO.getUtenteByCf(resultSet.getString("utente")));
             }while(resultSet.next());
 
-        } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore nel dialogo con il database.", e);
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
+            return utenteList;
+        } catch (SQLException e){
+            LoggerManager.logSevereException(ERROR_SQL, e);;
             return utenteList;
         } finally {
             try {
                 if(statement != null) statement.close();
-                if(resultSet != null) resultSet.close();
-                if(conn != null) conn.close();
+                if(resultSet != null) statement.close();
+                DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
         return utenteList;
@@ -120,15 +124,15 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         } finally {
             try {
                 if (statement != null) statement.close();
                 DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
     }
@@ -145,46 +149,45 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         } finally {
             try {
                 if (statement != null) statement.close();
                 DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
     }
 
     public Corso getCourseById(String nomeCorso) throws DbConnectionException, ItemNotFoundException{
         Corso corso = null;
-        Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try{
-            conn = DbConnection.getConnection();
             String sql = "SELECT * FROM corso WHERE nome=?";
-            statement = conn.prepareStatement(sql);
+
+            statement = DbConnection.getConnection().prepareStatement(sql);
             statement.setString(1, nomeCorso);
 
             resultSet = statement.executeQuery();
             if (resultSet.next())
                 corso = new Corso(resultSet.getString("nome"), resultSet.getDate("data_inizio"));
             else
-                throw new ItemNotFoundException("Nessun corso trovato con nome: " + nomeCorso);
+                throw new ItemNotFoundException(ERROR_OPENING_DB + nomeCorso);
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore nel dialogo con il database.", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
             return corso;
         } finally {
-            //try {
-            //    if(statement != null) statement.close();
-            //    if(resultSet != null) resultSet.close();
-            //    if(conn != null) conn.close();
-            //} catch (SQLException e) {
-            //    LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
-            //}
+//            try {
+//                if(statement != null) statement.close();
+//                if(resultSet != null) resultSet.close();
+//                DbConnection.closeConnection();
+//            } catch (SQLException e) {
+//                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+//            }
         }
         return corso;
     }

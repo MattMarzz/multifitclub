@@ -94,7 +94,7 @@ public class CoursesController implements Initializable {
         try {
             lezioneBeanObservableList.addAll(gestioneCorsiController.getLezioniByCorsoId(cb));
         } catch (Exception e) {
-            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", e.getMessage());
+            PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
         }
 
         dayCol.setCellValueFactory(new PropertyValueFactory<>("giorno"));
@@ -129,7 +129,7 @@ public class CoursesController implements Initializable {
         try {
             gestioneCorsiController.insertCourse(corsoBean);
         } catch (Exception e) {
-            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", e.getMessage());
+            PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
         }
 
         //PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Info", msg);
@@ -149,7 +149,7 @@ public class CoursesController implements Initializable {
         try {
             gestioneCorsiController.removeCorso(corsoBean);
         } catch (Exception e) {
-            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", e.getMessage());
+            PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
         }
 
         //PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Info", msg);

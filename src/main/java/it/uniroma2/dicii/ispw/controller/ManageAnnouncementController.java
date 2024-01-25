@@ -2,18 +2,14 @@ package it.uniroma2.dicii.ispw.controller;
 
 import it.uniroma2.dicii.ispw.App;
 import it.uniroma2.dicii.ispw.bean.AnnouncementBean;
-import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 import it.uniroma2.dicii.ispw.model.announcement.Announcement;
 import it.uniroma2.dicii.ispw.model.announcement.dao.AnnouncementDAO;
 import it.uniroma2.dicii.ispw.model.announcement.dao.AnnouncementDBMS;
-import it.uniroma2.dicii.ispw.model.utente.Utente;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

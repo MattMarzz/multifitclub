@@ -8,7 +8,7 @@ public class AnnouncementManager extends Subject {
 
     private AnnouncementManager() {}
 
-    public synchronized static AnnouncementManager getInstance(){
+    public static synchronized AnnouncementManager getInstance(){
         if(instance == null) {
             instance = new AnnouncementManager();
         }
