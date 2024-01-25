@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateParser {
+
+    private DateParser() {}
+
     public static Date parseStringToDateUtil(String str) throws InvalidDataException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;

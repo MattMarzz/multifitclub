@@ -13,8 +13,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UtenteDBMS implements UtenteDAO{
+import static it.uniroma2.dicii.ispw.utils.ConstantMsg.*;
 
+public class UtenteDBMS implements UtenteDAO{
     @Override
     public String insertUtente(Utente utente) throws ItemAlreadyExistsException {
         PreparedStatement statement = null;
@@ -40,17 +41,17 @@ public class UtenteDBMS implements UtenteDAO{
             if(e.getErrorCode() == 1062)
                 throw new ItemAlreadyExistsException("L'utente con cf: " + utente.getCf() + " esiste già");
 
-            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
             return res;
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return res;
         } finally {
             try {
                 if (statement != null) statement.close();
                 DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
         return res;
@@ -73,10 +74,10 @@ public class UtenteDBMS implements UtenteDAO{
             utente = setUtenteFromResultSet(resultSet);
 
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return utente;
         } catch (SQLException e){
-            LoggerManager.logSevereException("Errore SQL non previsto: ", e);;
+            LoggerManager.logSevereException(ERROR_SQL, e);;
             return utente;
         } finally {
             try {
@@ -84,7 +85,7 @@ public class UtenteDBMS implements UtenteDAO{
                 if(resultSet != null) statement.close();
                 DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
         return utente;
@@ -107,10 +108,10 @@ public class UtenteDBMS implements UtenteDAO{
 
             utente = setUtenteFromResultSet(resultSet);
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore SQL non previsto. ", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
             return null;
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return null;
         } finally {
             try {
@@ -118,7 +119,7 @@ public class UtenteDBMS implements UtenteDAO{
                 if(resultSet != null) resultSet.close();
                 DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
         return utente;
@@ -144,10 +145,10 @@ public class UtenteDBMS implements UtenteDAO{
             } while (resultSet.next());
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore nel reperire utenti. ", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
             return users;
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return users;
         }
         finally {
@@ -156,7 +157,7 @@ public class UtenteDBMS implements UtenteDAO{
                 if(resultSet != null) resultSet.close();
                 DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
         return users;
@@ -183,17 +184,17 @@ public class UtenteDBMS implements UtenteDAO{
             res = "L'Utente " + utente.getName() + " è stato modificato correttamente!";
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
             return res;
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return res;
         } finally {
             try {
                 if (statement != null) statement.close();
                 DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
         return res;

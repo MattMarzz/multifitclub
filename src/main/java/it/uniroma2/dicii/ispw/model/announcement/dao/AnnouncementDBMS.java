@@ -1,6 +1,7 @@
 package it.uniroma2.dicii.ispw.model.announcement.dao;
 
 import it.uniroma2.dicii.ispw.exception.DbConnectionException;
+import it.uniroma2.dicii.ispw.exception.ItemAlreadyExistsException;
 import it.uniroma2.dicii.ispw.model.announcement.Announcement;
 import it.uniroma2.dicii.ispw.utils.DbConnection;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
@@ -14,15 +15,13 @@ import java.util.List;
 
 public class AnnouncementDBMS implements AnnouncementDAO{
     @Override
-    public String insertAnnouncement(Announcement announcement) throws DbConnectionException {
+    public String insertAnnouncement(Announcement announcement) throws ItemAlreadyExistsException {
         String res = "Impossibile inserire annuncio";
-        Connection conn = null;
         PreparedStatement statement = null;
         try {
-            conn = DbConnection.getConnection();
             String sql = "insert into annuncio(titolo, testo, data, utente)" +
                     "values (?, ?, ?, ?)";
-            statement = conn.prepareStatement(sql);
+            statement = DbConnection.getConnection().prepareStatement(sql);
             statement.setString(1, announcement.getTitle());
             statement.setString(2, announcement.getText());
             statement.setTimestamp(3, announcement.getDate());
@@ -30,23 +29,35 @@ public class AnnouncementDBMS implements AnnouncementDAO{
             statement.executeUpdate();
             res = "Annuncio inviato correttamente";
         } catch (SQLException e) {
-            LoggerManager.logInfoException("Impossibile inserire annuncio", e);
+            if(e.getErrorCode() == 1062)
+                throw new ItemAlreadyExistsException("Annuncio esistente");
+
+            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
             return res;
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            return res;
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                DbConnection.closeConnection();
+            } catch (SQLException e) {
+                LoggerManager.logSevereException("Errore nella chiusura della connessione", e);
+            }
         }
 
         return res;
     }
 
     @Override
-    public List<Announcement> getAllAnnouncement() throws DbConnectionException {
+    public List<Announcement> getAllAnnouncement() {
         List<Announcement> announcementList = new ArrayList<>();
-        Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            conn = DbConnection.getConnection();
             String sql = "select * from annuncio";
-            statement = conn.prepareStatement(sql);
+
+            statement = DbConnection.getConnection().prepareStatement(sql);
             resultSet = statement.executeQuery();
 
             if(!resultSet.next()) return announcementList;
@@ -62,8 +73,19 @@ public class AnnouncementDBMS implements AnnouncementDAO{
             } while (resultSet.next());
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore nel reperire la lista degli annunci ", e);
+            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
             return announcementList;
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            return announcementList;
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if(resultSet != null) resultSet.close();
+                DbConnection.closeConnection();
+            } catch (SQLException e) {
+                LoggerManager.logSevereException("Errore nella chiusura della connessione", e);
+            }
         }
 
         return announcementList;

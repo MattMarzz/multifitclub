@@ -15,7 +15,7 @@ public class LoggerManager {
     //need to execute only the very first time
     static {
         try {
-            FileHandler fileHandler = new FileHandler("logs/application.log", LEN_BYTE, 0, true);
+            FileHandler fileHandler = new FileHandler("logs/application.log", LEN_BYTE, 1, true);
             fileHandler.setFormatter(new SimpleFormatter());
             logger.addHandler(fileHandler);
         } catch (IOException e) {

@@ -2,14 +2,10 @@ package it.uniroma2.dicii.ispw.model.utente;
 
 import it.uniroma2.dicii.ispw.App;
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
-import it.uniroma2.dicii.ispw.controller.GestioneUtentiController;
-import it.uniroma2.dicii.ispw.controller.ManageAnnouncementController;
-import it.uniroma2.dicii.ispw.controller.Observer;
 import it.uniroma2.dicii.ispw.enums.Ruolo;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
-import it.uniroma2.dicii.ispw.model.announcement.Announcement;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDAO;
 import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDBMS;

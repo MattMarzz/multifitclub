@@ -22,7 +22,7 @@ public class LoginController {
             utenteDAO = new UtenteFS();
     }
 
-    public UtenteBean login(LoginBean loginBean) throws Exception {
+    public UtenteBean login(LoginBean loginBean) throws ItemNotFoundException, InvalidDataException {
         if(loginBean.getEmail().isBlank() || loginBean.getPassword().isBlank())
             throw new InvalidDataException("E-mail e password necessarie!");
 

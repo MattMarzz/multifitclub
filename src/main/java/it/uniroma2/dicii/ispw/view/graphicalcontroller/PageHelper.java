@@ -17,6 +17,12 @@ import java.net.URL;
 
 public class PageHelper {
 
+    public static final String ERROR = "Errore";
+    public static final String SUCCESS = "Successo";
+    public static final String EMPTY_FIELDS = "Il campo non può essere vuoto.";
+
+    private PageHelper() {}
+
     public static void changeScene(ActionEvent event, String fxmlFile, String title, UtenteBean utente) throws IOException {
         try {
             URL url = App.class.getResource(fxmlFile);

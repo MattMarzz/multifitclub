@@ -1,7 +1,5 @@
 package it.uniroma2.dicii.ispw.bean;
 
-import it.uniroma2.dicii.ispw.model.utente.Utente;
-
 import java.sql.Timestamp;
 
 public class AnnouncementBean {

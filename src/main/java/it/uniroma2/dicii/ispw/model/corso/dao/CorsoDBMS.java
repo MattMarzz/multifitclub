@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.uniroma2.dicii.ispw.utils.ConstantMsg.*;
+
 
 public class CorsoDBMS implements CorsoDAO {
 
@@ -34,10 +36,10 @@ public class CorsoDBMS implements CorsoDAO {
             corso.setStartDate(resultSet.getDate("data_inizio"));
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
             return null;
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return null;
         } finally {
             try {
@@ -45,7 +47,7 @@ public class CorsoDBMS implements CorsoDAO {
                 if (resultSet != null) resultSet.close();
                 DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
         return corso;
@@ -70,10 +72,10 @@ public class CorsoDBMS implements CorsoDAO {
             } while (resultSet.next());
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore nel reperire corsi. ", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
             return corsoList;
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return corsoList;
         }
         finally {
@@ -82,7 +84,7 @@ public class CorsoDBMS implements CorsoDAO {
                 if(resultSet != null) resultSet.close();
                 DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
         return corsoList;
@@ -103,15 +105,15 @@ public class CorsoDBMS implements CorsoDAO {
             if(e.getErrorCode() == 1062)
                 throw new ItemAlreadyExistsException("L'utente con cf: " + corso.getName() + " esiste già");
 
-            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         } finally {
             try {
                 if (statement != null) statement.close();
                 DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
     }
@@ -129,16 +131,16 @@ public class CorsoDBMS implements CorsoDAO {
             statement.executeUpdate();
 
         }  catch (SQLException e) {
-            LoggerManager.logSevereException("Errore nel reperire corsi. ", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         }
         finally {
             try {
                 if(statement != null) statement.close();
                 DbConnection.closeConnection();
             } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
+                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
             }
         }
     }

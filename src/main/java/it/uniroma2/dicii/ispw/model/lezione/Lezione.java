@@ -24,12 +24,6 @@ public class Lezione implements Serializable {
     public void setDay(String day) {
         this.day = day;
     }
-    public Time getStarTime() {
-        return startTime;
-    }
-    public void setStartTime(Time startTime) {
-        this.startTime = startTime;
-    }
     public String getCourseName() {
         return courseName;
     }
@@ -44,6 +38,9 @@ public class Lezione implements Serializable {
     }
     public Time getStartTime() {
         return startTime;
+    }
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
     }
     public String getSala() {
         return sala;
