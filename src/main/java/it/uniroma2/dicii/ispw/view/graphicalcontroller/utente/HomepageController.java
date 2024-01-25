@@ -18,7 +18,7 @@ public class HomepageController extends AuthenticatedUser {
     }
 
     @FXML
-    private static void onLogoutBtnClick(ActionEvent event) {
+    private void onLogoutBtnClick(ActionEvent event) {
         AuthenticatedUser.utenteBean = null;
         PageHelper.logout(event);
     }

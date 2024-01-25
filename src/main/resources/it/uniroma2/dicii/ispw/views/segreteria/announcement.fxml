@@ -4,6 +4,8 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -24,19 +26,19 @@
          </HBox>
          <AnchorPane layoutY="61.0" prefHeight="597.0" prefWidth="1018.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="61.0">
             <children>
-               <AnchorPane layoutX="30.0" layoutY="44.0" prefHeight="518.0" prefWidth="567.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="44.0">
+               <AnchorPane layoutX="30.0" layoutY="44.0" prefHeight="518.0" prefWidth="475.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="44.0">
                   <children>
                      <Card prefHeight="518.0" prefWidth="567.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      <TextField fx:id="titleIn" layoutX="36.0" layoutY="110.0" prefHeight="25.0" prefWidth="226.0" />
                      <Label layoutX="36.0" layoutY="77.0" prefHeight="17.0" prefWidth="83.0" styleClass="fg-default" text="Titolo" />
                      <Text layoutX="35.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fg-default" text="Testo" wrappingWidth="98.751953125" />
-                     <TextArea fx:id="textIn" layoutX="35.0" layoutY="223.0" prefHeight="186.0" prefWidth="497.0" />
-                     <Button layoutX="434.0" layoutY="451.0" mnemonicParsing="false" onAction="#onSendBtnClick" prefHeight="25.0" prefWidth="99.0" styleClass="success" text="Invia">
+                     <TextArea fx:id="textIn" layoutX="35.0" layoutY="223.0" prefHeight="186.0" prefWidth="371.0" />
+                     <Button layoutX="307.0" layoutY="476.0" mnemonicParsing="false" onAction="#onSendBtnClick" prefHeight="25.0" prefWidth="99.0" styleClass="success" text="Invia">
                         <cursor>
                            <Cursor fx:constant="HAND" />
                         </cursor>
                      </Button>
-                     <Button layoutX="298.0" layoutY="451.0" mnemonicParsing="false" onAction="#onClearBtnClick" prefHeight="25.0" prefWidth="99.0" styleClass="danger" text="Svuota">
+                     <Button layoutX="171.0" layoutY="476.0" mnemonicParsing="false" onAction="#onClearBtnClick" prefHeight="25.0" prefWidth="99.0" styleClass="danger" text="Svuota">
                         <cursor>
                            <Cursor fx:constant="HAND" />
                         </cursor>
@@ -46,11 +48,20 @@
                      <Label layoutX="30.0" layoutY="22.0" prefHeight="17.0" prefWidth="178.0" styleClass="accent" text="Scrivi nuovo annuncio" />
                   </children>
                </AnchorPane>
-               <AnchorPane layoutX="630.0" layoutY="44.0" prefHeight="518.0" prefWidth="360.0" AnchorPane.bottomAnchor="34.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="44.0">
+               <AnchorPane layoutX="630.0" layoutY="44.0" prefHeight="518.0" prefWidth="475.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="523.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="44.0">
                   <children>
-                     <Card prefHeight="518.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     <Card layoutX="18.0" prefHeight="518.0" prefWidth="475.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      <Label layoutX="20.0" layoutY="20.0" prefHeight="17.0" prefWidth="178.0" styleClass="accent" text="Lista annunci" />
-                     <Label layoutX="57.0" layoutY="251.0" prefHeight="17.0" prefWidth="261.0" styleClass="fg-default" text="working in progress" />
+                     <TableView fx:id="announceTable" layoutX="20.0" layoutY="67.0" prefHeight="429.0" prefWidth="435.0" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="67.0">
+                       <columns>
+                         <TableColumn fx:id="titleCol" prefWidth="107.0" text="Titolo" />
+                         <TableColumn fx:id="textCol" prefWidth="219.0" text="Comunicazione" />
+                           <TableColumn fx:id="dateCol" prefWidth="109.0" text="Data" />
+                       </columns>
+                        <columnResizePolicy>
+                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
+                     </TableView>
                   </children>
                </AnchorPane>
             </children>

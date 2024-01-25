@@ -8,18 +8,22 @@ import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 import it.uniroma2.dicii.ispw.model.AnnouncementManager;
 import it.uniroma2.dicii.ispw.view.graphicalcontroller.AuthenticatedUser;
 import it.uniroma2.dicii.ispw.view.graphicalcontroller.PageHelper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
 
-public class AnnouncementController implements Observer {
+public class AnnouncementController implements Observer, Initializable {
 
     @FXML
     private TextArea textIn;
@@ -29,6 +33,15 @@ public class AnnouncementController implements Observer {
     private Label textLbl;
     @FXML
     private Label titleLbl;
+    @FXML
+    private TableView<AnnouncementBean> announceTable;
+    @FXML
+    private TableColumn<AnnouncementBean, Timestamp> dateCol;
+    @FXML
+    private TableColumn<AnnouncementBean, String> textCol;
+    @FXML
+    private TableColumn<AnnouncementBean, String> titleCol;
+
 
     @FXML
     void onClearBtnClick(ActionEvent event) {
@@ -70,6 +83,23 @@ public class AnnouncementController implements Observer {
 
     @Override
     public void update() {
-        System.out.println("bene ma non benissimo");
+        loadTable();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        loadTable();
+    }
+
+    private void loadTable() {
+        ManageAnnouncementController manageAnnouncementController = new ManageAnnouncementController();
+        ObservableList<AnnouncementBean> announcementBeanObservableList = FXCollections.observableArrayList();
+        announcementBeanObservableList.addAll(manageAnnouncementController.getAllAnnouncementBean());
+
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+        textCol.setCellValueFactory(new PropertyValueFactory<>("text"));
+
+        announceTable.setItems(announcementBeanObservableList);
     }
 }
