@@ -64,16 +64,7 @@ public class RoomRequestDBMS implements RoomRequestDAO{
 
             if (!resultSet.next()) return requestList;
             do {
-                RoomRequest rr = new RoomRequest();
-                rr.setReqId(resultSet.getInt("id"));
-                rr.setDate(resultSet.getTimestamp("data"));
-                rr.setTitle(resultSet.getString("titolo"));
-                rr.setMsg(resultSet.getString("testo"));
-                rr.setSender(resultSet.getString("utente"));
-                rr.setRoom(resultSet.getString("sala"));
-                rr.setWhen(resultSet.getTimestamp("quando"));
-                rr.setStatus(RoomRequestStatus.getStatus(resultSet.getInt("status")));
-
+                RoomRequest rr = setRoomRequestFromResultSet(resultSet);
                 requestList.add(rr);
             } while (resultSet.next());
 
@@ -117,7 +108,7 @@ public class RoomRequestDBMS implements RoomRequestDAO{
 
     @Override
     public RoomRequest getRoomRequestById(int id) throws ItemNotFoundException {
-        RoomRequest rr = new RoomRequest();
+        RoomRequest rr;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
@@ -130,14 +121,7 @@ public class RoomRequestDBMS implements RoomRequestDAO{
 
             if (!resultSet.next()) throw new ItemNotFoundException("Richiesta non trovata");
 
-            rr.setReqId(resultSet.getInt("id"));
-            rr.setDate(resultSet.getTimestamp("data"));
-            rr.setTitle(resultSet.getString("titolo"));
-            rr.setMsg(resultSet.getString("testo"));
-            rr.setSender(resultSet.getString("utente"));
-            rr.setRoom(resultSet.getString("sala"));
-            rr.setWhen(resultSet.getTimestamp("quando"));
-            rr.setStatus(RoomRequestStatus.getStatus(resultSet.getInt("status")));
+            rr = setRoomRequestFromResultSet(resultSet);
 
         } catch (SQLException e) {
             LoggerManager.logSevereException(ERROR_SQL, e);
@@ -165,16 +149,7 @@ public class RoomRequestDBMS implements RoomRequestDAO{
 
             if (!resultSet.next()) return requestList;
             do {
-                RoomRequest rr = new RoomRequest();
-                rr.setReqId(resultSet.getInt("id"));
-                rr.setDate(resultSet.getTimestamp("data"));
-                rr.setTitle(resultSet.getString("titolo"));
-                rr.setMsg(resultSet.getString("testo"));
-                rr.setSender(resultSet.getString("utente"));
-                rr.setRoom(resultSet.getString("sala"));
-                rr.setWhen(resultSet.getTimestamp("quando"));
-                rr.setStatus(RoomRequestStatus.getStatus(resultSet.getInt("status")));
-
+                RoomRequest rr = setRoomRequestFromResultSet(resultSet);
                 requestList.add(rr);
             } while (resultSet.next());
 
@@ -188,6 +163,19 @@ public class RoomRequestDBMS implements RoomRequestDAO{
             DbConnection.closeEverything(statement, resultSet, true);
         }
         return requestList;
+    }
+
+    public RoomRequest setRoomRequestFromResultSet(ResultSet resultSet) throws SQLException{
+        RoomRequest rr = new RoomRequest();
+        rr.setReqId(resultSet.getInt("id"));
+        rr.setDate(resultSet.getTimestamp("data"));
+        rr.setTitle(resultSet.getString("titolo"));
+        rr.setMsg(resultSet.getString("testo"));
+        rr.setSender(resultSet.getString("utente"));
+        rr.setRoom(resultSet.getString("sala"));
+        rr.setWhen(resultSet.getTimestamp("quando"));
+        rr.setStatus(RoomRequestStatus.getStatus(resultSet.getInt("status")));
+        return rr;
     }
 
 }
