@@ -37,7 +37,7 @@ public class PageHelper {
             //pass the information of the logged user to the proper controller
             if(utente != null) {
                 AuthenticatedUser controller = loader.getController();
-                controller.setUtenteBean(utente);
+                AuthenticatedUser.setUtenteBean(utente);
                 controller.initUserData();
             }
 
@@ -51,6 +51,7 @@ public class PageHelper {
             throw new IOException("Errore non previsto. Si prega di riprovare");
         }
     }
+
 
     public static void launchAlert(Alert.AlertType alertType, String title, String msg) {
         Alert alert = new Alert(alertType);

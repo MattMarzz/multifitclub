@@ -29,14 +29,9 @@
                       <fx:include source="read-announcement.fxml" />
                   </content>
                 </Tab>
-                  <Tab style="-fx-cursor: hand;" text="Chat">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                    </content>
-                  </Tab>
                   <Tab style="-fx-cursor: hand;" text="Richiedi sala">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                         <fx:include source="room-request.fxml" />
                      </content>
                   </Tab>
               </tabs>

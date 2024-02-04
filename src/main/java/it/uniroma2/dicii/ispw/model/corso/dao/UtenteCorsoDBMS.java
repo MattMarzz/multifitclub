@@ -1,7 +1,6 @@
 package it.uniroma2.dicii.ispw.model.corso.dao;
 
 import it.uniroma2.dicii.ispw.App;
-import it.uniroma2.dicii.ispw.exception.ItemAlreadyExistsException;
 import it.uniroma2.dicii.ispw.utils.DbConnection;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
@@ -13,7 +12,6 @@ import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDAO;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDBMS;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,7 +43,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
         try{
             String sql = userRoleInCourse.equals(UserRoleInCourse.ENROLLMENT) ? "SELECT * FROM iscrizione WHERE utente=?" : "SELECT * FROM insegnato WHERE utente=?";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, cf);
             resultSet = statement.executeQuery();
 
@@ -63,13 +61,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
             LoggerManager.logSevereException(ERROR_SQL, e);;
             return courses;
         } finally {
-            try {
-                if(statement != null) statement.close();
-                if(resultSet != null) statement.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, resultSet);
         }
         return courses;
     }
@@ -83,7 +75,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
             String sql;
             sql = userRoleInCourse.equals(UserRoleInCourse.ENROLLMENT) ? "SELECT * FROM iscrizione WHERE corso=?" : "SELECT * FROM insegnato WHERE corso=?";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, nomeCorso);
             resultSet = statement.executeQuery();
 
@@ -101,13 +93,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
             LoggerManager.logSevereException(ERROR_SQL, e);;
             return utenteList;
         } finally {
-            try {
-                if(statement != null) statement.close();
-                if(resultSet != null) statement.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, resultSet);
         }
         return utenteList;
     }
@@ -118,7 +104,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
         try{
             String sql = "delete from iscrizione WHERE corso=? and utente=?";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, corso.getName());
             statement.setString(2, utente.getCf());
             statement.executeUpdate();
@@ -128,12 +114,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
         } catch (DbConnectionException e) {
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         } finally {
-            try {
-                if (statement != null) statement.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, null);
         }
     }
 
@@ -143,7 +124,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
         try{
             String sql = "insert into iscrizione(corso, utente) values(?, ?)";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, corso.getName());
             statement.setString(2, utente.getCf());
             statement.executeUpdate();
@@ -153,12 +134,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
         } catch (DbConnectionException e) {
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         } finally {
-            try {
-                if (statement != null) statement.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, null);
         }
     }
 
@@ -169,7 +145,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
         try{
             String sql = "SELECT * FROM corso WHERE nome=?";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, nomeCorso);
 
             resultSet = statement.executeQuery();
@@ -181,13 +157,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
             LoggerManager.logSevereException(ERROR_SQL, e);
             return corso;
         } finally {
-//            try {
-//                if(statement != null) statement.close();
-//                if(resultSet != null) resultSet.close();
-//                DbConnection.closeConnection();
-//            } catch (SQLException e) {
-//                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
-//            }
+//            DbConnection.closeEverything(statement, resulSet);
         }
         return corso;
     }

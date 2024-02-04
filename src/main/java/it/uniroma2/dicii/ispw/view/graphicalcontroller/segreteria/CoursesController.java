@@ -3,7 +3,6 @@ package it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria;
 import it.uniroma2.dicii.ispw.bean.CorsoBean;
 import it.uniroma2.dicii.ispw.bean.LezioneBean;
 import it.uniroma2.dicii.ispw.controller.GestioneCorsiController;
-import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import it.uniroma2.dicii.ispw.view.graphicalcontroller.PageHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

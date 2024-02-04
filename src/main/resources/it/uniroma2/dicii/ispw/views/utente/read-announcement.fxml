@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import atlantafx.base.controls.Card?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -17,7 +19,22 @@
         <children>
             <VBox prefHeight="694.0" prefWidth="392.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <children>
-                    <TableView fx:id="annListView" prefHeight="655.0" prefWidth="392.0" VBox.vgrow="ALWAYS">
+               <AnchorPane prefHeight="59.0" prefWidth="392.0">
+                  <children>
+                     <Button graphicTextGap="6.0" layoutX="291.0" layoutY="13.0" mnemonicParsing="false" onAction="#onRefreshBtnClick" prefHeight="24.0" prefWidth="87.0" styleClass="flat" text="Reload">
+                        <graphic>
+                           <FontAwesomeIconView glyphName="REFRESH" styleClass="ikonli-font-icon" />
+                        </graphic>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor>
+                     </Button>
+                  </children>
+                  <padding>
+                     <Insets bottom="5.0" />
+                  </padding>
+               </AnchorPane>
+                    <TableView fx:id="annListView" prefHeight="633.0" prefWidth="362.0" VBox.vgrow="ALWAYS">
                         <columns>
                             <TableColumn fx:id="titleCol" prefWidth="75.0" text="Titolo" />
                             <TableColumn fx:id="dateCol" prefWidth="75.0" text="Data" />
@@ -27,7 +44,7 @@
                             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                         </columnResizePolicy>
                   <VBox.margin>
-                     <Insets top="10.0" />
+                     <Insets left="7.0" />
                   </VBox.margin>
                     </TableView>
                 </children>

@@ -1,6 +1,13 @@
 package it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria;
 
+import it.uniroma2.dicii.ispw.controller.GestioneUtentiController;
+import it.uniroma2.dicii.ispw.controller.LoginController;
+import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
+import it.uniroma2.dicii.ispw.model.utente.Utente;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
+import it.uniroma2.dicii.ispw.utils.LoginManager;
+import it.uniroma2.dicii.ispw.notification.Client;
+import it.uniroma2.dicii.ispw.utils.Observer;
 import it.uniroma2.dicii.ispw.view.graphicalcontroller.AuthenticatedUser;
 import it.uniroma2.dicii.ispw.view.graphicalcontroller.PageHelper;
 import javafx.application.Platform;
@@ -9,10 +16,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
 
-
-public class StructuralController extends AuthenticatedUser {
+public class StructuralController extends AuthenticatedUser implements Observer {
 
     @FXML
     private Button coursesListBtn;
@@ -45,14 +50,20 @@ public class StructuralController extends AuthenticatedUser {
     @FXML
     private AnchorPane usersListView;
 
-    @FXML
-    private AnnouncementController announcementController;
-
     @Override
     public void initUserData() {
         nameLbl.setText(AuthenticatedUser.utenteBean.getName());
         //land on dashboard
         switchView(new ActionEvent(dashboardBtn, null));
+        Utente u = null;
+        try {
+            u = new GestioneUtentiController().getUtenteByCf(utenteBean.getCf());
+        } catch (ItemNotFoundException e) {
+            LoggerManager.logSevereException(e.getMessage());
+        }
+        Client c = LoginManager.getInstance().getHashMap().get(u);
+        if(c != null)
+            c.attach(this);
     }
 
 
@@ -87,9 +98,31 @@ public class StructuralController extends AuthenticatedUser {
 
     @FXML
     private void onLogoutBtnClick (ActionEvent event) {
+        Utente u = null;
+        try {
+            u = new GestioneUtentiController().getUtenteByCf(AuthenticatedUser.utenteBean.getCf());
+        } catch (ItemNotFoundException e) {
+            LoggerManager.logSevereException("Errore di login", e);
+        }
+        Client c = LoginManager.getInstance().getHashMap().get(u);
+        if(c != null)
+            c.detach(this);
+
+        new LoginController().logout(u);
         AuthenticatedUser.utenteBean = null;
+
         PageHelper.logout(event);
     }
 
 
+    @Override
+    public void update(String... msg) {
+        Platform.runLater(() -> {
+            // Aggiorna la view con la notifica (ad esempio, mostra una snack bar)
+            // Puoi accedere direttamente agli elementi della UI da qui
+            if(msg.length != 0)
+                PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Notifica", msg[0]);
+        });
+
+    }
 }

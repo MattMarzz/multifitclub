@@ -14,13 +14,15 @@ module multifitclub {
     exports it.uniroma2.dicii.ispw.model.utente;
     exports it.uniroma2.dicii.ispw.model.lezione;
     exports it.uniroma2.dicii.ispw.model.corso;
-    exports it.uniroma2.dicii.ispw.model.announcement;
-    exports it.uniroma2.dicii.ispw.model.announcement.dao;
+    exports it.uniroma2.dicii.ispw.model.communication;
     exports it.uniroma2.dicii.ispw.enums;
     exports it.uniroma2.dicii.ispw.utils;
     exports it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria;
+    exports it.uniroma2.dicii.ispw.view.graphicalcontroller.utente;
+    exports it.uniroma2.dicii.ispw.notification;
 
     opens it.uniroma2.dicii.ispw.view.graphicalcontroller to javafx.fxml;
     opens it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria to javafx.fxml;
     opens it.uniroma2.dicii.ispw.view.graphicalcontroller.utente to javafx.fxml;
+
 }

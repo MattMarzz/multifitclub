@@ -4,17 +4,19 @@ import it.uniroma2.dicii.ispw.exception.DbConnectionException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
+import static it.uniroma2.dicii.ispw.utils.ConstantMsg.ERROR_CLOSING_DB;
+
 public class DbConnection {
+
+    private static DbConnection instance = null;
     private static Connection conn = null;
 
-    protected DbConnection(){}
+    private DbConnection(){}
 
-    public static Connection getConnection() throws DbConnectionException {
+    public Connection getConnection() throws DbConnectionException {
         try (InputStream input = DbConnection.class.getClassLoader().getResourceAsStream("application.properties")){
             if(conn == null || conn.isClosed()){
                 if(input == null) throw new DbConnectionException("Configurazione della connessione al database non trovata!");
@@ -35,9 +37,25 @@ public class DbConnection {
         return conn;
     }
 
-    public static void closeConnection() throws SQLException{
+    public synchronized static DbConnection getInstance() {
+        if (instance == null)
+            instance = new DbConnection();
+        return instance;
+    }
+
+    public void closeConnection() throws SQLException{
         if(conn != null && !conn.isClosed()){
             conn.close();
+        }
+    }
+
+    public static void closeEverything(Statement st, ResultSet rs) {
+        try {
+            if (st != null) st.close();
+            if (rs != null) rs.close();
+            DbConnection.getInstance().closeConnection();
+        } catch (SQLException e) {
+            LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
         }
     }
 }

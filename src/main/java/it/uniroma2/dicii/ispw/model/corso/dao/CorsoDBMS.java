@@ -26,7 +26,7 @@ public class CorsoDBMS implements CorsoDAO {
         try {
             String sql = "select * from corso where nome=?";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, nome);
             resultSet = statement.executeQuery();
 
@@ -42,13 +42,7 @@ public class CorsoDBMS implements CorsoDAO {
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return null;
         } finally {
-            try {
-                if (statement != null) statement.close();
-                if (resultSet != null) resultSet.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, resultSet);
         }
         return corso;
     }
@@ -61,7 +55,7 @@ public class CorsoDBMS implements CorsoDAO {
         try {
             String sql = "select * from corso";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             resultSet = statement.executeQuery();
 
             if(!resultSet.next()) return corsoList;
@@ -79,13 +73,7 @@ public class CorsoDBMS implements CorsoDAO {
             return corsoList;
         }
         finally {
-            try {
-                if(statement != null) statement.close();
-                if(resultSet != null) resultSet.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, resultSet);
         }
         return corsoList;
     }
@@ -96,7 +84,7 @@ public class CorsoDBMS implements CorsoDAO {
         try {
             String sql = "insert into corso(nome, data_inizio) values(?, ?)";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, corso.getName());
             statement.setDate(2, new java.sql.Date(corso.getStartDate().getTime()));
             statement.executeUpdate();
@@ -109,12 +97,7 @@ public class CorsoDBMS implements CorsoDAO {
         } catch (DbConnectionException e) {
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         } finally {
-            try {
-                if (statement != null) statement.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, null);
         }
     }
 
@@ -125,7 +108,7 @@ public class CorsoDBMS implements CorsoDAO {
         try {
             String sql = "delete from corso where nome=? and data_inizio=?";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, corso.getName());
             statement.setDate(2, new java.sql.Date(corso.getStartDate().getTime()));
             statement.executeUpdate();
@@ -136,12 +119,7 @@ public class CorsoDBMS implements CorsoDAO {
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         }
         finally {
-            try {
-                if(statement != null) statement.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, null);
         }
     }
 }

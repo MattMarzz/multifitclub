@@ -1,9 +1,9 @@
-package it.uniroma2.dicii.ispw.controller;
+package it.uniroma2.dicii.ispw.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Subject {
+public class Subject {
     private List<Observer> observers = new ArrayList<>();
 
     public void attach(Observer observer) {
@@ -14,10 +14,9 @@ public abstract class Subject {
         this.observers.remove(observer);
     }
 
-    public void notifyChanges() {
+    public void notifyChanges(String... msg) {
         for (Observer o: this.observers) {
-            o.update();
+            o.update(msg);
         }
     }
-
 }

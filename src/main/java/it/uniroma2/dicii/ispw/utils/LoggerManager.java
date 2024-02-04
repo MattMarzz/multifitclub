@@ -19,8 +19,7 @@ public class LoggerManager {
             fileHandler.setFormatter(new SimpleFormatter());
             logger.addHandler(fileHandler);
         } catch (IOException e) {
-            System.err.println("Errore durante l'inizializzazione del logger.");
-            e.printStackTrace(System.err);
+            logSevereException(e.getMessage());
         }
     }
 

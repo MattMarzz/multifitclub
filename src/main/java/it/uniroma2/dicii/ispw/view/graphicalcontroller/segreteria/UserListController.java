@@ -268,8 +268,13 @@ public class UserListController implements Initializable {
         }
         if(date != null)
             dateIn.setValue(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        Ruolo[] ruoli = Ruolo.values();
-        roleIn.getItems().addAll(ruoli);
+
+        //check if combo is already loaded
+        if(roleIn.getItems().isEmpty()) {
+            Ruolo[] ruoli = Ruolo.values();
+            roleIn.getItems().addAll(ruoli);
+        }
+
         roleIn.setValue(utenteBean.getRuolo());
 
         switch(utenteBean.getRuolo()) {

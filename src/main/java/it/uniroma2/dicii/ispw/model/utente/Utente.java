@@ -1,17 +1,24 @@
 package it.uniroma2.dicii.ispw.model.utente;
 
 import it.uniroma2.dicii.ispw.App;
+import it.uniroma2.dicii.ispw.bean.CommunicationBean;
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.enums.Ruolo;
+import it.uniroma2.dicii.ispw.enums.TypesOfCommunications;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
+import it.uniroma2.dicii.ispw.notification.Client;
+import it.uniroma2.dicii.ispw.model.communication.CommunicationBase;
+import it.uniroma2.dicii.ispw.model.communication.CommunicationFactory;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDAO;
 import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDBMS;
 import it.uniroma2.dicii.ispw.utils.DateParser;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
+import java.lang.Object;
+import java.util.Objects;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +34,6 @@ public class Utente implements Serializable {
     private Ruolo ruolo;
     private List<Corso> enrollments;
     private List<Corso> teachings;
-//    private List<Announcement> announcementList;
 
     private transient UtenteCorsoDAO utenteCorsoDAO;
 
@@ -48,6 +54,30 @@ public class Utente implements Serializable {
         this.email = email;
         this.password = password;
         this.ruolo = ruolo;
+    }
+
+    public void sendCommunication(TypesOfCommunications toc, CommunicationBean comBean, Client client) {
+        CommunicationBase communicationBase;
+        if(toc.equals(TypesOfCommunications.ANNOUNCEMENT)) {
+            communicationBase = new CommunicationFactory().createAnnouncement(this.cf, comBean.getTitle(), comBean.getText(), comBean.getDate());
+        } else {
+            communicationBase = new CommunicationFactory().createRoomRequest(this.cf, comBean.getId(), comBean.getTitle(), comBean.getText(),
+                    comBean.getDate(), comBean.getRoom(), comBean.getWhen(), comBean.getStatus());
+        }
+        communicationBase.sendCommunication(client);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Utente utente = (Utente) o;
+        return Objects.equals(this.cf, utente.cf);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.cf);
     }
 
     public Utente(UtenteBean ub) throws InvalidDataException {
@@ -92,14 +122,6 @@ public class Utente implements Serializable {
         }
         return teachings;
     }
-
-//    @Override
-//    public void update() {
-//        ManageAnnouncementController manageAnnouncementController = new ManageAnnouncementController();
-//        GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
-//
-//        this.announcementList = manageAnnouncementController.getAllAnnouncement();
-//    }
 
     public String getName() {
         return name;

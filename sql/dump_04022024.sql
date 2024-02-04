@@ -33,7 +33,7 @@ CREATE TABLE `annuncio` (
   PRIMARY KEY (`id`),
   KEY `annuncio_utente_idx` (`utente`),
   CONSTRAINT `annuncio_utente` FOREIGN KEY (`utente`) REFERENCES `utente` (`cf`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `annuncio` (
 
 LOCK TABLES `annuncio` WRITE;
 /*!40000 ALTER TABLE `annuncio` DISABLE KEYS */;
-INSERT INTO `annuncio` VALUES (1,'Annuncio','bellissimo testo','2024-01-24 20:09:52','BNCMRA70A20H501B'),(9,'titolone','aiutoooo.','2024-01-24 23:16:02','BNCMRA70A20H501B'),(16,'nuovo ann','sa sa prova prova','2024-01-25 20:04:34','BNCMRA70A20H501B');
+INSERT INTO `annuncio` VALUES (1,'Annuncio','bellissimo testo','2024-01-24 20:09:52','BNCMRA70A20H501B'),(26,'df','dfg','2024-02-03 20:25:36','BNCMRA70A20H501B'),(27,'rt','erqqr','2024-02-04 01:18:49','BNCMRA70A20H501B');
 /*!40000 ALTER TABLE `annuncio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,6 +156,38 @@ INSERT INTO `lezione` VALUES ('lunedi','10:30:00','A','judo',NULL),('mercoledi',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `richiesta`
+--
+
+DROP TABLE IF EXISTS `richiesta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `richiesta` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `titolo` varchar(45) NOT NULL,
+  `testo` varchar(45) DEFAULT NULL,
+  `data` datetime DEFAULT NULL,
+  `quando` datetime DEFAULT NULL,
+  `status` int DEFAULT '0',
+  `utente` char(16) DEFAULT NULL,
+  `sala` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `richiesta_utente_idx` (`utente`),
+  CONSTRAINT `richiesta_utente` FOREIGN KEY (`utente`) REFERENCES `utente` (`cf`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `richiesta`
+--
+
+LOCK TABLES `richiesta` WRITE;
+/*!40000 ALTER TABLE `richiesta` DISABLE KEYS */;
+INSERT INTO `richiesta` VALUES (13,'bz','cvbx','2024-02-04 17:47:24','2024-02-16 00:00:00',1,'MACMRA70A20H335L','cvbz'),(14,'nuova','lol','2024-02-04 17:58:52','2024-02-10 00:00:00',1,'MACMRA70A20H335L','a');
+/*!40000 ALTER TABLE `richiesta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `utente`
 --
 
@@ -193,4 +225,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-25 20:13:22
+-- Dump completed on 2024-02-04 21:13:27

@@ -7,7 +7,6 @@ public abstract class AuthenticatedUser {
     public static void setUtenteBean(UtenteBean utenteBean) {
         AuthenticatedUser.utenteBean = utenteBean;
     }
-
     public static UtenteBean getUtenteBean() {
         return AuthenticatedUser.utenteBean;
     }

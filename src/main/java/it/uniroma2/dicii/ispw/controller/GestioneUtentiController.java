@@ -38,6 +38,10 @@ public class GestioneUtentiController {
         }
     }
 
+    public Utente getUtenteByCf(String cf) throws ItemNotFoundException {
+        return utenteDAO.getUtenteByCf(cf);
+    }
+
     public String insertUtente(UtenteBean utenteBean) throws InvalidDataException{
         String res = null;
         if(utenteBean.getCf().length() != CF_LENGTH) throw new InvalidDataException("Codice fiscale non valido.");

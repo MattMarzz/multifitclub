@@ -12,6 +12,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.uniroma2.dicii.ispw.utils.ConstantMsg.ERROR_OPENING_DB;
+import static it.uniroma2.dicii.ispw.utils.ConstantMsg.ERROR_SQL;
+
 public class LezioneDBMS implements LezioneDAO{
     @Override
     public List<Lezione> getLezioniByCourseId(String nomeCorso) throws ItemNotFoundException {
@@ -21,7 +24,7 @@ public class LezioneDBMS implements LezioneDAO{
         try{
             String sql = "SELECT * FROM lezione WHERE corso=?";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, nomeCorso);
             resultSet = statement.executeQuery();
 
@@ -39,19 +42,13 @@ public class LezioneDBMS implements LezioneDAO{
             }while(resultSet.next());
 
         } catch (SQLException e) {
-            LoggerManager.logSevereException("Errore SQL non previsto: ", e);
+            LoggerManager.logSevereException(ERROR_SQL, e);
             return lezioniList;
         } catch (DbConnectionException e) {
-            LoggerManager.logSevereException("Impossibile connettersi al db: ", e);
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return lezioniList;
         } finally {
-            try {
-                if (statement != null) statement.close();
-                if (resultSet != null) resultSet.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException("Errore nella chiusura della connessione.", e);
-            }
+            DbConnection.closeEverything(statement, resultSet);
         }
         return lezioniList;
     }

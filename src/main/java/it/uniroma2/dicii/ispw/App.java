@@ -24,25 +24,7 @@ public class App extends Application {
 
     public static void main(String[] args) {
         setPersistenceLayer();
-//        UtenteBean u = new UtenteBean("Luca", "ad", "BNCMRA70A20H501B", "10/10/2010", "em@em.it", "abc", Ruolo.UTENTE );
-//        GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
-//        try {
-//            gestioneUtentiController.insertUtente(u);
-//        } catch (InvalidDataException e) {
-//            throw new RuntimeException(e);
-//        }
         launch();
-//        AnnouncementController controller = new AnnouncementController();
-//        AnnouncementBean ab = new AnnouncementBean();
-//        ab.setTitle("Annuncio");
-//        ab.setText("bellissimo testo");
-//        ab.setDate(Timestamp.valueOf(LocalDateTime.now()));
-//        ab.setSender("BNCMRA70A20H501B");
-//        try {
-//            controller.publishNewAnnouncement(ab);
-//        } catch (InvalidDataException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     @Override
@@ -68,16 +50,10 @@ public class App extends Application {
             Properties properties = new Properties();
             properties.load(input);
 
-            switch(properties.getProperty("persistence.layer")){
-                case "JDBC":
-                    App.persistenceLayer = TypesOfPersistenceLayer.JDBC;
-                    break;
-                case "FileSystem":
-                    App.persistenceLayer = TypesOfPersistenceLayer.FILE_SYSTEM;
-                    break;
-                default:
-                    App.persistenceLayer = TypesOfPersistenceLayer.JDBC;
-                    break;
+            if (properties.getProperty("persistence.layer").equals("FileSystem")) {
+                App.persistenceLayer = TypesOfPersistenceLayer.FILE_SYSTEM;
+            } else {
+                App.persistenceLayer = TypesOfPersistenceLayer.JDBC;
             }
         } catch (IOException e) {
             LoggerManager.logSevereException("Impossibile leggere il layer di persistenza dal file di configurazione.\n" +

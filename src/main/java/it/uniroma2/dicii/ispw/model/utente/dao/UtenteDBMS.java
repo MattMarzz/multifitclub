@@ -24,7 +24,7 @@ public class UtenteDBMS implements UtenteDAO{
             String sql = " insert into utente (cf, nome, cognome, data_nascita, ruolo, email, password)"
                     + " values (?, ?, ?, ?, ?, ?, ?)";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, utente.getCf());
             statement.setString(2, utente.getName());
             statement.setString(3, utente.getSurname());
@@ -47,12 +47,7 @@ public class UtenteDBMS implements UtenteDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return res;
         } finally {
-            try {
-                if (statement != null) statement.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, null);
         }
         return res;
     }
@@ -65,7 +60,7 @@ public class UtenteDBMS implements UtenteDAO{
         try {
             String query = "SELECT * FROM utente WHERE email = ? AND password = ?";
 
-            statement = DbConnection.getConnection().prepareStatement(query);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(query);
             statement.setString(1, loginBean.getEmail());
             statement.setString(2, loginBean.getPassword());
 
@@ -80,13 +75,7 @@ public class UtenteDBMS implements UtenteDAO{
             LoggerManager.logSevereException(ERROR_SQL, e);;
             return utente;
         } finally {
-            try {
-                if(statement != null) statement.close();
-                if(resultSet != null) statement.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, null);
         }
         return utente;
     }
@@ -99,7 +88,7 @@ public class UtenteDBMS implements UtenteDAO{
         try{
             String sql = "SELECT * FROM utente WHERE cf=?";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, cf);
             resultSet = statement.executeQuery();
 
@@ -114,13 +103,7 @@ public class UtenteDBMS implements UtenteDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return null;
         } finally {
-            try {
-                if(statement != null) statement.close();
-                if(resultSet != null) resultSet.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, null);
         }
         return utente;
     }
@@ -133,7 +116,7 @@ public class UtenteDBMS implements UtenteDAO{
         try {
             String sql = "SELECT * FROM utente";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             resultSet = statement.executeQuery();
 
             if(!resultSet.next())
@@ -152,13 +135,7 @@ public class UtenteDBMS implements UtenteDAO{
             return users;
         }
         finally {
-            try {
-                if(statement != null) statement.close();
-                if(resultSet != null) resultSet.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, null);
         }
         return users;
     }
@@ -171,7 +148,7 @@ public class UtenteDBMS implements UtenteDAO{
             String sql = " update utente set nome=?, cognome=?, data_nascita=?, ruolo=?, email=?"
                     + " where cf=?";
 
-            statement = DbConnection.getConnection().prepareStatement(sql);
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, utente.getName());
             statement.setString(2, utente.getSurname());
             statement.setDate(3, new java.sql.Date(utente.getBirthDate().getTime()));
@@ -190,12 +167,7 @@ public class UtenteDBMS implements UtenteDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return res;
         } finally {
-            try {
-                if (statement != null) statement.close();
-                DbConnection.closeConnection();
-            } catch (SQLException e) {
-                LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
-            }
+            DbConnection.closeEverything(statement, null);
         }
         return res;
     }
@@ -208,17 +180,7 @@ public class UtenteDBMS implements UtenteDAO{
         utente.setBirthDate(resultSet.getDate("data_nascita"));
         utente.setEmail(resultSet.getString("email"));
         utente.setPassword(resultSet.getString("password"));
-        switch (resultSet.getInt("ruolo")) {
-            case 1:
-                utente.setRuolo(Ruolo.ISTRUTTORE);
-                break;
-            case 2:
-                utente.setRuolo(Ruolo.SEGRETERIA);
-                break;
-            default:
-                utente.setRuolo(Ruolo.UTENTE);
-                break;
-        }
+        utente.setRuolo(Ruolo.getRuolo(resultSet.getInt("ruolo")));
         return utente;
     }
 
