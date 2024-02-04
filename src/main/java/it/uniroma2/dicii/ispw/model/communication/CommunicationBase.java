@@ -12,7 +12,7 @@ public abstract class CommunicationBase implements Serializable {
     protected String msg;
     protected Timestamp date;
 
-    public CommunicationBase() {
+    protected CommunicationBase() {
     }
 
     public CommunicationBase(String sender, String title, String msg, Timestamp date) {

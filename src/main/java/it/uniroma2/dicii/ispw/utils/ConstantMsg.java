@@ -6,4 +6,6 @@ public class ConstantMsg {
     public static final String ERROR_SQL = "Errore SQL non previsto: ";
     public static final String NAME_NOT_EMPTY = "Il nome non può essere vuoto.";
 
+    private ConstantMsg() {
+    }
 }

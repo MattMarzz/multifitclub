@@ -29,7 +29,7 @@ public class HomepageController extends AuthenticatedUser implements Observer {
         try {
             u = new GestioneUtentiController().getUtenteByCf(utenteBean.getCf());
         } catch (ItemNotFoundException e) {
-            LoggerManager.logSevereException(e.getMessage());
+            LoggerManager.logSevere(e.getMessage());
         }
         Client c = LoginManager.getInstance().getHashMap().get(u);
         if(c != null)

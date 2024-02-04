@@ -48,7 +48,7 @@ public class LezioneDBMS implements LezioneDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return lezioniList;
         } finally {
-            DbConnection.closeEverything(statement, resultSet);
+            DbConnection.closeEverything(statement, resultSet, true);
         }
         return lezioniList;
     }

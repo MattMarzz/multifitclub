@@ -40,7 +40,7 @@ public class AnnouncementDBMS implements AnnouncementDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return res;
         } finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
 
         return res;
@@ -76,7 +76,7 @@ public class AnnouncementDBMS implements AnnouncementDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return announcementList;
         } finally {
-            DbConnection.closeEverything(statement, resultSet);
+            DbConnection.closeEverything(statement, resultSet, true);
         }
 
         return announcementList;

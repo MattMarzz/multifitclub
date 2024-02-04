@@ -4,6 +4,7 @@ import it.uniroma2.dicii.ispw.notification.Client;
 import it.uniroma2.dicii.ispw.model.utente.Utente;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class LoginManager {
     private static LoginManager instance = null;
@@ -21,7 +22,7 @@ public class LoginManager {
         this.hashMap.put(u, c);
     }
 
-    public HashMap<Utente, Client> getHashMap() {
+    public Map<Utente, Client> getHashMap() {
         return hashMap;
     }
 }

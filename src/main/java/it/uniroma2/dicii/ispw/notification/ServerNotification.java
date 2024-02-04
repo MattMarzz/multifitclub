@@ -28,7 +28,7 @@ public class ServerNotification {
             while (!serverSocket.isClosed()) {
                 //waiting for clients
                 Socket socket = serverSocket.accept();
-                System.out.println("A new client has connected");
+                LoggerManager.logFine("Nuovo client connesso!");
                 ClientHandler clientHandler = new ClientHandler(socket);
 
                 Thread thread = new Thread(clientHandler);
@@ -37,7 +37,7 @@ public class ServerNotification {
                 if(connections >= MAX_CONNECTONS) break;
             }
         } catch (IOException e) {
-            LoggerManager.logSevereException(e.getMessage());
+            LoggerManager.logSevere(e.getMessage());
             closeServerSocket();
         }
     }
@@ -48,7 +48,7 @@ public class ServerNotification {
                 serverSocket.close();
             }
         } catch (IOException e) {
-            LoggerManager.logSevereException(e.getMessage());
+            LoggerManager.logSevere(e.getMessage());
         }
     }
 

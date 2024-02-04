@@ -1,7 +1,6 @@
 package it.uniroma2.dicii.ispw.model.corso.dao;
 
 import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
-import it.uniroma2.dicii.ispw.exception.ItemAlreadyExistsException;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.utente.Utente;

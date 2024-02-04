@@ -12,7 +12,7 @@ import static it.uniroma2.dicii.ispw.utils.ConstantMsg.ERROR_CLOSING_DB;
 public class DbConnection {
 
     private static DbConnection instance = null;
-    private static Connection conn = null;
+    private Connection conn = null;
 
     private DbConnection(){}
 
@@ -37,7 +37,7 @@ public class DbConnection {
         return conn;
     }
 
-    public synchronized static DbConnection getInstance() {
+    public static synchronized DbConnection getInstance() {
         if (instance == null)
             instance = new DbConnection();
         return instance;
@@ -49,13 +49,15 @@ public class DbConnection {
         }
     }
 
-    public static void closeEverything(Statement st, ResultSet rs) {
+    public static void closeEverything(Statement st, ResultSet rs, boolean wantToCloseConn) {
         try {
             if (st != null) st.close();
             if (rs != null) rs.close();
-            DbConnection.getInstance().closeConnection();
+            if(wantToCloseConn)
+                DbConnection.getInstance().closeConnection();
         } catch (SQLException e) {
             LoggerManager.logSevereException(ERROR_CLOSING_DB, e);
         }
     }
+
 }

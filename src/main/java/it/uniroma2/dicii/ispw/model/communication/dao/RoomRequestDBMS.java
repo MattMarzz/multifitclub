@@ -45,7 +45,7 @@ public class RoomRequestDBMS implements RoomRequestDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return res;
         } finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
 
         return res;
@@ -84,7 +84,7 @@ public class RoomRequestDBMS implements RoomRequestDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return requestList;
         } finally {
-            DbConnection.closeEverything(statement, resultSet);
+            DbConnection.closeEverything(statement, resultSet, true);
         }
 
         return requestList;
@@ -110,7 +110,7 @@ public class RoomRequestDBMS implements RoomRequestDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return null;
         } finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
         return rr.getSender();
     }
@@ -146,7 +146,7 @@ public class RoomRequestDBMS implements RoomRequestDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return null;
         } finally {
-//            DbConnection.closeEverything(statement, resultSet);
+            DbConnection.closeEverything(statement, resultSet, false);
         }
         return rr;
     }
@@ -185,7 +185,7 @@ public class RoomRequestDBMS implements RoomRequestDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return requestList;
         } finally {
-            DbConnection.closeEverything(statement, resultSet);
+            DbConnection.closeEverything(statement, resultSet, true);
         }
         return requestList;
     }

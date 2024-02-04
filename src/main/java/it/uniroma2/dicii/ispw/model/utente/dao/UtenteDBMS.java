@@ -47,7 +47,7 @@ public class UtenteDBMS implements UtenteDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return res;
         } finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
         return res;
     }
@@ -72,10 +72,10 @@ public class UtenteDBMS implements UtenteDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return utente;
         } catch (SQLException e){
-            LoggerManager.logSevereException(ERROR_SQL, e);;
+            LoggerManager.logSevereException(ERROR_SQL, e);
             return utente;
         } finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
         return utente;
     }
@@ -103,7 +103,7 @@ public class UtenteDBMS implements UtenteDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return null;
         } finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
         return utente;
     }
@@ -135,7 +135,7 @@ public class UtenteDBMS implements UtenteDAO{
             return users;
         }
         finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
         return users;
     }
@@ -167,7 +167,7 @@ public class UtenteDBMS implements UtenteDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return res;
         } finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
         return res;
     }

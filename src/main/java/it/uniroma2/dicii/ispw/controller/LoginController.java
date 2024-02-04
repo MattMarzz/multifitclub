@@ -17,7 +17,7 @@ import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.HashMap;
+import java.util.Map;
 
 
 public class LoginController {
@@ -62,7 +62,7 @@ public class LoginController {
     }
 
     public void logout(Utente u) {
-        HashMap<Utente, Client> hm = LoginManager.getInstance().getHashMap();
+        Map<Utente, Client> hm = LoginManager.getInstance().getHashMap();
         hm.remove(u);
     }
 

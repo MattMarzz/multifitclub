@@ -19,17 +19,18 @@ public class LoggerManager {
             fileHandler.setFormatter(new SimpleFormatter());
             logger.addHandler(fileHandler);
         } catch (IOException e) {
-            logSevereException(e.getMessage());
+            logSevere(e.getMessage());
         }
     }
 
     public static void logSevereException(String message, Exception e){
         logger.log(Level.SEVERE, message, e);
     }
-    public static void logSevereException(String message){
+    public static void logSevere(String message){
         logger.log(Level.SEVERE, message);
     }
     public static void logInfoException(String message, Exception e){
         logger.log(Level.INFO, message, e);
     }
+    public static void logFine(String message) {logger.log(Level.FINE, message);}
 }

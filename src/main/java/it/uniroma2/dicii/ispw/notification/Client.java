@@ -103,7 +103,7 @@ public class Client extends Subject {
                 socket.close();
             }
         } catch (IOException e) {
-            LoggerManager.logSevereException(e.getMessage());
+            LoggerManager.logSevere(e.getMessage());
         }
     }
 }

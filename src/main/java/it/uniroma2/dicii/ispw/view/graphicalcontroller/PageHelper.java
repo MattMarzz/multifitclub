@@ -27,7 +27,7 @@ public class PageHelper {
         try {
             URL url = App.class.getResource(fxmlFile);
             if(url == null){
-                LoggerManager.logSevereException("FXML file non trovato: " + fxmlFile);
+                LoggerManager.logSevere("FXML file non trovato: " + fxmlFile);
                 throw new IOException("Errore di sistema. Si prega di riprovare");
             }
 

@@ -27,9 +27,7 @@ public class RoomRequest extends CommunicationBase implements Serializable {
     public RoomRequest(String sender, int id, String title, String msg, Timestamp date, String room, Timestamp when, RoomRequestStatus status) {
         super(sender, title, msg, date);
         this.reqId = id;
-        this.when = when;
         this.status = status;
-        this.room = room;
         setPersistenceLayer();
     }
 
@@ -49,7 +47,7 @@ public class RoomRequest extends CommunicationBase implements Serializable {
             try {
                 this.setSender(roomRequestDAO.requestResponse(this));
             } catch (ItemNotFoundException e) {
-                LoggerManager.logSevereException(e.getMessage());
+                LoggerManager.logSevere(e.getMessage());
             }
 
         } else {

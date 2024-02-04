@@ -264,7 +264,7 @@ public class UserListController implements Initializable {
         try {
             date  = sdf.parse(utenteBean.getBirthDate());
         } catch (ParseException e) {
-            LoggerManager.logSevereException("Formato data non valida " + e.getMessage());
+            LoggerManager.logSevere("Formato data non valida " + e.getMessage());
         }
         if(date != null)
             dateIn.setValue(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());

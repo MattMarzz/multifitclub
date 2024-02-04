@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class Announcement extends CommunicationBase implements Serializable {
-    private int AnnId;
+    private int annId;
     private transient AnnouncementDAO announcementDAO;
 
     public Announcement(){
@@ -46,6 +46,6 @@ public class Announcement extends CommunicationBase implements Serializable {
     }
 
     public void setAnnId(int annId) {
-        AnnId = annId;
+        this.annId = annId;
     }
 }

@@ -17,7 +17,6 @@ import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDBMS;
 import it.uniroma2.dicii.ispw.utils.DateParser;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
-import java.lang.Object;
 import java.util.Objects;
 import java.io.Serializable;
 import java.util.ArrayList;

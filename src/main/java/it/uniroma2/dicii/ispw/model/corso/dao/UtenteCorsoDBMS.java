@@ -58,10 +58,10 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return courses;
         } catch (SQLException e){
-            LoggerManager.logSevereException(ERROR_SQL, e);;
+            LoggerManager.logSevereException(ERROR_SQL, e);
             return courses;
         } finally {
-            DbConnection.closeEverything(statement, resultSet);
+            DbConnection.closeEverything(statement, resultSet, true);
         }
         return courses;
     }
@@ -90,10 +90,10 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return utenteList;
         } catch (SQLException e){
-            LoggerManager.logSevereException(ERROR_SQL, e);;
+            LoggerManager.logSevereException(ERROR_SQL, e);
             return utenteList;
         } finally {
-            DbConnection.closeEverything(statement, resultSet);
+            DbConnection.closeEverything(statement, resultSet, true);
         }
         return utenteList;
     }
@@ -114,7 +114,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
         } catch (DbConnectionException e) {
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         } finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
     }
 
@@ -134,7 +134,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
         } catch (DbConnectionException e) {
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         } finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
     }
 
@@ -157,7 +157,7 @@ public class UtenteCorsoDBMS implements UtenteCorsoDAO{
             LoggerManager.logSevereException(ERROR_SQL, e);
             return corso;
         } finally {
-//            DbConnection.closeEverything(statement, resulSet);
+            DbConnection.closeEverything(statement, resultSet, false);
         }
         return corso;
     }

@@ -42,7 +42,7 @@ public class CorsoDBMS implements CorsoDAO {
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
             return null;
         } finally {
-            DbConnection.closeEverything(statement, resultSet);
+            DbConnection.closeEverything(statement, resultSet, true);
         }
         return corso;
     }
@@ -73,7 +73,7 @@ public class CorsoDBMS implements CorsoDAO {
             return corsoList;
         }
         finally {
-            DbConnection.closeEverything(statement, resultSet);
+            DbConnection.closeEverything(statement, resultSet, true);
         }
         return corsoList;
     }
@@ -97,7 +97,7 @@ public class CorsoDBMS implements CorsoDAO {
         } catch (DbConnectionException e) {
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         } finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
     }
 
@@ -119,7 +119,7 @@ public class CorsoDBMS implements CorsoDAO {
             LoggerManager.logSevereException(ERROR_OPENING_DB, e);
         }
         finally {
-            DbConnection.closeEverything(statement, null);
+            DbConnection.closeEverything(statement, null, true);
         }
     }
 }

@@ -22,8 +22,8 @@ import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDBMS;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommunicationController {
     private UtenteDAO utenteDAO;
@@ -42,7 +42,7 @@ public class CommunicationController {
 
     public void forwardCommunication(UtenteBean utenteBean, CommunicationBean communicationBean, TypesOfCommunications toc) throws ItemNotFoundException, InvalidDataException {
         Utente u = utenteDAO.getUtenteByCf(utenteBean.getCf());
-        HashMap<Utente, Client> hm = LoginManager.getInstance().getHashMap();
+        Map<Utente, Client> hm = LoginManager.getInstance().getHashMap();
 
         if(communicationBean.getId() == -1) {
             //it means new communication

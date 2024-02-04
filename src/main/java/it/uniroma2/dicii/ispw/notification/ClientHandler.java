@@ -7,11 +7,12 @@ import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 // each instance executed by different thread
 public class ClientHandler implements Runnable{
 
-    public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
+    public final static List<ClientHandler> clientHandlers = new ArrayList<>();
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
@@ -78,7 +79,7 @@ public class ClientHandler implements Runnable{
                 }
             } catch (IOException e) {
                 closeEverything(socket, bufferedReader, bufferedWriter);
-                LoggerManager.logSevereException(e.getMessage());
+                LoggerManager.logSevere(e.getMessage());
             }
         }
     }
@@ -139,7 +140,7 @@ public class ClientHandler implements Runnable{
                 socket.close();
             }
         } catch (IOException e) {
-            LoggerManager.logSevereException(e.getMessage());
+            LoggerManager.logSevere(e.getMessage());
         }
     }
 }
