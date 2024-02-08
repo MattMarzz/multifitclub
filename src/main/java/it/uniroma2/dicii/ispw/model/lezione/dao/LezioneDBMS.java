@@ -1,11 +1,8 @@
 package it.uniroma2.dicii.ispw.model.lezione.dao;
 
-import it.uniroma2.dicii.ispw.enums.Ruolo;
 import it.uniroma2.dicii.ispw.exception.ItemAlreadyExistsException;
-import it.uniroma2.dicii.ispw.model.utente.Utente;
 import it.uniroma2.dicii.ispw.utils.DbConnection;
 import it.uniroma2.dicii.ispw.exception.DbConnectionException;
-import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.lezione.Lezione;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
@@ -21,66 +18,15 @@ import static it.uniroma2.dicii.ispw.utils.ConstantMsg.ERROR_SQL;
 public class LezioneDBMS implements LezioneDAO{
     @Override
     public List<Lezione> getLezioniByCourseId(String nomeCorso) {
-        List<Lezione> lezioniList = new ArrayList<>();
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try{
-            String sql = "SELECT * FROM lezione WHERE corso=?";
-
-            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
-            statement.setString(1, nomeCorso);
-            resultSet = statement.executeQuery();
-
-            if(!resultSet.next())
-                return lezioniList;
-
-            do{
-                Lezione l = setLezioneFromResultSet(resultSet);
-                lezioniList.add(l);
-            }while(resultSet.next());
-
-        } catch (SQLException e) {
-            LoggerManager.logSevereException(ERROR_SQL, e);
-            return lezioniList;
-        } catch (DbConnectionException e) {
-            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
-            return lezioniList;
-        } finally {
-            DbConnection.closeEverything(statement, resultSet, true);
-        }
-        return lezioniList;
+        String sql = "SELECT * FROM lezione WHERE corso=?";
+        return getParametricLessons(sql);
     }
 
     @Override
     public List<Lezione> getAllLezioniForDay(String giorno) {
-        List<Lezione> lezioniList = new ArrayList<>();
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try{
-            String sql = "SELECT * FROM lezione WHERE giorno=?";
+        String sql = "SELECT * FROM lezione WHERE giorno=?";
+        return getParametricLessons(sql);
 
-            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
-            statement.setString(1, giorno);
-            resultSet = statement.executeQuery();
-
-            if(!resultSet.next())
-                return lezioniList;
-
-            do{
-               Lezione l = setLezioneFromResultSet(resultSet);
-               lezioniList.add(l);
-            }while(resultSet.next());
-
-        } catch (SQLException e) {
-            LoggerManager.logSevereException(ERROR_SQL, e);
-            return lezioniList;
-        } catch (DbConnectionException e) {
-            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
-            return lezioniList;
-        } finally {
-            DbConnection.closeEverything(statement, resultSet, true);
-        }
-        return lezioniList;
     }
 
     @Override
@@ -113,17 +59,31 @@ public class LezioneDBMS implements LezioneDAO{
         } finally {
             DbConnection.closeEverything(statement, null, true);
         }
-        return "Attività ierite correttamente!";
+        return "Attività inserite correttamente!";
     }
 
     @Override
     public List<Lezione> getAllLezioni() {
+        String sql = "SELECT * FROM lezione ORDER BY corso";
+        return getParametricLessons(sql);
+    }
+
+
+    private Lezione setLezioneFromResultSet(ResultSet resultSet) throws SQLException {
+        Lezione lezione = new Lezione();
+        lezione.setCfUtente(resultSet.getString("istruttore"));
+        lezione.setDay(resultSet.getString("giorno"));
+        lezione.setStartTime(resultSet.getTime("ora"));
+        lezione.setCourseName(resultSet.getString("corso"));
+        lezione.setSala(resultSet.getString("sala"));
+        return lezione;
+    }
+
+    private List<Lezione> getParametricLessons(String sql) {
         List<Lezione> lezioniList = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try{
-            String sql = "SELECT * FROM lezione ORDER BY corso";
-
             statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
             resultSet = statement.executeQuery();
 
@@ -145,16 +105,5 @@ public class LezioneDBMS implements LezioneDAO{
             DbConnection.closeEverything(statement, resultSet, true);
         }
         return lezioniList;
-    }
-
-
-    private Lezione setLezioneFromResultSet(ResultSet resultSet) throws SQLException {
-        Lezione lezione = new Lezione();
-        lezione.setCfUtente(resultSet.getString("istruttore"));
-        lezione.setDay(resultSet.getString("giorno"));
-        lezione.setStartTime(resultSet.getTime("ora"));
-        lezione.setCourseName(resultSet.getString("corso"));
-        lezione.setSala(resultSet.getString("sala"));
-        return lezione;
     }
 }

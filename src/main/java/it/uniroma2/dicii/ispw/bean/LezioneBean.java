@@ -11,10 +11,6 @@ public class LezioneBean {
     private List<String> giornoList;
     private String cf;
 
-    public LezioneBean() {
-    }
-
-
     public String getGiorno() {
         return giorno;
     }
