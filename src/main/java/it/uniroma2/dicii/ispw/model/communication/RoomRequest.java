@@ -46,6 +46,7 @@ public class RoomRequest extends CommunicationBase implements Serializable {
         if(this.reqId != -1) {
             try {
                 this.setSender(roomRequestDAO.requestResponse(this));
+                //todo: inserire qui ls chiamata al client per l'aggiornamento delle lezioni e la chiamata al controller
             } catch (ItemNotFoundException e) {
                 LoggerManager.logSevere(e.getMessage());
             }

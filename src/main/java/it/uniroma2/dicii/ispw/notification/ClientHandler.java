@@ -21,6 +21,7 @@ public class ClientHandler implements Runnable{
     private static final String NEW_ANN = "Nuovo annuncio da";
     private static final String NEW_REQ = "Nuovo richiesta da";
     private static final String REQ_RESPONSE = "Hai ricevuto una risposta!";
+    private static final String NEW_ACT = "Nuove attività inserite";
 
     public ClientHandler(Socket socket) {
         try {
@@ -57,6 +58,8 @@ public class ClientHandler implements Runnable{
                 } else if (messageFromClient.startsWith(REQ_RESPONSE)) {
                     String recipient = messageFromClient.substring(REQ_RESPONSE.length() + 1);
                     personalNotification(recipient, messageFromClient.substring(0, REQ_RESPONSE.length()));
+                } else if (messageFromClient.startsWith(NEW_ACT)) {
+                    reloadProg();
                 }
             } catch (IOException e) {
                 closeEverything(socket, bufferedReader, bufferedWriter);
@@ -117,6 +120,20 @@ public class ClientHandler implements Runnable{
                     clientHandler.bufferedWriter.newLine();
                     clientHandler.bufferedWriter.flush();
                 }
+            } catch (IOException e) {
+                closeEverything(socket, bufferedReader, bufferedWriter);
+            }
+        }
+    }
+
+    public void reloadProg() {
+        for(ClientHandler clientHandler : clientHandlers) {
+            try {
+
+                 clientHandler.bufferedWriter.write("Reload");
+                 clientHandler.bufferedWriter.newLine();
+                 clientHandler.bufferedWriter.flush();
+
             } catch (IOException e) {
                 closeEverything(socket, bufferedReader, bufferedWriter);
             }

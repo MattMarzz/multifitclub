@@ -18,6 +18,7 @@ public class Client extends Subject {
     private static final String NEW_ANN = "Nuovo annuncio da";
     private static final String NEW_REQ = "Nuovo richiesta da";
     private static final String REQ_RESPONSE = "Hai ricevuto una risposta!";
+    private static final String NEW_ACT = "Nuove attività inserite";
 
     public Client(Socket socket, Utente utente) {
         try {
@@ -68,7 +69,16 @@ public class Client extends Subject {
                 closeEverything(socket, bufferedReader, bufferedWriter);
             }
         }
+    }
 
+    public void newActivitiesDetected() {
+        try {
+            bufferedWriter.write(NEW_ACT);
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            closeEverything(socket, bufferedReader, bufferedWriter);
+        }
     }
 
     public void listenForMessage() {

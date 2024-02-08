@@ -14,6 +14,7 @@ import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDBMS;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
 import it.uniroma2.dicii.ispw.utils.EmailValidator;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
+import it.uniroma2.dicii.ispw.view.graphicalcontroller.AuthenticatedUser;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -55,13 +56,41 @@ public class LoginController {
             lm.setHashMap(u, client);
         }
 
-        //don't load pwd for security purpose
         return new UtenteBean(u.getName(), u.getSurname(), u.getCf(), u.getBirthDate().toString(),
-                    u.getEmail(), null, u.getRuolo());
+                    u.getEmail(), u.getPassword(), u.getRuolo());
 
     }
 
-    public void logout(Utente u) {
+    public void attachObserver(UtenteBean ub, AuthenticatedUser controller) {
+        Utente u = null;
+        try {
+            u = new GestioneUtentiController().getUtenteByCf(ub.getCf());
+        } catch (ItemNotFoundException e) {
+            LoggerManager.logSevere(e.getMessage());
+        }
+        Client c = LoginManager.getInstance().getHashMap().get(u);
+        if(c != null)
+            c.attach(controller);
+    }
+    public void detachObserver(UtenteBean ub, AuthenticatedUser controller) {
+        Utente u = null;
+        try {
+            u = new GestioneUtentiController().getUtenteByCf(ub.getCf());
+        } catch (ItemNotFoundException e) {
+            LoggerManager.logSevereException("Errore di login", e);
+        }
+        Client c = LoginManager.getInstance().getHashMap().get(u);
+        if(c != null)
+            c.detach(controller);
+    }
+
+    public void logout(UtenteBean ub) {
+        Utente u = null;
+        try {
+            u = new GestioneUtentiController().getUtenteByCf(ub.getCf());
+        } catch (ItemNotFoundException e) {
+            LoggerManager.logSevere(e.getMessage());
+        }
         Map<Utente, Client> hm = LoginManager.getInstance().getHashMap();
         hm.remove(u);
     }

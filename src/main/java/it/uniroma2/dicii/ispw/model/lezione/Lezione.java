@@ -1,7 +1,13 @@
 package it.uniroma2.dicii.ispw.model.lezione;
 
+import it.uniroma2.dicii.ispw.App;
+import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
+import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDAO;
+import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDBMS;
+
 import java.io.Serializable;
 import java.sql.Time;
+import java.util.List;
 
 public class Lezione implements Serializable {
     private  String day;
@@ -10,13 +16,41 @@ public class Lezione implements Serializable {
     private String courseName;
     private String cfUtente;
 
-    public Lezione(){}
+    private transient LezioneDAO lezioneDAO;
+
+    public Lezione(){
+        if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC)) {
+            lezioneDAO = new LezioneDBMS();
+        }
+//       else {
+//            corsoDAO = new CorsoFS();
+//            utenteCorsoDAO = new UtenteCorsoFS();
+//        }
+    }
     public Lezione(String day, Time startTime, String courseName, String cfUtente) {
+        this();
         this.day = day;
         this.startTime = startTime;
         this.courseName = courseName;
         this.cfUtente = cfUtente;
     }
+
+    public boolean isThereOverlap() {
+        List<Lezione> lezioniList = lezioneDAO.getAllLezioniForDay(this.day);
+        for (Lezione l: lezioniList) {
+            //check for overlapping
+            Time fineLezione = Time.valueOf(this.getStartTime().toLocalTime().plusHours(1));
+            Time fineLezionetemp = Time.valueOf(l.getStartTime().toLocalTime().plusHours(1));
+
+            if((this.getStartTime().before(l.getStartTime()) && fineLezione.after(l.getStartTime()) ) ||
+                    (this.getStartTime().after(l.getStartTime()) && this.getStartTime().before(fineLezionetemp)))
+                return true;
+        }
+        return false;
+    }
+
+
+
 
     public String getDay() {
         return day;

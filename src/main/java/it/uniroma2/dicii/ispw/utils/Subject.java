@@ -16,7 +16,10 @@ public class Subject {
 
     public void notifyChanges(String... msg) {
         for (Observer o: this.observers) {
-            o.update(msg);
+            if(msg[0].equals("Reload"))
+                o.update();
+            else
+                o.update(msg);
         }
     }
 }

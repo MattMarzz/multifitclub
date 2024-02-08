@@ -48,7 +48,7 @@
          <AnchorPane fx:id="tableView" layoutX="630.0" layoutY="96.0" prefHeight="561.0" prefWidth="737.0" visible="false" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="523.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="96.0">
             <children>
                <Card layoutX="18.0" prefHeight="518.0" prefWidth="475.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               <Button graphicTextGap="6.0" layoutX="613.0" layoutY="25.0" mnemonicParsing="false" onAction="#onRefreshBtnClick" prefHeight="24.0" prefWidth="87.0" styleClass="flat" text="Reload">
+               <Button graphicTextGap="6.0" layoutX="613.0" layoutY="25.0" mnemonicParsing="false" onAction="#onRefreshBtnClick" prefHeight="24.0" prefWidth="87.0" styleClass="flat" text="Reload" AnchorPane.rightAnchor="37.0">
                   <graphic>
                      <FontAwesomeIconView glyphName="REFRESH" styleClass="ikonli-font-icon" />
                   </graphic>

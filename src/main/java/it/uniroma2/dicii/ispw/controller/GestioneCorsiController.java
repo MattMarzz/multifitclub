@@ -68,11 +68,15 @@ public class GestioneCorsiController {
         for (Lezione l: corso.getLezioneList()) {
             LezioneBean lb = new LezioneBean();
             lb.setGiorno(l.getDay());
-            lb.setOra(l.getStartTime().toString());
+            lb.setOra(l.getStartTime());
             lb.setSala(l.getSala());
             lezioneBeanList.add(lb);
         }
         return lezioneBeanList;
+    }
+
+    public Corso getCorsoById(String corso) throws ItemNotFoundException {
+        return corsoDAO.getCorsoByNome(corso);
     }
 
 }

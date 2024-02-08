@@ -7,7 +7,6 @@ import it.uniroma2.dicii.ispw.model.utente.Utente;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import it.uniroma2.dicii.ispw.utils.LoginManager;
 import it.uniroma2.dicii.ispw.notification.Client;
-import it.uniroma2.dicii.ispw.utils.Observer;
 import it.uniroma2.dicii.ispw.view.graphicalcontroller.AuthenticatedUser;
 import it.uniroma2.dicii.ispw.view.graphicalcontroller.PageHelper;
 import javafx.application.Platform;
@@ -17,7 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 
-public class StructuralController extends AuthenticatedUser implements Observer {
+public class StructuralController extends AuthenticatedUser{
 
     @FXML
     private Button coursesListBtn;
@@ -55,15 +54,7 @@ public class StructuralController extends AuthenticatedUser implements Observer 
         nameLbl.setText(AuthenticatedUser.utenteBean.getName());
         //land on dashboard
         switchView(new ActionEvent(dashboardBtn, null));
-        Utente u = null;
-        try {
-            u = new GestioneUtentiController().getUtenteByCf(utenteBean.getCf());
-        } catch (ItemNotFoundException e) {
-            LoggerManager.logSevere(e.getMessage());
-        }
-        Client c = LoginManager.getInstance().getHashMap().get(u);
-        if(c != null)
-            c.attach(this);
+        new LoginController().attachObserver(AuthenticatedUser.getUtenteBean(), this);
     }
 
 
@@ -98,19 +89,11 @@ public class StructuralController extends AuthenticatedUser implements Observer 
 
     @FXML
     private void onLogoutBtnClick (ActionEvent event) {
-        Utente u = null;
-        try {
-            u = new GestioneUtentiController().getUtenteByCf(AuthenticatedUser.utenteBean.getCf());
-        } catch (ItemNotFoundException e) {
-            LoggerManager.logSevereException("Errore di login", e);
-        }
-        Client c = LoginManager.getInstance().getHashMap().get(u);
-        if(c != null)
-            c.detach(this);
+        LoginController loginController = new LoginController();
+        loginController.detachObserver(AuthenticatedUser.getUtenteBean(), this);
+        loginController.logout(AuthenticatedUser.getUtenteBean());
 
-        new LoginController().logout(u);
         AuthenticatedUser.setUtenteBean(null);
-
         PageHelper.logout(event);
     }
 
@@ -118,8 +101,6 @@ public class StructuralController extends AuthenticatedUser implements Observer 
     @Override
     public void update(String... msg) {
         Platform.runLater(() -> {
-            // Aggiorna la view con la notifica (ad esempio, mostra una snack bar)
-            // Puoi accedere direttamente agli elementi della UI da qui
             if(msg.length != 0)
                 PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Notifica", msg[0]);
         });
