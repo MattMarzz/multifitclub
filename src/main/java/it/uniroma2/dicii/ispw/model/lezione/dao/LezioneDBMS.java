@@ -19,13 +19,13 @@ public class LezioneDBMS implements LezioneDAO{
     @Override
     public List<Lezione> getLezioniByCourseId(String nomeCorso) {
         String sql = "SELECT * FROM lezione WHERE corso=?";
-        return getParametricLessons(sql);
+        return getParametricLessons(sql, nomeCorso);
     }
 
     @Override
     public List<Lezione> getAllLezioniForDay(String giorno) {
         String sql = "SELECT * FROM lezione WHERE giorno=?";
-        return getParametricLessons(sql);
+        return getParametricLessons(sql, giorno);
 
     }
 
@@ -65,7 +65,7 @@ public class LezioneDBMS implements LezioneDAO{
     @Override
     public List<Lezione> getAllLezioni() {
         String sql = "SELECT * FROM lezione ORDER BY corso";
-        return getParametricLessons(sql);
+        return getParametricLessons(sql, null);
     }
 
 
@@ -79,12 +79,14 @@ public class LezioneDBMS implements LezioneDAO{
         return lezione;
     }
 
-    private List<Lezione> getParametricLessons(String sql) {
+    private List<Lezione> getParametricLessons(String sql, String firstParam) {
         List<Lezione> lezioniList = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try{
             statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
+            if(firstParam != null)
+                statement.setString(1, firstParam);
             resultSet = statement.executeQuery();
 
             if(!resultSet.next())

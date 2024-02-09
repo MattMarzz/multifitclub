@@ -2,12 +2,19 @@ package it.uniroma2.dicii.ispw.model.lezione;
 
 import it.uniroma2.dicii.ispw.App;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
+import it.uniroma2.dicii.ispw.model.communication.RoomRequest;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDAO;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDBMS;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 public class Lezione implements Serializable {
     private  String day;
@@ -49,7 +56,13 @@ public class Lezione implements Serializable {
         return false;
     }
 
-
+    public void transformReservationIntoLesson(RoomRequest rr) {
+        LocalDateTime localDateTime = rr.getWhen().toLocalDateTime();
+        DayOfWeek dayOfWeek = localDateTime.getDayOfWeek();
+        this.day = dayOfWeek.getDisplayName(TextStyle.FULL, Locale.ITALIAN);
+        this.cfUtente = rr.getSender();
+        this.sala = rr.getRoom();
+    }
 
 
     public String getDay() {

@@ -3,11 +3,15 @@ package it.uniroma2.dicii.ispw.controller;
 import it.uniroma2.dicii.ispw.App;
 import it.uniroma2.dicii.ispw.bean.LezioneBean;
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
+import it.uniroma2.dicii.ispw.enums.RoomRequestStatus;
 import it.uniroma2.dicii.ispw.enums.Ruolo;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 import it.uniroma2.dicii.ispw.exception.ItemAlreadyExistsException;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
+import it.uniroma2.dicii.ispw.model.communication.RoomRequest;
+import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestDAO;
+import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestDBMS;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.lezione.Lezione;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDAO;
@@ -18,6 +22,8 @@ import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDBMS;
 import it.uniroma2.dicii.ispw.notification.Client;
 import it.uniroma2.dicii.ispw.utils.LoginManager;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +32,14 @@ public class ProgrammazioneController {
 
     private LezioneDAO lezioneDAO;
     private UtenteDAO utenteDAO;
+    private RoomRequestDAO roomRequestDAO;
 
 
     public ProgrammazioneController() {
         if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC)) {
             lezioneDAO = new LezioneDBMS();
             utenteDAO = new UtenteDBMS();
+            roomRequestDAO = new RoomRequestDBMS();
         }
 //       else {
 //            corsoDAO = new CorsoFS();
@@ -71,6 +79,7 @@ public class ProgrammazioneController {
 
     public List<LezioneBean> getAllLezioni() {
         List<Lezione> lezioneList = lezioneDAO.getAllLezioni();
+        lezioneList.addAll(getConfirmedReservation(null));
         return lezioneToLezioneBean(lezioneList);
     }
 
@@ -89,9 +98,8 @@ public class ProgrammazioneController {
             List<Lezione> tempList = lezioneDAO.getLezioniByCourseId(c.getName());
             lessons.addAll(tempList);
         }
-
+        lessons.addAll(getConfirmedReservation(cf));
         return lezioneToLezioneBean(lessons);
-
     }
 
     public List<LezioneBean> lezioneToLezioneBean(List<Lezione> lezioneList) {
@@ -106,6 +114,36 @@ public class ProgrammazioneController {
             lezioneBeanList.add(lb);
         }
         return lezioneBeanList;
+    }
+
+    public List<Lezione> getConfirmedReservation(String cf) {
+        List<RoomRequest> roomRequests;
+        List<Lezione> lezioneList = new ArrayList<>();
+
+        if(cf == null) {
+            //retrieve all confirmed reservation
+            roomRequests = roomRequestDAO.getAllAcceptedRequest();
+        } else {
+            //retrieve all confirmed reservation for user
+            roomRequests = roomRequestDAO.getRoomRequestByUtente(cf);
+            roomRequests.removeIf(rr -> !rr.getStatus().equals(RoomRequestStatus.ACCEPTED));
+        }
+
+        lezioneList = getLessonFromReservation(roomRequests);
+        return lezioneList;
+    }
+
+    public List<Lezione> getLessonFromReservation(List<RoomRequest> roomRequests) {
+        List<Lezione> lezioneList = new ArrayList<>();
+        for (RoomRequest rr: roomRequests) {
+            //check if rr is expired or not
+            if(rr.getWhen().after(Timestamp.valueOf(LocalDateTime.now()))) {
+                Lezione l = new Lezione();
+                l.transformReservationIntoLesson(rr);
+                lezioneList.add(l);
+            }
+        }
+        return lezioneList;
     }
 
 }

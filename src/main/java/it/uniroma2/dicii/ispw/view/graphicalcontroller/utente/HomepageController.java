@@ -106,8 +106,8 @@ public class HomepageController extends AuthenticatedUser {
         Platform.runLater(() -> {
             if(msg.length != 0) {
                 PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Notifica", msg[0]);
-            } else {
-                //load lesson
+
+                //load lessons
                 loadAllLessons();
                 loadYourLessons();
             }

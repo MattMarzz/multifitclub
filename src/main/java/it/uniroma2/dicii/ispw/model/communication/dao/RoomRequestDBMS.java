@@ -165,6 +165,38 @@ public class RoomRequestDBMS implements RoomRequestDAO{
         return requestList;
     }
 
+    @Override
+    public List<RoomRequest> getAllAcceptedRequest() {
+        List<RoomRequest> requestList = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            String sql = "select * from richiesta where status=?";
+
+            statement = DbConnection.getInstance().getConnection().prepareStatement(sql);
+            statement.setInt(1, RoomRequestStatus.ACCEPTED.ordinal());
+
+            resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) return requestList;
+            do {
+                RoomRequest rr = setRoomRequestFromResultSet(resultSet);
+                requestList.add(rr);
+            } while (resultSet.next());
+
+        } catch (SQLException e) {
+            LoggerManager.logSevereException(ERROR_SQL, e);
+            return requestList;
+        } catch (DbConnectionException e) {
+            LoggerManager.logSevereException(ERROR_OPENING_DB, e);
+            return requestList;
+        } finally {
+            DbConnection.closeEverything(statement, resultSet, true);
+        }
+
+        return requestList;
+    }
+
     public RoomRequest setRoomRequestFromResultSet(ResultSet resultSet) throws SQLException{
         RoomRequest rr = new RoomRequest();
         rr.setReqId(resultSet.getInt("id"));

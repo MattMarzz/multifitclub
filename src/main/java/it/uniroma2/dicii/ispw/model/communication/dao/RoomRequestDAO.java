@@ -12,4 +12,5 @@ public interface RoomRequestDAO {
      public String requestResponse(RoomRequest roomRequest) throws ItemNotFoundException;
      public RoomRequest getRoomRequestById(int id) throws ItemNotFoundException;
      public List<RoomRequest> getRoomRequestByUtente(String cf);
+     public List<RoomRequest> getAllAcceptedRequest();
 }

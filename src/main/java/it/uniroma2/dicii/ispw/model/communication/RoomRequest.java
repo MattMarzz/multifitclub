@@ -28,6 +28,8 @@ public class RoomRequest extends CommunicationBase implements Serializable {
         super(sender, title, msg, date);
         this.reqId = id;
         this.status = status;
+        this.when = when;
+        this.room = room;
         setPersistenceLayer();
     }
 
