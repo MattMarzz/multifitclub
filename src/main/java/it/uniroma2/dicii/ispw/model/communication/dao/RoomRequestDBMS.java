@@ -34,7 +34,7 @@ public class RoomRequestDBMS implements RoomRequestDAO{
             statement.setString(6, roomRequest.getSender());
             statement.setString(7, roomRequest.getRoom());
             statement.executeUpdate();
-            res = "Prenotazione inviato correttamente";
+            res = "Prenotazione inviata correttamente";
         } catch (SQLException e) {
             if(e.getErrorCode() == 1062)
                 throw new ItemAlreadyExistsException("Prenotazione esistente");
