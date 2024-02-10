@@ -1,6 +1,9 @@
 package it.uniroma2.dicii.ispw.model.corso.dao;
 
 import it.uniroma2.dicii.ispw.App;
+import it.uniroma2.dicii.ispw.model.communication.dao.AnnouncementFS;
+import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestFS;
+import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
 import it.uniroma2.dicii.ispw.utils.DbConnection;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
@@ -12,6 +15,7 @@ import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDAO;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDBMS;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,16 +26,18 @@ import static it.uniroma2.dicii.ispw.utils.ConstantMsg.*;
 
 public class UtenteCorsoDBMS implements UtenteCorsoDAO{
     private UtenteDAO utenteDAO;
-    private CorsoDAO corsoDAO;
 
     public UtenteCorsoDBMS(){
         if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC)){
             utenteDAO = new UtenteDBMS();
-            //corsoDAO = new CorsoDBMS();
         }
-
-//        else
-//            utenteDAO = new UtentoFS();
+        else {
+            try {
+                utenteDAO = new UtenteFS();
+            } catch (IOException e) {
+                LoggerManager.logSevereException("Impossibile dialogare con il file system", e);
+            }
+        }
     }
 
 

@@ -26,12 +26,12 @@ public class RoomRequest extends CommunicationBase implements Serializable {
         setPersistenceLayer();
     }
 
-    public RoomRequest(String sender, int id, String title, String msg, Timestamp date, String room, Timestamp when, RoomRequestStatus status) {
+    public RoomRequest(String sender, int id, String title, String msg, Timestamp date, ReservationInfo resIfo, RoomRequestStatus status) {
         super(sender, title, msg, date);
         this.reqId = id;
         this.status = status;
-        this.when = when;
-        this.room = room;
+        this.when = resIfo.getWhen();
+        this.room = resIfo.getRoom();
         setPersistenceLayer();
     }
 

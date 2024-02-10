@@ -8,6 +8,7 @@ import it.uniroma2.dicii.ispw.enums.TypesOfCommunications;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
+import it.uniroma2.dicii.ispw.model.communication.ReservationInfo;
 import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoFS;
 import it.uniroma2.dicii.ispw.notification.Client;
 import it.uniroma2.dicii.ispw.model.communication.CommunicationBase;
@@ -67,8 +68,9 @@ public class Utente implements Serializable {
         if(toc.equals(TypesOfCommunications.ANNOUNCEMENT)) {
             communicationBase = new CommunicationFactory().createAnnouncement(this.cf, comBean.getTitle(), comBean.getText(), comBean.getDate());
         } else {
+            ReservationInfo resInfo = new ReservationInfo(comBean.getWhen(), comBean.getRoom());
             communicationBase = new CommunicationFactory().createRoomRequest(this.cf, comBean.getId(), comBean.getTitle(), comBean.getText(),
-                    comBean.getDate(), comBean.getRoom(), comBean.getWhen(), comBean.getStatus());
+                    comBean.getDate(), resInfo, comBean.getStatus());
         }
         communicationBase.sendCommunication(client);
     }

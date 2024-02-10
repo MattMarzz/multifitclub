@@ -6,6 +6,7 @@ import com.opencsv.ICSVWriter;
 import it.uniroma2.dicii.ispw.enums.RoomRequestStatus;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
+import it.uniroma2.dicii.ispw.model.communication.ReservationInfo;
 import it.uniroma2.dicii.ispw.model.communication.RoomRequest;
 import it.uniroma2.dicii.ispw.utils.CSVManager;
 import it.uniroma2.dicii.ispw.utils.ConstantMsg;
@@ -180,7 +181,9 @@ public class RoomRequestFS implements RoomRequestDAO{
             LoggerManager.logSevereException("Errore di conversione data: ", e);
         }
 
-        return new RoomRequest(sender, id, titolo, testo, date, sala, when, RoomRequestStatus.getStatus(statusId));
+        ReservationInfo reservationInfo = new ReservationInfo(when, sala);
+
+        return new RoomRequest(sender, id, titolo, testo, date, reservationInfo, RoomRequestStatus.getStatus(statusId));
     }
 
     private String[] setRecordFromRRequest(RoomRequest rr) {

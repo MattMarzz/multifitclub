@@ -9,8 +9,7 @@ public class CommunicationFactory {
         return new Announcement(cf, title, msg, date);
     }
 
-    public RoomRequest createRoomRequest(String cf, int id, String title, String msg, Timestamp date, String room,
-                                         Timestamp when, RoomRequestStatus status) {
-        return new RoomRequest(cf, id, title, msg, date, room, when, status);
+    public RoomRequest createRoomRequest(String cf, int id, String title, String msg, Timestamp date, ReservationInfo resInfo, RoomRequestStatus status) {
+        return new RoomRequest(cf, id, title, msg, date, resInfo, status);
     }
 }
