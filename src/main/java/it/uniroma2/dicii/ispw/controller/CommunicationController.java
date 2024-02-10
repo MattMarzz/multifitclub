@@ -13,6 +13,7 @@ import it.uniroma2.dicii.ispw.model.communication.dao.AnnouncementDAO;
 import it.uniroma2.dicii.ispw.model.communication.dao.AnnouncementDBMS;
 import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestDAO;
 import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestDBMS;
+import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneFS;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import it.uniroma2.dicii.ispw.utils.LoginManager;
 import it.uniroma2.dicii.ispw.notification.Client;
@@ -21,6 +22,7 @@ import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDAO;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDBMS;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +38,12 @@ public class CommunicationController {
             announcementDAO = new AnnouncementDBMS();
             roomRequestDAO = new RoomRequestDBMS();
         } else {
-           // utenteDAO = new UtenteFS();
+            try {
+                utenteDAO = new UtenteFS();
+
+            } catch (IOException e) {
+                LoggerManager.logSevereException("Impossibile dialogare con il file system", e);
+            }
         }
     }
 

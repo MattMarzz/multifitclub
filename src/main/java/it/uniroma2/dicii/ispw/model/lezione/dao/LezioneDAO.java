@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface LezioneDAO {
     public List<Lezione> getLezioniByCourseId(String nomeCorso) throws ItemNotFoundException;
-    public List<Lezione> getAllLezioniForDay(String lezione);
+    public List<Lezione> getAllLezioniForDay(String giorno);
     public String insertLezioni(List<Lezione> lezioneList) throws ItemAlreadyExistsException;
     public List<Lezione> getAllLezioni();
 }

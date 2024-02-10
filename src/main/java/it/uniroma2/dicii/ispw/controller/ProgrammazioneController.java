@@ -16,12 +16,16 @@ import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.lezione.Lezione;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDAO;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDBMS;
+import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneFS;
 import it.uniroma2.dicii.ispw.model.utente.Utente;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDAO;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDBMS;
+import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
 import it.uniroma2.dicii.ispw.notification.Client;
+import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import it.uniroma2.dicii.ispw.utils.LoginManager;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,10 +45,15 @@ public class ProgrammazioneController {
             utenteDAO = new UtenteDBMS();
             roomRequestDAO = new RoomRequestDBMS();
         }
-//       else {
-//            corsoDAO = new CorsoFS();
-//            utenteCorsoDAO = new UtenteCorsoFS();
-//        }
+       else {
+            try {
+                lezioneDAO = new LezioneFS();
+                utenteDAO = new UtenteFS();
+
+            } catch (IOException e) {
+                LoggerManager.logSevereException("Impossibile dialogare con il file system", e);
+            }
+        }
     }
 
     public String insertLezioni(LezioneBean lezioneBean, UtenteBean utenteBean) throws ItemNotFoundException, InvalidDataException, ItemAlreadyExistsException {

@@ -21,13 +21,14 @@ import java.util.List;
 public class UtenteFS implements UtenteDAO {
 
     private static final String CSV_FILE_NAME = CSVManager.getCsvDir() + "utente.csv";
-    private File file;
+    private final File file;
 
     public UtenteFS() throws IOException {
         this.file = new File(CSV_FILE_NAME);
 
         if(!file.exists()) {
-            file.createNewFile();
+            boolean isFileCreated = file.createNewFile();
+            if(!isFileCreated) throw new IOException("Impossibile dialogare con il file");
         }
     }
 
@@ -36,6 +37,7 @@ public class UtenteFS implements UtenteDAO {
         boolean duplicatedRecordId;
         Utente u = null;
         String[] record;
+        CSVWriter csvWriter = null;
         try {
             u = getUtenteByCf(utente.getCf());
             duplicatedRecordId = u != null;
@@ -46,7 +48,7 @@ public class UtenteFS implements UtenteDAO {
         if(duplicatedRecordId) throw new ItemAlreadyExistsException("Utente esistente!");
 
         try {
-            CSVWriter csvWriter = new CSVWriter(new BufferedWriter(new FileWriter(this.file, true)),  CSVWriter.DEFAULT_SEPARATOR,
+             csvWriter = new CSVWriter(new BufferedWriter(new FileWriter(this.file, true)),  CSVWriter.DEFAULT_SEPARATOR,
                     CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
 
             record = setRecordFromUtente(utente);
@@ -58,6 +60,9 @@ public class UtenteFS implements UtenteDAO {
         } catch (IOException e) {
             LoggerManager.logSevereException("Impossibile scrivere file!", e);
             return "Errore in inserimento";
+
+        }finally {
+            CSVManager.closeCsvWriter(csvWriter);
         }
 
         return "Inserimento effettuato";
@@ -99,7 +104,7 @@ public class UtenteFS implements UtenteDAO {
         CSVReader csvReader = null;
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
-            String[] record;
+            String[] record = {};
             int cfIndex = UtenteAttributesOrder.getIndex_Cf();
 
             while ((record = csvReader.readNext()) != null) {
@@ -167,7 +172,7 @@ public class UtenteFS implements UtenteDAO {
                 updatedRecords.add(record);
             }
 
-            new CSVWriter(new BufferedWriter(new FileWriter(this.file, false)),  CSVWriter.DEFAULT_SEPARATOR,
+            csvWriter = new CSVWriter(new BufferedWriter(new FileWriter(this.file, false)),  CSVWriter.DEFAULT_SEPARATOR,
                     CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
             csvWriter.writeAll(updatedRecords);
             csvWriter.flush();
@@ -196,7 +201,7 @@ public class UtenteFS implements UtenteDAO {
         try {
             date = DateParser.parseStringToDateUtil(dateStr);
         } catch (InvalidDataException e) {
-            LoggerManager.logSevereException("Errore di conversione: data", e);
+            LoggerManager.logSevereException("Errore di conversione data: ", e);
         }
 
 
@@ -215,7 +220,6 @@ public class UtenteFS implements UtenteDAO {
         record[UtenteAttributesOrder.getIndex_Ruolo()] = String.valueOf(u.getRuolo().ordinal());
 
         return record;
-
     }
 
 

@@ -5,7 +5,11 @@ import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.model.communication.RoomRequest;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDAO;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDBMS;
+import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneFS;
+import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
+import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -29,15 +33,20 @@ public class Lezione implements Serializable {
         if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC)) {
             lezioneDAO = new LezioneDBMS();
         }
-//       else {
-//            corsoDAO = new CorsoFS();
-//            utenteCorsoDAO = new UtenteCorsoFS();
-//        }
+       else {
+            try {
+                lezioneDAO = new LezioneFS();
+            } catch (IOException e) {
+                LoggerManager.logSevereException("Impossibile dialogare con il file system", e);
+            }
+        }
     }
-    public Lezione(String day, Time startTime, String courseName, String cfUtente) {
+
+    public Lezione(String day, Time startTime, String sala, String courseName, String cfUtente) {
         this();
         this.day = day;
         this.startTime = startTime;
+        this.sala = sala;
         this.courseName = courseName;
         this.cfUtente = cfUtente;
     }
