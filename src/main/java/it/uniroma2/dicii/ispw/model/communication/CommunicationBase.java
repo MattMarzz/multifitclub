@@ -14,7 +14,7 @@ public abstract class CommunicationBase implements Serializable {
     protected CommunicationBase() {
     }
 
-    public CommunicationBase(String sender, String title, String msg, Timestamp date) {
+    protected CommunicationBase(String sender, String title, String msg, Timestamp date) {
         this.sender = sender;
         this.title = title;
         this. msg = msg;

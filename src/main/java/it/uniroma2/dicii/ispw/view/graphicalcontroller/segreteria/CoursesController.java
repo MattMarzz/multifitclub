@@ -131,7 +131,6 @@ public class CoursesController implements Initializable {
             PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
         }
 
-        //PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Info", msg);
         loadCoursesTable();
         cleanAddForm();
     }
@@ -151,7 +150,6 @@ public class CoursesController implements Initializable {
             PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
         }
 
-        //PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Info", msg);
         loadCoursesTable();
         cleanDeleteForm();
     }
@@ -163,7 +161,6 @@ public class CoursesController implements Initializable {
             lezioniListView.setVisible(true);
             loadLessonTable();
         }
-        //addCourseView.setVisible(false);
     }
 
     @FXML

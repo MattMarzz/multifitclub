@@ -19,7 +19,13 @@ import java.util.List;
 public class LezioneFS implements LezioneDAO{
 
     private static final String CSV_FILE_NAME = CSVManager.getCsvDir() + "lezione.csv";
-    private File file;
+    private final File file;
+    private static final int INDEX_GIORNO = 0;
+    private static final int INDEX_ORA = 1;
+    private static final int INDEX_SALA = 2;
+    private static final int INDEX_CORSO = 3;
+    private static final int INDEX_ISTRUTTORE = 4;
+
     public LezioneFS() throws IOException {
         this.file = new File(CSV_FILE_NAME);
 
@@ -31,12 +37,12 @@ public class LezioneFS implements LezioneDAO{
 
     @Override
     public List<Lezione> getLezioniByCourseId(String nomeCorso) {
-        return getParametricLessons(LezioneAttributesOrder.getIndexCorso(), nomeCorso);
+        return getParametricLessons(INDEX_CORSO, nomeCorso);
     }
 
     @Override
     public List<Lezione> getAllLezioniForDay(String giorno) {
-        return getParametricLessons(LezioneAttributesOrder.getIndexGiorno(), giorno);
+        return getParametricLessons(INDEX_GIORNO, giorno);
     }
 
     @Override
@@ -100,11 +106,11 @@ public class LezioneFS implements LezioneDAO{
     }
 
     private Lezione setLezioneFromRecord(String[] rcrd) {
-        String giorno = rcrd[LezioneAttributesOrder.getIndexGiorno()];
-        String oraStr = rcrd[LezioneAttributesOrder.getIndexOra()];
-        String sala = rcrd[LezioneAttributesOrder.getIndexSala()];
-        String corso = rcrd[LezioneAttributesOrder.getIndexCorso()];
-        String istruttore = rcrd[LezioneAttributesOrder.getIndexIstruttore()];
+        String giorno = rcrd[INDEX_GIORNO];
+        String oraStr = rcrd[INDEX_ORA];
+        String sala = rcrd[INDEX_SALA];
+        String corso = rcrd[INDEX_CORSO];
+        String istruttore = rcrd[INDEX_ISTRUTTORE];
 
         Time time = null;
         try {
@@ -143,32 +149,13 @@ public class LezioneFS implements LezioneDAO{
     private  String[] setRecordFromLezione(Lezione l){
         String[] rcrd = new String[5];
 
-        rcrd[LezioneAttributesOrder.getIndexGiorno()] = l.getDay();
-        rcrd[LezioneAttributesOrder.getIndexOra()] = DateParser.parseTimeToString(l.getStartTime());
-        rcrd[LezioneAttributesOrder.getIndexSala()] = l.getSala();
-        rcrd[LezioneAttributesOrder.getIndexCorso()] = l.getCourseName();
-        rcrd[LezioneAttributesOrder.getIndexIstruttore()] = l.getCfUtente();
+        rcrd[INDEX_GIORNO] = l.getDay();
+        rcrd[INDEX_ORA] = DateParser.parseTimeToString(l.getStartTime());
+        rcrd[INDEX_SALA] = l.getSala();
+        rcrd[INDEX_CORSO] = l.getCourseName();
+        rcrd[INDEX_ISTRUTTORE] = l.getCfUtente();
 
         return rcrd;
     }
-
-
-
-    private static class LezioneAttributesOrder {
-        public static int getIndexGiorno() {
-            return 0;
-        }
-        public static int getIndexOra() {
-            return 1;
-        }
-        public static int getIndexSala() {
-            return 2;
-        }
-        public static int getIndexCorso() {
-            return 3;
-        }
-        public static int getIndexIstruttore() {
-            return 4;
-        }
-    }
+    
 }

@@ -21,6 +21,8 @@ public class CorsoFS implements CorsoDAO {
 
     private static final String CSV_FILE_NAME = CSVManager.getCsvDir() + "corso.csv";
     private final File file;
+    private static final int INDEX_NOME = 0;
+    private static final int INDEX_DATA = 1;
 
     public CorsoFS() throws IOException {
         this.file = new File(CSV_FILE_NAME);
@@ -38,7 +40,7 @@ public class CorsoFS implements CorsoDAO {
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
             String[] rcrd = {};
-            int nameIndex = CorsoAttributesOrder.getIndexNome();
+            int nameIndex = INDEX_NOME;
 
             while ((rcrd = csvReader.readNext()) != null) {
                 //check if the user exists
@@ -124,7 +126,7 @@ public class CorsoFS implements CorsoDAO {
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
             String[] rcrd;
-            int nameIndex = CorsoAttributesOrder.getIndexNome();
+            int nameIndex = INDEX_NOME;
 
             List<String[]> updatedRecords = new ArrayList<>();
 
@@ -156,8 +158,8 @@ public class CorsoFS implements CorsoDAO {
     }
 
     private Corso setCorsoFromRecord(String[] rcrd) {
-        String name = rcrd[CorsoAttributesOrder.getIndexNome()];
-        String dateStr = rcrd[CorsoAttributesOrder.getIndexData()];
+        String name = rcrd[INDEX_NOME];
+        String dateStr = rcrd[INDEX_DATA];
 
         Date date = null;
         try {
@@ -172,19 +174,10 @@ public class CorsoFS implements CorsoDAO {
     private String[] setRecordFromCorso(Corso c) {
         String[] rcrd = new String[2];
 
-        rcrd[CorsoAttributesOrder.getIndexNome()] = c.getName();
-        rcrd[CorsoAttributesOrder.getIndexData()] = DateParser.parseDateToString(c.getStartDate());
+        rcrd[INDEX_NOME] = c.getName();
+        rcrd[INDEX_DATA] = DateParser.parseDateToString(c.getStartDate());
 
         return rcrd;
     }
-
-
-    private static class CorsoAttributesOrder {
-        public static int getIndexNome() {
-            return 0;
-        }
-        public static int getIndexData() {
-            return 1;
-        }
-    }
+    
 }

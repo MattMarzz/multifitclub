@@ -22,6 +22,9 @@ public class UtenteCorsoFS implements UtenteCorsoDAO{
     private static final String CSV_FILE_NAME_ISCRIZIONE = CSVManager.getCsvDir() + "iscrizione.csv";
     private final File fileInsegnato;
     private final File fileIscrizione;
+    private static final int INDEX_CORSO = 0;
+    private static final int INDEX_UTENTE = 1;
+    
     public UtenteCorsoFS() throws IOException {
         this.fileInsegnato = new File(CSV_FILE_NAME_INSEGNATO);
         this.fileIscrizione = new File(CSV_FILE_NAME_ISCRIZIONE);
@@ -39,8 +42,8 @@ public class UtenteCorsoFS implements UtenteCorsoDAO{
 
     @Override
     public List<Corso> getCoursesByUserId(String cf, UserRoleInCourse userRoleInCourse) {
-        List<String> coursesNames = getRelationships(RelationshipAttributesOrder.getIndexUtente(),
-                    RelationshipAttributesOrder.getIndexCorso(), cf, userRoleInCourse);
+        List<String> coursesNames = getRelationships(INDEX_UTENTE,
+                    INDEX_CORSO, cf, userRoleInCourse);
 
         List<Corso> corsoList = new ArrayList<>();
         try {
@@ -57,8 +60,8 @@ public class UtenteCorsoFS implements UtenteCorsoDAO{
 
     @Override
     public List<Utente> getUsersByCourseId(String nomeCorso, UserRoleInCourse userRoleInCourse)  {
-        List<String> cfs = getRelationships(RelationshipAttributesOrder.getIndexCorso(),
-                RelationshipAttributesOrder.getIndexUtente(), nomeCorso, userRoleInCourse);
+        List<String> cfs = getRelationships(INDEX_CORSO,
+                INDEX_UTENTE, nomeCorso, userRoleInCourse);
 
         List<Utente> utenteList = new ArrayList<>();
         try {
@@ -82,8 +85,8 @@ public class UtenteCorsoFS implements UtenteCorsoDAO{
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.fileIscrizione)));
             String[] rcrd;
 
-            int cfIndex = RelationshipAttributesOrder.getIndexUtente();
-            int courseIndex = RelationshipAttributesOrder.getIndexCorso();
+            int cfIndex = INDEX_UTENTE;
+            int courseIndex = INDEX_CORSO;
 
             List<String[]> updatedRecords = new ArrayList<>();
 
@@ -116,8 +119,8 @@ public class UtenteCorsoFS implements UtenteCorsoDAO{
         CSVWriter csvWriter = null;
         boolean isExistingEnrollment = false;
 
-        List<String> coursesNames = getRelationships(RelationshipAttributesOrder.getIndexUtente(),
-                RelationshipAttributesOrder.getIndexCorso(), utente.getCf(), UserRoleInCourse.ENROLLMENT);
+        List<String> coursesNames = getRelationships(INDEX_UTENTE,
+                INDEX_CORSO, utente.getCf(), UserRoleInCourse.ENROLLMENT);
 
         for (String courseName: coursesNames) {
             if(courseName.equals(corso.getName())) {
@@ -176,19 +179,10 @@ public class UtenteCorsoFS implements UtenteCorsoDAO{
     private String[] setRecordFromEnrollment(Utente utente, Corso corso) {
         String[] rcrd = new String[2];
 
-        rcrd[RelationshipAttributesOrder.getIndexCorso()] = corso.getName();
-        rcrd[RelationshipAttributesOrder.getIndexUtente()] = utente.getCf();
+        rcrd[INDEX_CORSO] = corso.getName();
+        rcrd[INDEX_UTENTE] = utente.getCf();
 
         return rcrd;
     }
-
-    private static class RelationshipAttributesOrder {
-        public static int getIndexCorso() {
-            return 0;
-        }
-        public static int getIndexUtente() {
-            return 1;
-        }
-    }
-
+    
 }

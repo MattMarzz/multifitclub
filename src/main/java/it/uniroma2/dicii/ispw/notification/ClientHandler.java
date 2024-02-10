@@ -12,7 +12,7 @@ import java.util.List;
 // each instance executed by different thread
 public class ClientHandler implements Runnable{
 
-    public final static List<ClientHandler> clientHandlers = new ArrayList<>();
+    protected static final List<ClientHandler> clientHandlers = new ArrayList<>();
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
@@ -50,7 +50,6 @@ public class ClientHandler implements Runnable{
             try {
                 //read notification
                 messageFromClient = bufferedReader.readLine();
-                int i = 0;
 
                 if(messageFromClient.startsWith(NEW_ANN)) {
                     broadcastNotification(messageFromClient);

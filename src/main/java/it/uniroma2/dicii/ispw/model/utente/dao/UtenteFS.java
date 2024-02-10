@@ -23,6 +23,13 @@ public class UtenteFS implements UtenteDAO {
 
     private static final String CSV_FILE_NAME = CSVManager.getCsvDir() + "utente.csv";
     private final File file;
+    private static final int INDEX_CF = 0;
+    private static final int INDEX_NOME = 1;
+    private static final int INDEX_COGNOME = 2;
+    private static final int INDEX_DATA = 3;
+    private static final int INDEX_RUOLO = 4;
+    private static final int INDEX_EMAIL = 5;
+    private static final int INDEX_PWD = 6;
 
     public UtenteFS() throws IOException {
         this.file = new File(CSV_FILE_NAME);
@@ -75,8 +82,8 @@ public class UtenteFS implements UtenteDAO {
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
             String[] rcrd;
-            int emIndex = UtenteAttributesOrder.getIndexEmail();
-            int pwdIndex = UtenteAttributesOrder.getIndexPwd();
+            int emIndex = INDEX_EMAIL;
+            int pwdIndex = INDEX_PWD;
 
             while ((rcrd = csvReader.readNext()) != null) {
                 //check if the user exists
@@ -106,7 +113,7 @@ public class UtenteFS implements UtenteDAO {
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
             String[] rcrd = {};
-            int cfIndex = UtenteAttributesOrder.getIndexCf();
+            int cfIndex = INDEX_CF;
 
             while ((rcrd = csvReader.readNext()) != null) {
                 //check if the user exists
@@ -159,7 +166,7 @@ public class UtenteFS implements UtenteDAO {
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
             String[] rcrd;
-            int cfIndex = UtenteAttributesOrder.getIndexCf();
+            int cfIndex = INDEX_CF;
 
             List<String[]> updatedRecords = new ArrayList<>();
 
@@ -191,13 +198,13 @@ public class UtenteFS implements UtenteDAO {
     }
 
     private Utente setUtenteFromRecord(String[] rcrd) {
-        String cf = rcrd[UtenteAttributesOrder.getIndexCf()];
-        String name = rcrd[UtenteAttributesOrder.getIndexNome()];
-        String surname = rcrd[UtenteAttributesOrder.getIndexCognome()];
-        int roleId = Integer.parseInt(rcrd[UtenteAttributesOrder.getIndexRuolo()]);
-        String email = rcrd[UtenteAttributesOrder.getIndexEmail()];
-        String pwd = rcrd[UtenteAttributesOrder.getIndexPwd()];
-        String dateStr = rcrd[UtenteAttributesOrder.getIndexData()];
+        String cf = rcrd[INDEX_CF];
+        String name = rcrd[INDEX_NOME];
+        String surname = rcrd[INDEX_COGNOME];
+        int roleId = Integer.parseInt(rcrd[INDEX_RUOLO]);
+        String email = rcrd[INDEX_EMAIL];
+        String pwd = rcrd[INDEX_PWD];
+        String dateStr = rcrd[INDEX_DATA];
 
         Date date = null;
         try {
@@ -213,42 +220,15 @@ public class UtenteFS implements UtenteDAO {
     private String[] setRecordFromUtente(Utente u) {
         String[] rcrd = new String[7];
 
-        rcrd[UtenteAttributesOrder.getIndexCf()] = u.getCf();
-        rcrd[UtenteAttributesOrder.getIndexNome()] = u.getName();
-        rcrd[UtenteAttributesOrder.getIndexCognome()] = u.getSurname();
-        rcrd[UtenteAttributesOrder.getIndexEmail()] = u.getEmail();
-        rcrd[UtenteAttributesOrder.getIndexPwd()] = u.getPassword();
-        rcrd[UtenteAttributesOrder.getIndexData()] = DateParser.parseDateToString(u.getBirthDate());
-        rcrd[UtenteAttributesOrder.getIndexRuolo()] = String.valueOf(u.getRuolo().ordinal());
+        rcrd[INDEX_CF] = u.getCf();
+        rcrd[INDEX_NOME] = u.getName();
+        rcrd[INDEX_COGNOME] = u.getSurname();
+        rcrd[INDEX_EMAIL] = u.getEmail();
+        rcrd[INDEX_PWD] = u.getPassword();
+        rcrd[INDEX_DATA] = DateParser.parseDateToString(u.getBirthDate());
+        rcrd[INDEX_RUOLO] = String.valueOf(u.getRuolo().ordinal());
 
         return rcrd;
     }
-
-
-
-    private static class UtenteAttributesOrder {
-        public static int getIndexCf() {
-            return 0;
-        }
-        public static int getIndexNome() {
-            return 1;
-        }
-        public static int getIndexCognome() {
-            return 2;
-        }
-        public static int getIndexData() {
-            return 3;
-        }
-        public static int getIndexRuolo() {
-            return 4;
-        }
-        public static int getIndexEmail() {
-            return 5;
-        }
-        public static int getIndexPwd() {
-            return 6;
-        }
-    }
-
-
+    
 }

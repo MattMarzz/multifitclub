@@ -21,6 +21,14 @@ public class RoomRequestFS implements RoomRequestDAO{
 
     private static final String CSV_FILE_NAME = CSVManager.getCsvDir() + "richiesta.csv";
     private final File file;
+    private static final int INDEX_ID = 0;
+    private static final int INDEX_TITOLO = 1;
+    private static final int INDEX_TESTO = 2;
+    private static final int INDEX_DATA = 3;
+    private static final int INDEX_QUANDO = 4;
+    private static final int INDEX_STATUS = 5;
+    private static final int INDEX_UTENTE = 6;
+    private static final int INDEX_SALA = 7;
 
     public RoomRequestFS() throws IOException {
         this.file = new File(CSV_FILE_NAME);
@@ -95,7 +103,7 @@ public class RoomRequestFS implements RoomRequestDAO{
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
             String[] rcrd = {};
 
-            int index = RoomRequestAttributesOrder.getIndexId();
+            int index = INDEX_ID;
             List<String[]> updatedRecords = new ArrayList<>();
             String originalSender = null;
 
@@ -103,8 +111,8 @@ public class RoomRequestFS implements RoomRequestDAO{
                 //check if the user exists
                 if(Integer.parseInt(rcrd[index]) == roomRequest.getReqId()) {
                     isExistingRr = true;
-                    rcrd[RoomRequestAttributesOrder.getIndexStatus()] = String.valueOf(roomRequest.getStatus().ordinal());
-                    originalSender = rcrd[RoomRequestAttributesOrder.getIndexUtente()];
+                    rcrd[INDEX_STATUS] = String.valueOf(roomRequest.getStatus().ordinal());
+                    originalSender = rcrd[INDEX_UTENTE];
                 }
                 updatedRecords.add(rcrd);
             }
@@ -154,14 +162,14 @@ public class RoomRequestFS implements RoomRequestDAO{
     }
 
     private RoomRequest setRRequestFromRecord(String[] rcrd) {
-        int id = Integer.parseInt(rcrd[RoomRequestAttributesOrder.getIndexId()]);
-        String titolo = rcrd[RoomRequestAttributesOrder.getIndexTitolo()];
-        String testo = rcrd[RoomRequestAttributesOrder.getIndexTesto()];
-        String dataStr = rcrd[RoomRequestAttributesOrder.getIndexData()];
-        String quandoStr = rcrd[RoomRequestAttributesOrder.getIndexQuando()];
-        int statusId = Integer.parseInt(rcrd[RoomRequestAttributesOrder.getIndexStatus()]);
-        String sender = rcrd[RoomRequestAttributesOrder.getIndexUtente()];
-        String sala = rcrd[RoomRequestAttributesOrder.getIndexSala()];
+        int id = Integer.parseInt(rcrd[INDEX_ID]);
+        String titolo = rcrd[INDEX_TITOLO];
+        String testo = rcrd[INDEX_TESTO];
+        String dataStr = rcrd[INDEX_DATA];
+        String quandoStr = rcrd[INDEX_QUANDO];
+        int statusId = Integer.parseInt(rcrd[INDEX_STATUS]);
+        String sender = rcrd[INDEX_UTENTE];
+        String sala = rcrd[INDEX_SALA];
 
         Timestamp date = null;
         Timestamp when = null;
@@ -178,42 +186,16 @@ public class RoomRequestFS implements RoomRequestDAO{
     private String[] setRecordFromRRequest(RoomRequest rr) {
         String[] rcrd = new String[8];
 
-        rcrd[RoomRequestAttributesOrder.getIndexId()] = String.valueOf(rr.getReqId());
-        rcrd[RoomRequestAttributesOrder.getIndexTitolo()] = rr.getTitle();
-        rcrd[RoomRequestAttributesOrder.getIndexTesto()] = rr.getMsg();
-        rcrd[RoomRequestAttributesOrder.getIndexUtente()] = rr.getSender();
-        rcrd[RoomRequestAttributesOrder.getIndexData()] = DateParser.parseTimestampToString(rr.getDate());
-        rcrd[RoomRequestAttributesOrder.getIndexQuando()] = DateParser.parseTimestampToString(rr.getWhen());
-        rcrd[RoomRequestAttributesOrder.getIndexSala()] = rr.getRoom();
-        rcrd[RoomRequestAttributesOrder.getIndexStatus()] = String.valueOf(rr.getStatus().ordinal());
+        rcrd[INDEX_ID] = String.valueOf(rr.getReqId());
+        rcrd[INDEX_TITOLO] = rr.getTitle();
+        rcrd[INDEX_TESTO] = rr.getMsg();
+        rcrd[INDEX_UTENTE] = rr.getSender();
+        rcrd[INDEX_DATA] = DateParser.parseTimestampToString(rr.getDate());
+        rcrd[INDEX_QUANDO] = DateParser.parseTimestampToString(rr.getWhen());
+        rcrd[INDEX_SALA] = rr.getRoom();
+        rcrd[INDEX_STATUS] = String.valueOf(rr.getStatus().ordinal());
 
         return rcrd;
     }
-
-    private static class RoomRequestAttributesOrder {
-        public static int getIndexId() {
-            return 0;
-        }
-        public static int getIndexTitolo() {
-            return 1;
-        }
-        public static int getIndexTesto() {
-            return 2;
-        }
-        public static int getIndexData() {
-            return 3;
-        }
-        public static int getIndexQuando() {
-            return 4;
-        }
-        public static int getIndexStatus() {
-            return 5;
-        }
-        public static int getIndexUtente() {
-            return 6;
-        }
-        public static int getIndexSala() {
-            return 7;
-        }
-    }
+    
 }

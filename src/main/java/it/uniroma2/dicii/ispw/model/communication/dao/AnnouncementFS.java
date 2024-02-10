@@ -19,6 +19,11 @@ public class AnnouncementFS implements AnnouncementDAO{
 
     private static final String CSV_FILE_NAME = CSVManager.getCsvDir() + "annuncio.csv";
     private final File file;
+    private static final int INDEX_ID = 0;
+    private static final int INDEX_TITOLO = 1;
+    private static final int INDEX_TESTO = 2;
+    private static final int INDEX_DATA = 3;
+    private static final int INDEX_UTENTE = 4;
 
     public AnnouncementFS() throws IOException {
         this.file = new File(CSV_FILE_NAME);
@@ -85,11 +90,11 @@ public class AnnouncementFS implements AnnouncementDAO{
     }
 
     private Announcement setAnnouncementFromRecord(String[] rcrd) {
-        int id = Integer.parseInt(rcrd[AnnouncementAttributesOrder.getIndexId()]);
-        String titolo = rcrd[AnnouncementAttributesOrder.getIndexTitolo()];
-        String testo = rcrd[AnnouncementAttributesOrder.getIndexTesto()];
-        String dataStr = rcrd[AnnouncementAttributesOrder.getIndexData()];
-        String utente = rcrd[AnnouncementAttributesOrder.getIndexUtente()];
+        int id = Integer.parseInt(rcrd[INDEX_ID]);
+        String titolo = rcrd[INDEX_TITOLO];
+        String testo = rcrd[INDEX_TESTO];
+        String dataStr = rcrd[INDEX_DATA];
+        String utente = rcrd[INDEX_UTENTE];
 
         Timestamp date = null;
         try {
@@ -104,30 +109,13 @@ public class AnnouncementFS implements AnnouncementDAO{
     private String[] setRecordFromAnnouncement(Announcement a) {
         String[] rcrd = new String[5];
 
-        rcrd[AnnouncementAttributesOrder.getIndexId()] = String.valueOf(a.getAnnId());
-        rcrd[AnnouncementAttributesOrder.getIndexTitolo()] = a.getTitle();
-        rcrd[AnnouncementAttributesOrder.getIndexTesto()] = a.getMsg();
-        rcrd[AnnouncementAttributesOrder.getIndexUtente()] = a.getSender();
-        rcrd[AnnouncementAttributesOrder.getIndexData()] = DateParser.parseTimestampToString(a.getDate());
+        rcrd[INDEX_ID] = String.valueOf(a.getAnnId());
+        rcrd[INDEX_TITOLO] = a.getTitle();
+        rcrd[INDEX_TESTO] = a.getMsg();
+        rcrd[INDEX_UTENTE] = a.getSender();
+        rcrd[INDEX_DATA] = DateParser.parseTimestampToString(a.getDate());
 
         return rcrd;
     }
 
-    private static class AnnouncementAttributesOrder {
-        public static int getIndexId() {
-            return 0;
-        }
-        public static int getIndexTitolo() {
-            return 1;
-        }
-        public static int getIndexTesto() {
-            return 2;
-        }
-        public static int getIndexData() {
-            return 3;
-        }
-        public static int getIndexUtente() {
-            return 4;
-        }
-    }
 }
