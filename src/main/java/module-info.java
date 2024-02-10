@@ -4,6 +4,7 @@ module multifitclub {
     requires java.sql;
     requires atlantafx.base;
     requires de.jensd.fx.glyphs.fontawesome;
+    requires com.opencsv;
 
     exports it.uniroma2.dicii.ispw;
     exports it.uniroma2.dicii.ispw.exception;

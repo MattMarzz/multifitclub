@@ -57,7 +57,7 @@ public class AddUserController implements Initializable {
             utenteBean.setEmail(emailIn.getText());
             utenteBean.setPassword(pwdIn.getText());
             utenteBean.setRuolo(roleIn.getValue());
-            utenteBean.setBirthDate(dateIn.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            utenteBean.setBirthDate(dateIn.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
             try {
                 res = gestioneUtentiController.insertUtente(utenteBean);

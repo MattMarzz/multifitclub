@@ -207,6 +207,11 @@ public class UserListController implements Initializable {
     }
 
     @FXML
+    private void onRefreshBtnClick() {
+        loadUsersListTable();
+    }
+
+    @FXML
     private void onAddEnrollment() {
         CorsoBean corsoBean = new CorsoBean();
         UtenteBean utenteBean = new UtenteBean();

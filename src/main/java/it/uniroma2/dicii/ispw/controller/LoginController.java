@@ -26,8 +26,14 @@ public class LoginController {
     public LoginController() {
         if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC))
             utenteDAO = new UtenteDBMS();
-        else
-            utenteDAO = new UtenteFS();
+        else {
+            try {
+                utenteDAO = new UtenteFS();
+            } catch (IOException e) {
+                LoggerManager.logSevereException("Impossibile accedere", e);
+            }
+        }
+
     }
 
     public UtenteBean login(LoginBean loginBean) throws ItemNotFoundException, InvalidDataException {

@@ -71,7 +71,7 @@ public class ReservationController implements Initializable {
 
     @FXML
     void onRefreshBtnClick(ActionEvent event) {
-        loadReservationRequest();
+//        loadReservationRequest();
     }
 
     @FXML

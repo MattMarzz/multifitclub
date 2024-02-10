@@ -10,7 +10,7 @@ public class DateParser {
     private DateParser() {}
 
     public static Date parseStringToDateUtil(String str) throws InvalidDataException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
             date  = sdf.parse(str);
@@ -19,5 +19,10 @@ public class DateParser {
             throw new InvalidDataException("Formato data non valida.");
         }
         return date;
+    }
+
+    public static String parseDateToString(Date date)  {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
     }
 }

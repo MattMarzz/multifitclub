@@ -17,8 +17,11 @@ import it.uniroma2.dicii.ispw.model.utente.Utente;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDAO;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDBMS;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
+import it.uniroma2.dicii.ispw.utils.DateParser;
 import it.uniroma2.dicii.ispw.utils.EmailValidator;
+import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +37,11 @@ public class GestioneUtentiController {
             corsoDAO = new CorsoDBMS();
             utenteCorsoDAO = new UtenteCorsoDBMS();
         } else {
-            utenteDAO = new UtenteFS();
+            try {
+                utenteDAO = new UtenteFS();
+            } catch (IOException e) {
+                LoggerManager.logSevereException("Impossibile dialogare con il file system", e);
+            }
         }
     }
 
@@ -68,7 +75,7 @@ public class GestioneUtentiController {
         users = utenteDAO.getAllUtenti();
 
         for (Utente u: users) {
-            UtenteBean ub = new UtenteBean(u.getName(), u.getSurname(), u.getCf(), u.getBirthDate().toString(), u.getEmail(), null, u.getRuolo());
+            UtenteBean ub = new UtenteBean(u.getName(), u.getSurname(), u.getCf(), DateParser.parseDateToString(u.getBirthDate()), u.getEmail(), null, u.getRuolo());
             utenteBeans.add(ub);
         }
 

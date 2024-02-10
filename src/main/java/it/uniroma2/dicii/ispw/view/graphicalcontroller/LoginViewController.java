@@ -78,16 +78,16 @@ public class LoginViewController implements Initializable {
     }
 
     public void loadAllLessons() {
-        List<LezioneBean> lezioneBeanList = new ProgrammazioneController().getAllLezioni();
-        ObservableList<LezioneBean> lezioneBeanObservableList = FXCollections.observableArrayList();
-        lezioneBeanObservableList.addAll(lezioneBeanList);
-
-        courseCol.setCellValueFactory(new PropertyValueFactory<>("corso"));
-        dayCol.setCellValueFactory(new PropertyValueFactory<>("giorno"));
-        hourCol.setCellValueFactory(new PropertyValueFactory<>("ora"));
-        istCol.setCellValueFactory(new PropertyValueFactory<>("cf"));
-        roomCol.setCellValueFactory(new PropertyValueFactory<>("sala"));
-
-        schedulingTable.setItems(lezioneBeanObservableList);
+//        List<LezioneBean> lezioneBeanList = new ProgrammazioneController().getAllLezioni();
+//        ObservableList<LezioneBean> lezioneBeanObservableList = FXCollections.observableArrayList();
+//        lezioneBeanObservableList.addAll(lezioneBeanList);
+//
+//        courseCol.setCellValueFactory(new PropertyValueFactory<>("corso"));
+//        dayCol.setCellValueFactory(new PropertyValueFactory<>("giorno"));
+//        hourCol.setCellValueFactory(new PropertyValueFactory<>("ora"));
+//        istCol.setCellValueFactory(new PropertyValueFactory<>("cf"));
+//        roomCol.setCellValueFactory(new PropertyValueFactory<>("sala"));
+//
+//        schedulingTable.setItems(lezioneBeanObservableList);
     }
 }

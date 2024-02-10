@@ -49,7 +49,15 @@
                             </TableView>
                         </children>
                     </AnchorPane>
-                    <Label layoutX="20.0" layoutY="29.0" prefHeight="17.0" prefWidth="467.0" styleClass="accent" text="Clicca su un Utente per visualizzare e/o modificare le sue informazioni" />
+                    <Label layoutX="20.0" layoutY="26.0" prefHeight="17.0" prefWidth="467.0" styleClass="accent" text="Clicca su un Utente per visualizzare e/o modificare le sue informazioni" />
+               <Button graphicTextGap="6.0" layoutX="597.0" layoutY="34.0" mnemonicParsing="false" onAction="#onRefreshBtnClick" prefHeight="24.0" prefWidth="87.0" styleClass="flat" text="Reload" AnchorPane.rightAnchor="14.0">
+                  <graphic>
+                     <FontAwesomeIconView glyphName="REFRESH" styleClass="ikonli-font-icon" />
+                  </graphic>
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+               </Button>
                 </children>
             </AnchorPane>
             <AnchorPane layoutX="14.0" layoutY="76.0" prefHeight="544.0" prefWidth="277.0" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="76.0">

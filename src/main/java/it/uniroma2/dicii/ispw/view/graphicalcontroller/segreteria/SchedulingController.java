@@ -100,10 +100,10 @@ public class SchedulingController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadCourses();
-        loadPrgrammation();
-        daysList.getItems().addAll("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
-        daysList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+//        loadCourses();
+//        loadPrgrammation();
+//        daysList.getItems().addAll("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
+//        daysList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     private void loadCourses() {

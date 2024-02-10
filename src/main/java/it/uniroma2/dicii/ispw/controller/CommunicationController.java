@@ -36,7 +36,7 @@ public class CommunicationController {
             announcementDAO = new AnnouncementDBMS();
             roomRequestDAO = new RoomRequestDBMS();
         } else {
-            utenteDAO = new UtenteFS();
+           // utenteDAO = new UtenteFS();
         }
     }
 
@@ -86,7 +86,7 @@ public class CommunicationController {
         try {
             requestList = roomRequestDAO.getAllRequest();
         } catch (Exception e) {
-            LoggerManager.logSevereException("Errore nel reperire la lista delle richiste pre le sale", e);
+            LoggerManager.logSevereException("Errore nel reperire la lista delle richiste per le sale", e);
             return requestList;
         }
         return requestList;
