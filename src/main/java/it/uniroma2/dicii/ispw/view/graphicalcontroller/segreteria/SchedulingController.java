@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.Time;
@@ -100,10 +101,10 @@ public class SchedulingController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        loadCourses();
-//        loadPrgrammation();
-//        daysList.getItems().addAll("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
-//        daysList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        loadCourses();
+        loadPrgrammation();
+        daysList.getItems().addAll("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
+        daysList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     private void loadCourses() {
@@ -127,6 +128,11 @@ public class SchedulingController implements Initializable {
         salaCol.setCellValueFactory(new PropertyValueFactory<>("sala"));
 
         lessonsTable.setItems(lezioneBeanObservableList);
+    }
+
+    @FXML
+    void onMouseEntered(MouseEvent event) {
+        loadCourses();
     }
 
 }

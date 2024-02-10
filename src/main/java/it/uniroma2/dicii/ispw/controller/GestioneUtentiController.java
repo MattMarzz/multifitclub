@@ -9,10 +9,7 @@ import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 import it.uniroma2.dicii.ispw.exception.ItemAlreadyExistsException;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
-import it.uniroma2.dicii.ispw.model.corso.dao.CorsoDAO;
-import it.uniroma2.dicii.ispw.model.corso.dao.CorsoDBMS;
-import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDAO;
-import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDBMS;
+import it.uniroma2.dicii.ispw.model.corso.dao.*;
 import it.uniroma2.dicii.ispw.model.utente.Utente;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDAO;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDBMS;
@@ -39,6 +36,8 @@ public class GestioneUtentiController {
         } else {
             try {
                 utenteDAO = new UtenteFS();
+                corsoDAO = new CorsoFS();
+                utenteCorsoDAO = new UtenteCorsoFS();
             } catch (IOException e) {
                 LoggerManager.logSevereException("Impossibile dialogare con il file system", e);
             }

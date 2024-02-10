@@ -50,7 +50,7 @@
                         </children>
                     </AnchorPane>
                     <Label layoutX="20.0" layoutY="26.0" prefHeight="17.0" prefWidth="467.0" styleClass="accent" text="Clicca su un Utente per visualizzare e/o modificare le sue informazioni" />
-               <Button graphicTextGap="6.0" layoutX="597.0" layoutY="34.0" mnemonicParsing="false" onAction="#onRefreshBtnClick" prefHeight="24.0" prefWidth="87.0" styleClass="flat" text="Reload" AnchorPane.rightAnchor="14.0">
+               <Button graphicTextGap="6.0" layoutX="597.0" layoutY="34.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="87.0" styleClass="flat" text="Reload" AnchorPane.rightAnchor="14.0">
                   <graphic>
                      <FontAwesomeIconView glyphName="REFRESH" styleClass="ikonli-font-icon" />
                   </graphic>
@@ -177,7 +177,7 @@
                             </AnchorPane>
                             <AnchorPane layoutX="332.0" layoutY="6.0" prefHeight="430.0" prefWidth="326.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="337.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <children>
-                                    <ListView layoutX="24.0" layoutY="64.0" prefHeight="275.0" prefWidth="185.0">
+                                    <ListView fx:id="addTeachingList" layoutX="24.0" layoutY="64.0" prefHeight="275.0" prefWidth="185.0">
                                         <tooltip>
                                             <Tooltip text="clicca per selezionare corso" />
                                         </tooltip>

@@ -8,6 +8,7 @@ import it.uniroma2.dicii.ispw.enums.TypesOfCommunications;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
+import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoFS;
 import it.uniroma2.dicii.ispw.notification.Client;
 import it.uniroma2.dicii.ispw.model.communication.CommunicationBase;
 import it.uniroma2.dicii.ispw.model.communication.CommunicationFactory;
@@ -17,6 +18,7 @@ import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDBMS;
 import it.uniroma2.dicii.ispw.utils.DateParser;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,8 +42,13 @@ public class Utente implements Serializable {
         if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC)) {
             utenteCorsoDAO = new UtenteCorsoDBMS();
         }
-//        else
-//            utenteCorsoDAO = new UtenteCorsoFS();
+        else {
+            try {
+                utenteCorsoDAO = new UtenteCorsoFS();
+            } catch (IOException e) {
+                LoggerManager.logSevereException("Impossibile dialogare con il file system", e);
+            }
+        }
     }
 
     public Utente(String name, String surname, String cf, Date birthDate, String email, String password, Ruolo ruolo) {

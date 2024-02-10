@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -72,6 +73,8 @@ public class UserListController implements Initializable {
     @FXML
     private ListView<CorsoBean> addEnrollmentList;
     @FXML
+    private ListView<CorsoBean> addTeachingList;
+    @FXML
     private Label deleteEnrollmentInfo;
     @FXML
     private Label addEnrollmentInfo;
@@ -87,6 +90,8 @@ public class UserListController implements Initializable {
 
 
     private ObservableList<CorsoBean> corsoBeanObservableListEnroll;
+    private ObservableList<CorsoBean> corsoBeanObservableListTeach;
+
     public void loadEnrollmentsList(UtenteBean utenteBean) {
         deleteEnrollmentInfo.setText("");
         GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
@@ -121,47 +126,11 @@ public class UserListController implements Initializable {
         });
     }
 
-    public void loadAvailableCourse(UtenteBean utenteBean) {
-        addEnrollmentInfo.setText("");
-        GestioneCorsiController gestioneCorsiController = new GestioneCorsiController();
-        ObservableList<CorsoBean> corsoBeanObservableList = FXCollections.observableArrayList();
-        List<CorsoBean> allCorsi = gestioneCorsiController.getAllCorsi();
-
-        List<CorsoBean> corsiNonInscritti = allCorsi.stream()
-                .filter(corso -> corsoBeanObservableListEnroll.stream().noneMatch(iscritto -> iscritto.getName().equals(corso.getName())))
-                .toList();
-
-        corsoBeanObservableList.addAll(corsiNonInscritti);
-
-        addEnrollmentList.setCellFactory(param -> new ListCell<CorsoBean>() {
-            @Override
-            protected void updateItem(CorsoBean corsoBean, boolean empty) {
-                super.updateItem(corsoBean, empty);
-
-                if (empty || corsoBean == null) {
-                    setText(null);
-                } else {
-                    setText(corsoBean.getName());
-                }
-            }
-        });
-
-        addEnrollmentList.setItems(corsoBeanObservableList);
-
-        addEnrollmentList.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
-            addEnrollmentList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-            addEnrollmentList.setCursor(Cursor.HAND);
-            if (newSelection != null) {
-                showAddEnrollmentInfoLbl(newSelection);
-            }
-        });
-    }
-
     public void loadTeachingList(UtenteBean utenteBean) {
         GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
-        ObservableList<CorsoBean> corsoBeanObservableList = FXCollections.observableArrayList();
+        corsoBeanObservableListTeach = FXCollections.observableArrayList();
         try {
-            corsoBeanObservableList.addAll(gestioneUtentiController.getTeachingByUtente(utenteBean));
+            corsoBeanObservableListTeach.addAll(gestioneUtentiController.getTeachingByUtente(utenteBean));
         } catch (ItemNotFoundException e) {
             PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR,  e.getMessage());
         }
@@ -178,7 +147,58 @@ public class UserListController implements Initializable {
                 }
             }
         });
-        teachingList.setItems(corsoBeanObservableList);
+        teachingList.setItems(corsoBeanObservableListTeach);
+    }
+
+    public void loadAvailableCourse(UtenteBean utenteBean) {
+        addEnrollmentInfo.setText("");
+        GestioneCorsiController gestioneCorsiController = new GestioneCorsiController();
+        ObservableList<CorsoBean> corsoBeanObservableList = FXCollections.observableArrayList();
+        List<CorsoBean> allCorsi = gestioneCorsiController.getAllCorsi();
+        List<CorsoBean> corsiNonInscritti = new ArrayList<>();
+
+        if(utenteBean.getRuolo().equals(Ruolo.ISTRUTTORE)) {
+            corsiNonInscritti = allCorsi.stream()
+                    .filter(corso -> corsoBeanObservableListTeach.stream().noneMatch(iscritto -> iscritto.getName().equals(corso.getName())))
+                    .toList();
+            corsoBeanObservableList.addAll(corsiNonInscritti);
+            populateRightAddList(corsoBeanObservableList, addTeachingList);
+
+        } else {
+            corsiNonInscritti = allCorsi.stream()
+                    .filter(corso -> corsoBeanObservableListEnroll.stream().noneMatch(iscritto -> iscritto.getName().equals(corso.getName())))
+                    .toList();
+            corsoBeanObservableList.addAll(corsiNonInscritti);
+            populateRightAddList(corsoBeanObservableList, addEnrollmentList);
+        }
+
+
+    }
+
+    public void populateRightAddList(ObservableList<CorsoBean> cbObservableList, ListView<CorsoBean> list) {
+        list.setCellFactory(param -> new ListCell<CorsoBean>() {
+            @Override
+            protected void updateItem(CorsoBean corsoBean, boolean empty) {
+                super.updateItem(corsoBean, empty);
+
+                if (empty || corsoBean == null) {
+                    setText(null);
+                } else {
+                    setText(corsoBean.getName());
+                }
+            }
+        });
+
+        list.setItems(cbObservableList);
+
+        list.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
+            list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            list.setCursor(Cursor.HAND);
+            if (newSelection != null) {
+                //attention: currently only carries enrollment
+                showAddEnrollmentInfoLbl(newSelection);
+            }
+        });
     }
 
 
@@ -197,6 +217,7 @@ public class UserListController implements Initializable {
         GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
         corsoBean.setName(deleteEnrollmentInfo.getText());
         utenteBean.setCf(cfIn.getText());
+        utenteBean.setRuolo(roleIn.getValue());
         try {
             gestioneUtentiController.removeEnrollmentByUtente(utenteBean, corsoBean);
         } catch (ItemNotFoundException e) {
@@ -218,6 +239,7 @@ public class UserListController implements Initializable {
         GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
         corsoBean.setName(addEnrollmentInfo.getText());
         utenteBean.setCf(cfIn.getText());
+        utenteBean.setRuolo(roleIn.getValue());
         try {
             gestioneUtentiController.addEnrollmentToUtente(utenteBean, corsoBean);
         } catch (Exception e) {
@@ -313,7 +335,7 @@ public class UserListController implements Initializable {
         utenteBean.setSurname(surnameIn.getText());
         utenteBean.setEmail(emailIn.getText());
         utenteBean.setRuolo(roleIn.getValue());
-        utenteBean.setBirthDate(dateIn.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        utenteBean.setBirthDate(dateIn.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
         GestioneUtentiController gestioneUtentiController = new GestioneUtentiController();
         String esito = "";
@@ -337,6 +359,7 @@ public class UserListController implements Initializable {
         teachingView.setVisible(false);
         UtenteBean ub = new UtenteBean();
         ub.setCf(cfIn.getText());
+        ub.setRuolo(roleIn.getValue());
         loadEnrollmentsList(ub);
         loadAvailableCourse(ub);
     }
@@ -348,7 +371,9 @@ public class UserListController implements Initializable {
         teachingView.setVisible(true);
         UtenteBean ub = new UtenteBean();
         ub.setCf(cfIn.getText());
+        ub.setRuolo(roleIn.getValue());
         loadTeachingList(ub);
+        loadAvailableCourse(ub);
     }
 
     @FXML

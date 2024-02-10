@@ -6,9 +6,11 @@ import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestDAO;
 import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestDBMS;
+import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestFS;
 import it.uniroma2.dicii.ispw.notification.Client;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -37,9 +39,13 @@ public class RoomRequest extends CommunicationBase implements Serializable {
         if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC)) {
             roomRequestDAO = new RoomRequestDBMS();
         }
-//        else {
-//
-//        }
+        else {
+            try {
+                roomRequestDAO = new RoomRequestFS();
+            } catch (IOException e) {
+                LoggerManager.logSevereException("Impossibile dialogare con il file system", e);
+            }
+        }
     }
 
     @Override
@@ -57,7 +63,7 @@ public class RoomRequest extends CommunicationBase implements Serializable {
             try {
                 roomRequestDAO.insertRoomRequest(this);
             } catch (Exception e) {
-                LoggerManager.logSevereException("Connessione al db fallita", e);
+                LoggerManager.logSevereException("Connessione in persistenza fallita", e);
             }
         }
 

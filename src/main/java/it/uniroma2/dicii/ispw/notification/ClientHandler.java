@@ -50,6 +50,7 @@ public class ClientHandler implements Runnable{
             try {
                 //read notification
                 messageFromClient = bufferedReader.readLine();
+                int i = 0;
 
                 if(messageFromClient.startsWith(NEW_ANN)) {
                     broadcastNotification(messageFromClient);

@@ -12,6 +12,7 @@ import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.communication.RoomRequest;
 import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestDAO;
 import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestDBMS;
+import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestFS;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.lezione.Lezione;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDAO;
@@ -49,6 +50,7 @@ public class ProgrammazioneController {
             try {
                 lezioneDAO = new LezioneFS();
                 utenteDAO = new UtenteFS();
+                roomRequestDAO = new RoomRequestFS();
 
             } catch (IOException e) {
                 LoggerManager.logSevereException("Impossibile dialogare con il file system", e);

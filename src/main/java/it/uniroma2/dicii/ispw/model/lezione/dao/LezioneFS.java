@@ -2,12 +2,10 @@ package it.uniroma2.dicii.ispw.model.lezione.dao;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.ICSVWriter;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 import it.uniroma2.dicii.ispw.exception.ItemAlreadyExistsException;
-import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.lezione.Lezione;
-import it.uniroma2.dicii.ispw.model.utente.Utente;
-import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
 import it.uniroma2.dicii.ispw.utils.CSVManager;
 import it.uniroma2.dicii.ispw.utils.ConstantMsg;
 import it.uniroma2.dicii.ispw.utils.DateParser;
@@ -33,17 +31,17 @@ public class LezioneFS implements LezioneDAO{
 
     @Override
     public List<Lezione> getLezioniByCourseId(String nomeCorso) {
-        return getParametricLessons(LezioneAttributesOrder.getIndex_Corso(), nomeCorso);
+        return getParametricLessons(LezioneAttributesOrder.getIndexCorso(), nomeCorso);
     }
 
     @Override
     public List<Lezione> getAllLezioniForDay(String giorno) {
-        return getParametricLessons(LezioneAttributesOrder.getIndex_Giorno(), giorno);
+        return getParametricLessons(LezioneAttributesOrder.getIndexGiorno(), giorno);
     }
 
     @Override
     public String insertLezioni(List<Lezione> lezioneList) throws ItemAlreadyExistsException {
-        String[] record;
+        String[] rcrd;
         CSVWriter csvWriter = null;
 
         List<Lezione> alreadyInLesson = getAllLezioni();
@@ -57,14 +55,13 @@ public class LezioneFS implements LezioneDAO{
         }
 
         try {
-            csvWriter = new CSVWriter(new BufferedWriter(new FileWriter(this.file, true)),  CSVWriter.DEFAULT_SEPARATOR,
-                    CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
+            csvWriter = new CSVWriter(new BufferedWriter(new FileWriter(this.file, true)),  ICSVWriter.DEFAULT_SEPARATOR,
+                    ICSVWriter.NO_QUOTE_CHARACTER, ICSVWriter.DEFAULT_ESCAPE_CHARACTER, ICSVWriter.RFC4180_LINE_END);
             for (Lezione l : lezioneList) {
-                record = setRecordFromLezione(l);
+                rcrd = setRecordFromLezione(l);
 
-                csvWriter.writeNext(record);
+                csvWriter.writeNext(rcrd);
                 csvWriter.flush();
-                CSVManager.closeCsvWriter(csvWriter);
             }
 
         } catch (IOException e) {
@@ -85,10 +82,10 @@ public class LezioneFS implements LezioneDAO{
 
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
-            String[] record = {};
+            String[] rcrd = {};
 
-            while ((record = csvReader.readNext()) != null) {
-                Lezione l = setLezioneFromRecord(record);
+            while ((rcrd = csvReader.readNext()) != null) {
+                Lezione l = setLezioneFromRecord(rcrd);
                 lezioneList.add(l);
             }
 
@@ -102,12 +99,12 @@ public class LezioneFS implements LezioneDAO{
         return lezioneList;
     }
 
-    private Lezione setLezioneFromRecord(String[] record) {
-        String giorno = record[LezioneAttributesOrder.getIndex_Giorno()];
-        String oraStr = record[LezioneAttributesOrder.getIndex_Ora()];
-        String sala = record[LezioneAttributesOrder.getIndex_Sala()];
-        String corso = record[LezioneAttributesOrder.getIndex_Corso()];
-        String istruttore = record[LezioneAttributesOrder.getIndex_Istruttore()];
+    private Lezione setLezioneFromRecord(String[] rcrd) {
+        String giorno = rcrd[LezioneAttributesOrder.getIndexGiorno()];
+        String oraStr = rcrd[LezioneAttributesOrder.getIndexOra()];
+        String sala = rcrd[LezioneAttributesOrder.getIndexSala()];
+        String corso = rcrd[LezioneAttributesOrder.getIndexCorso()];
+        String istruttore = rcrd[LezioneAttributesOrder.getIndexIstruttore()];
 
         Time time = null;
         try {
@@ -124,12 +121,12 @@ public class LezioneFS implements LezioneDAO{
         CSVReader csvReader = null;
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
-            String[] record = {};
+            String[] rcrd = {};
 
-            while ((record = csvReader.readNext()) != null) {
+            while ((rcrd = csvReader.readNext()) != null) {
                 //check if the user exists
-                if(record[index].equals(str)) {
-                    lezioneList.add(setLezioneFromRecord(record));
+                if(rcrd[index].equals(str)) {
+                    lezioneList.add(setLezioneFromRecord(rcrd));
                 }
             }
 
@@ -144,33 +141,33 @@ public class LezioneFS implements LezioneDAO{
     }
 
     private  String[] setRecordFromLezione(Lezione l){
-        String[] record = new String[5];
+        String[] rcrd = new String[5];
 
-        record[LezioneAttributesOrder.getIndex_Giorno()] = l.getDay();
-        record[LezioneAttributesOrder.getIndex_Ora()] = DateParser.parseTimeToString(l.getStartTime());
-        record[LezioneAttributesOrder.getIndex_Sala()] = l.getSala();
-        record[LezioneAttributesOrder.getIndex_Corso()] = l.getCourseName();
-        record[LezioneAttributesOrder.getIndex_Istruttore()] = l.getCfUtente();
+        rcrd[LezioneAttributesOrder.getIndexGiorno()] = l.getDay();
+        rcrd[LezioneAttributesOrder.getIndexOra()] = DateParser.parseTimeToString(l.getStartTime());
+        rcrd[LezioneAttributesOrder.getIndexSala()] = l.getSala();
+        rcrd[LezioneAttributesOrder.getIndexCorso()] = l.getCourseName();
+        rcrd[LezioneAttributesOrder.getIndexIstruttore()] = l.getCfUtente();
 
-        return record;
+        return rcrd;
     }
 
 
 
     private static class LezioneAttributesOrder {
-        public static int getIndex_Giorno() {
+        public static int getIndexGiorno() {
             return 0;
         }
-        public static int getIndex_Ora() {
+        public static int getIndexOra() {
             return 1;
         }
-        public static int getIndex_Sala() {
+        public static int getIndexSala() {
             return 2;
         }
-        public static int getIndex_Corso() {
+        public static int getIndexCorso() {
             return 3;
         }
-        public static int getIndex_Istruttore() {
+        public static int getIndexIstruttore() {
             return 4;
         }
     }

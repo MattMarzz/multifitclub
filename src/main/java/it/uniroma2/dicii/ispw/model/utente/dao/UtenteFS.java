@@ -2,6 +2,7 @@ package it.uniroma2.dicii.ispw.model.utente.dao;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.ICSVWriter;
 import it.uniroma2.dicii.ispw.bean.LoginBean;
 import it.uniroma2.dicii.ispw.enums.Ruolo;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
@@ -36,7 +37,7 @@ public class UtenteFS implements UtenteDAO {
     public String insertUtente(Utente utente) throws ItemAlreadyExistsException {
         boolean duplicatedRecordId;
         Utente u = null;
-        String[] record;
+        String[] rcrd;
         CSVWriter csvWriter = null;
         try {
             u = getUtenteByCf(utente.getCf());
@@ -48,14 +49,13 @@ public class UtenteFS implements UtenteDAO {
         if(duplicatedRecordId) throw new ItemAlreadyExistsException("Utente esistente!");
 
         try {
-             csvWriter = new CSVWriter(new BufferedWriter(new FileWriter(this.file, true)),  CSVWriter.DEFAULT_SEPARATOR,
-                    CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
+             csvWriter = new CSVWriter(new BufferedWriter(new FileWriter(this.file, true)),  ICSVWriter.DEFAULT_SEPARATOR,
+                    ICSVWriter.NO_QUOTE_CHARACTER, ICSVWriter.DEFAULT_ESCAPE_CHARACTER, ICSVWriter.RFC4180_LINE_END);
 
-            record = setRecordFromUtente(utente);
+            rcrd = setRecordFromUtente(utente);
 
-            csvWriter.writeNext(record);
+            csvWriter.writeNext(rcrd);
             csvWriter.flush();
-            CSVManager.closeCsvWriter(csvWriter);
 
         } catch (IOException e) {
             LoggerManager.logSevereException("Impossibile scrivere file!", e);
@@ -74,15 +74,16 @@ public class UtenteFS implements UtenteDAO {
         CSVReader csvReader = null;
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
-            String[] record;
-            int emIndex = UtenteAttributesOrder.getIndex_Email();
-            int pwdIndex = UtenteAttributesOrder.getIndex_Pwd();
+            String[] rcrd;
+            int emIndex = UtenteAttributesOrder.getIndexEmail();
+            int pwdIndex = UtenteAttributesOrder.getIndexPwd();
 
-            while ((record = csvReader.readNext()) != null) {
+            while ((rcrd = csvReader.readNext()) != null) {
                 //check if the user exists
-                if(record[emIndex].equals(loginBean.getEmail()) &&
-                    record[pwdIndex].equals(loginBean.getPassword())) {
-                    u = setUtenteFromRecord(record);
+                if(rcrd[emIndex].equals(loginBean.getEmail()) &&
+                    rcrd[pwdIndex].equals(loginBean.getPassword())) {
+                    u = setUtenteFromRecord(rcrd);
+                    break;
                 }
             }
 
@@ -104,13 +105,13 @@ public class UtenteFS implements UtenteDAO {
         CSVReader csvReader = null;
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
-            String[] record = {};
-            int cfIndex = UtenteAttributesOrder.getIndex_Cf();
+            String[] rcrd = {};
+            int cfIndex = UtenteAttributesOrder.getIndexCf();
 
-            while ((record = csvReader.readNext()) != null) {
+            while ((rcrd = csvReader.readNext()) != null) {
                 //check if the user exists
-                if(record[cfIndex].equals(cf)) {
-                    u = setUtenteFromRecord(record);
+                if(rcrd[cfIndex].equals(cf)) {
+                    u = setUtenteFromRecord(rcrd);
                 }
             }
 
@@ -133,10 +134,10 @@ public class UtenteFS implements UtenteDAO {
 
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
-            String[] record = {};
+            String[] rcrd = {};
 
-            while ((record = csvReader.readNext()) != null) {
-                Utente u = setUtenteFromRecord(record);
+            while ((rcrd = csvReader.readNext()) != null) {
+                Utente u = setUtenteFromRecord(rcrd);
                 utenteList.add(u);
             }
 
@@ -152,30 +153,33 @@ public class UtenteFS implements UtenteDAO {
 
     @Override
     public String editUtente(Utente utente) {
-        Utente u = null;
         boolean isExistingUser = false;
         CSVReader csvReader = null;
         CSVWriter csvWriter = null;
         try {
             csvReader = new CSVReader(new BufferedReader(new FileReader(this.file)));
-            String[] record;
-            int cfIndex = UtenteAttributesOrder.getIndex_Cf();
+            String[] rcrd;
+            int cfIndex = UtenteAttributesOrder.getIndexCf();
 
             List<String[]> updatedRecords = new ArrayList<>();
 
-            while ((record = csvReader.readNext()) != null) {
+            while ((rcrd = csvReader.readNext()) != null) {
                 //check if the user exists
-                if(record[cfIndex].equals(utente.getCf())) {
+                if(rcrd[cfIndex].equals(utente.getCf())) {
                     isExistingUser = true;
-                    record = setRecordFromUtente(utente);
+                    rcrd = setRecordFromUtente(utente);
                 }
-                updatedRecords.add(record);
+                updatedRecords.add(rcrd);
             }
 
-            csvWriter = new CSVWriter(new BufferedWriter(new FileWriter(this.file, false)),  CSVWriter.DEFAULT_SEPARATOR,
-                    CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
-            csvWriter.writeAll(updatedRecords);
-            csvWriter.flush();
+            if(isExistingUser) {
+                csvWriter = new CSVWriter(new BufferedWriter(new FileWriter(this.file, false)),  ICSVWriter.DEFAULT_SEPARATOR,
+                        ICSVWriter.NO_QUOTE_CHARACTER, ICSVWriter.DEFAULT_ESCAPE_CHARACTER, ICSVWriter.RFC4180_LINE_END);
+                csvWriter.writeAll(updatedRecords);
+                csvWriter.flush();
+                return "Modifica effettuata!";
+            } else
+                return "Utente non trovato.";
 
         } catch (Exception e) {
             LoggerManager.logSevereException(ConstantMsg.ERROR_OPENING_FILE, e);
@@ -184,18 +188,16 @@ public class UtenteFS implements UtenteDAO {
             CSVManager.closeCsvReader(csvReader);
             CSVManager.closeCsvWriter(csvWriter);
         }
-
-        return  isExistingUser ? "Modifica effettuata!" : "Utente non trovato.";
     }
 
-    private Utente setUtenteFromRecord(String[] record) {
-        String cf = record[UtenteAttributesOrder.getIndex_Cf()];
-        String name = record[UtenteAttributesOrder.getIndex_Nome()];
-        String surname = record[UtenteAttributesOrder.getIndex_Cognome()];
-        int roleId = Integer.parseInt(record[UtenteAttributesOrder.getIndex_Ruolo()]);
-        String email = record[UtenteAttributesOrder.getIndex_Email()];
-        String pwd = record[UtenteAttributesOrder.getIndex_Pwd()];
-        String dateStr = record[UtenteAttributesOrder.getIndex_Data()];
+    private Utente setUtenteFromRecord(String[] rcrd) {
+        String cf = rcrd[UtenteAttributesOrder.getIndexCf()];
+        String name = rcrd[UtenteAttributesOrder.getIndexNome()];
+        String surname = rcrd[UtenteAttributesOrder.getIndexCognome()];
+        int roleId = Integer.parseInt(rcrd[UtenteAttributesOrder.getIndexRuolo()]);
+        String email = rcrd[UtenteAttributesOrder.getIndexEmail()];
+        String pwd = rcrd[UtenteAttributesOrder.getIndexPwd()];
+        String dateStr = rcrd[UtenteAttributesOrder.getIndexData()];
 
         Date date = null;
         try {
@@ -208,42 +210,42 @@ public class UtenteFS implements UtenteDAO {
         return new Utente(name, surname, cf, date, email, pwd, Ruolo.getRuolo(roleId));
     }
 
-    private synchronized String[] setRecordFromUtente(Utente u) throws IOException {
-        String[] record = new String[7];
+    private String[] setRecordFromUtente(Utente u) {
+        String[] rcrd = new String[7];
 
-        record[UtenteAttributesOrder.getIndex_Cf()] = u.getCf();
-        record[UtenteAttributesOrder.getIndex_Nome()] = u.getName();
-        record[UtenteAttributesOrder.getIndex_Cognome()] = u.getSurname();
-        record[UtenteAttributesOrder.getIndex_Email()] = u.getEmail();
-        record[UtenteAttributesOrder.getIndex_Pwd()] = u.getPassword();
-        record[UtenteAttributesOrder.getIndex_Data()] = DateParser.parseDateToString(u.getBirthDate());
-        record[UtenteAttributesOrder.getIndex_Ruolo()] = String.valueOf(u.getRuolo().ordinal());
+        rcrd[UtenteAttributesOrder.getIndexCf()] = u.getCf();
+        rcrd[UtenteAttributesOrder.getIndexNome()] = u.getName();
+        rcrd[UtenteAttributesOrder.getIndexCognome()] = u.getSurname();
+        rcrd[UtenteAttributesOrder.getIndexEmail()] = u.getEmail();
+        rcrd[UtenteAttributesOrder.getIndexPwd()] = u.getPassword();
+        rcrd[UtenteAttributesOrder.getIndexData()] = DateParser.parseDateToString(u.getBirthDate());
+        rcrd[UtenteAttributesOrder.getIndexRuolo()] = String.valueOf(u.getRuolo().ordinal());
 
-        return record;
+        return rcrd;
     }
 
 
 
     private static class UtenteAttributesOrder {
-        public static int getIndex_Cf() {
+        public static int getIndexCf() {
             return 0;
         }
-        public static int getIndex_Nome() {
+        public static int getIndexNome() {
             return 1;
         }
-        public static int getIndex_Cognome() {
+        public static int getIndexCognome() {
             return 2;
         }
-        public static int getIndex_Data() {
+        public static int getIndexData() {
             return 3;
         }
-        public static int getIndex_Ruolo() {
+        public static int getIndexRuolo() {
             return 4;
         }
-        public static int getIndex_Email() {
+        public static int getIndexEmail() {
             return 5;
         }
-        public static int getIndex_Pwd() {
+        public static int getIndexPwd() {
             return 6;
         }
     }

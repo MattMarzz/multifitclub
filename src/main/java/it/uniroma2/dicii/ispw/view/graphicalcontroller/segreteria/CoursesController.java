@@ -55,7 +55,7 @@ public class CoursesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        loadCoursesTable();
+        loadCoursesTable();
     }
 
     public void loadCoursesTable() {

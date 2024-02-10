@@ -10,8 +10,11 @@ import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.corso.Corso;
 import it.uniroma2.dicii.ispw.model.corso.dao.CorsoDAO;
 import it.uniroma2.dicii.ispw.model.corso.dao.CorsoDBMS;
+import it.uniroma2.dicii.ispw.model.corso.dao.CorsoFS;
 import it.uniroma2.dicii.ispw.model.lezione.Lezione;
+import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +27,13 @@ public class GestioneCorsiController {
         if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC)) {
             corsoDAO = new CorsoDBMS();
         }
-//       else {
-//            corsoDAO = new CorsoFS();
-//            utenteCorsoDAO = new UtenteCorsoFS();
-//        }
+       else {
+            try {
+                corsoDAO = new CorsoFS();
+            } catch (IOException e) {
+                LoggerManager.logSevereException("Impossibile dialogare con il file system", e);
+            }
+        }
     }
 
     public List<CorsoBean> getAllCorsi() {

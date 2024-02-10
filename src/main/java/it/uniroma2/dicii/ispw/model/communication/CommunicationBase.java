@@ -1,6 +1,5 @@
 package it.uniroma2.dicii.ispw.model.communication;
 
-
 import it.uniroma2.dicii.ispw.notification.Client;
 
 import java.io.Serializable;

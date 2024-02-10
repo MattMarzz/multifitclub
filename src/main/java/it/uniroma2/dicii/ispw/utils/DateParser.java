@@ -3,6 +3,7 @@ package it.uniroma2.dicii.ispw.utils;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,6 +43,21 @@ public class DateParser {
 
     public static String parseTimeToString(Time time)  {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        return sdf.format(time);
+    }
+
+    public static Timestamp parseStringToTimestamp(String str) throws InvalidDataException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date date = sdf.parse(str);
+            return new Timestamp(date.getTime());
+        } catch (ParseException e) {
+            throw new InvalidDataException("Formato orario non valido.");
+        }
+    }
+
+    public static String parseTimestampToString(Timestamp time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(time);
     }
 }

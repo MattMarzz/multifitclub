@@ -6,12 +6,12 @@ import it.uniroma2.dicii.ispw.enums.UserRoleInCourse;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDAO;
 import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoDBMS;
+import it.uniroma2.dicii.ispw.model.corso.dao.UtenteCorsoFS;
 import it.uniroma2.dicii.ispw.model.lezione.Lezione;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDAO;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDBMS;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneFS;
 import it.uniroma2.dicii.ispw.model.utente.Utente;
-import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class Corso implements Serializable {
       else {
             try {
                 lezioneDAO = new LezioneFS();
-
+                utenteCorsoDAO = new UtenteCorsoFS();
             } catch (IOException e) {
                 LoggerManager.logSevereException("Impossibile dialogare con il file system", e);
             }

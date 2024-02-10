@@ -78,8 +78,7 @@ public class AnnouncementController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-//        loadTable();
+        loadTable();
     }
 
     private void loadTable() {

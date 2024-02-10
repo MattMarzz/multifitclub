@@ -1,12 +1,6 @@
 package it.uniroma2.dicii.ispw.view.graphicalcontroller.segreteria;
 
-import it.uniroma2.dicii.ispw.controller.GestioneUtentiController;
 import it.uniroma2.dicii.ispw.controller.LoginController;
-import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
-import it.uniroma2.dicii.ispw.model.utente.Utente;
-import it.uniroma2.dicii.ispw.utils.LoggerManager;
-import it.uniroma2.dicii.ispw.utils.LoginManager;
-import it.uniroma2.dicii.ispw.notification.Client;
 import it.uniroma2.dicii.ispw.view.graphicalcontroller.AuthenticatedUser;
 import it.uniroma2.dicii.ispw.view.graphicalcontroller.PageHelper;
 import javafx.application.Platform;

@@ -9,11 +9,7 @@ import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
 import it.uniroma2.dicii.ispw.model.communication.Announcement;
 import it.uniroma2.dicii.ispw.model.communication.RoomRequest;
-import it.uniroma2.dicii.ispw.model.communication.dao.AnnouncementDAO;
-import it.uniroma2.dicii.ispw.model.communication.dao.AnnouncementDBMS;
-import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestDAO;
-import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestDBMS;
-import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneFS;
+import it.uniroma2.dicii.ispw.model.communication.dao.*;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import it.uniroma2.dicii.ispw.utils.LoginManager;
 import it.uniroma2.dicii.ispw.notification.Client;
@@ -40,7 +36,8 @@ public class CommunicationController {
         } else {
             try {
                 utenteDAO = new UtenteFS();
-
+                announcementDAO = new AnnouncementFS();
+                roomRequestDAO = new RoomRequestFS();
             } catch (IOException e) {
                 LoggerManager.logSevereException("Impossibile dialogare con il file system", e);
             }

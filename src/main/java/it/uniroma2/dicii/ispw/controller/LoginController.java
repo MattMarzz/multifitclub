@@ -6,6 +6,7 @@ import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
+import it.uniroma2.dicii.ispw.utils.DateParser;
 import it.uniroma2.dicii.ispw.utils.LoginManager;
 import it.uniroma2.dicii.ispw.notification.Client;
 import it.uniroma2.dicii.ispw.model.utente.Utente;
@@ -62,7 +63,7 @@ public class LoginController {
             lm.setHashMap(u, client);
         }
 
-        return new UtenteBean(u.getName(), u.getSurname(), u.getCf(), u.getBirthDate().toString(),
+        return new UtenteBean(u.getName(), u.getSurname(), u.getCf(), DateParser.parseDateToString(u.getBirthDate()),
                     u.getEmail(), u.getPassword(), u.getRuolo());
 
     }

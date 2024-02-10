@@ -6,16 +6,13 @@ import it.uniroma2.dicii.ispw.model.communication.RoomRequest;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDAO;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneDBMS;
 import it.uniroma2.dicii.ispw.model.lezione.dao.LezioneFS;
-import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
