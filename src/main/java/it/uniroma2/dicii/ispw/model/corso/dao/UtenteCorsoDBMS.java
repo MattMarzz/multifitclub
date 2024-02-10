@@ -1,8 +1,6 @@
 package it.uniroma2.dicii.ispw.model.corso.dao;
 
 import it.uniroma2.dicii.ispw.App;
-import it.uniroma2.dicii.ispw.model.communication.dao.AnnouncementFS;
-import it.uniroma2.dicii.ispw.model.communication.dao.RoomRequestFS;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
 import it.uniroma2.dicii.ispw.utils.DbConnection;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
