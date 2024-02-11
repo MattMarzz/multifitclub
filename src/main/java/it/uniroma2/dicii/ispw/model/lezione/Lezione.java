@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Lezione implements Serializable {
     private  String day;
@@ -69,6 +70,21 @@ public class Lezione implements Serializable {
         this.cfUtente = rr.getSender();
         this.sala = rr.getRoom();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Lezione lezione = (Lezione) obj;
+
+        if (!Objects.equals(day, lezione.day)) return false;
+        if (!Objects.equals(startTime, lezione.startTime)) return false;
+        if (!Objects.equals(sala, lezione.sala)) return false;
+        if (!Objects.equals(courseName, lezione.courseName)) return false;
+        return Objects.equals(cfUtente, lezione.cfUtente);
+    }
+
 
 
     public String getDay() {
