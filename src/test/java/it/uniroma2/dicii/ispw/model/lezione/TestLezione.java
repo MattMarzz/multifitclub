@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * has been correctly set and the appropriate level of persistence is configured
  * in the application.properties file.
  */
-public class TestLezione {
+class TestLezione {
 
     @Test
     void testAffirmativeIsThereOverlap() throws Exception{

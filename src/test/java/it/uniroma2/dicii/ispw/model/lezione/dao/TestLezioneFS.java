@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
  * has been correctly set and the appropriate level of persistence is configured
  * in the application.properties file.
  */
-public class TestLezioneFS {
+class TestLezioneFS {
 
     @Test
     void testRightGetLezioniByCourseId() throws Exception {
