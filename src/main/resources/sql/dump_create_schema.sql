@@ -33,18 +33,8 @@ CREATE TABLE `annuncio` (
   PRIMARY KEY (`id`),
   KEY `annuncio_utente_idx` (`utente`),
   CONSTRAINT `annuncio_utente` FOREIGN KEY (`utente`) REFERENCES `utente` (`cf`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `annuncio`
---
-
-LOCK TABLES `annuncio` WRITE;
-/*!40000 ALTER TABLE `annuncio` DISABLE KEYS */;
-INSERT INTO `annuncio` VALUES (1,'Annuncio','bellissimo testo','2024-01-24 20:09:52','BNCMRA70A20H501B'),(26,'df','dfg','2024-02-03 20:25:36','BNCMRA70A20H501B'),(27,'rt','erqqr','2024-02-04 01:18:49','BNCMRA70A20H501B');
-/*!40000 ALTER TABLE `annuncio` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `corso`
@@ -59,16 +49,6 @@ CREATE TABLE `corso` (
   PRIMARY KEY (`nome`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `corso`
---
-
-LOCK TABLES `corso` WRITE;
-/*!40000 ALTER TABLE `corso` DISABLE KEYS */;
-INSERT INTO `corso` VALUES ('judo','2023-12-01'),('karate','2024-01-22'),('yoga','2022-01-01');
-/*!40000 ALTER TABLE `corso` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `insegnato`
@@ -88,16 +68,6 @@ CREATE TABLE `insegnato` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `insegnato`
---
-
-LOCK TABLES `insegnato` WRITE;
-/*!40000 ALTER TABLE `insegnato` DISABLE KEYS */;
-INSERT INTO `insegnato` VALUES ('judo','MACMRA70A20H335L'),('yoga','MACMRA70A20H335L');
-/*!40000 ALTER TABLE `insegnato` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `iscrizione`
 --
 
@@ -113,16 +83,6 @@ CREATE TABLE `iscrizione` (
   CONSTRAINT `iscrizione_utente` FOREIGN KEY (`utente`) REFERENCES `utente` (`cf`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `iscrizione`
---
-
-LOCK TABLES `iscrizione` WRITE;
-/*!40000 ALTER TABLE `iscrizione` DISABLE KEYS */;
-INSERT INTO `iscrizione` VALUES ('judo','MRZMTA70A20H409H'),('yoga','MRZMTA70A20H409H'),('yoga','MRZMTT12J78F345K');
-/*!40000 ALTER TABLE `iscrizione` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `lezione`
@@ -146,16 +106,6 @@ CREATE TABLE `lezione` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `lezione`
---
-
-LOCK TABLES `lezione` WRITE;
-/*!40000 ALTER TABLE `lezione` DISABLE KEYS */;
-INSERT INTO `lezione` VALUES ('lunedi','10:30:00','A','judo',NULL),('mercoledi','10:30:00','B','judo',NULL),('venerdi','14:00:00','C','yoga',NULL);
-/*!40000 ALTER TABLE `lezione` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `richiesta`
 --
 
@@ -174,18 +124,8 @@ CREATE TABLE `richiesta` (
   PRIMARY KEY (`id`),
   KEY `richiesta_utente_idx` (`utente`),
   CONSTRAINT `richiesta_utente` FOREIGN KEY (`utente`) REFERENCES `utente` (`cf`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `richiesta`
---
-
-LOCK TABLES `richiesta` WRITE;
-/*!40000 ALTER TABLE `richiesta` DISABLE KEYS */;
-INSERT INTO `richiesta` VALUES (13,'bz','cvbx','2024-02-04 17:47:24','2024-02-16 00:00:00',1,'MACMRA70A20H335L','cvbz'),(14,'nuova','lol','2024-02-04 17:58:52','2024-02-10 00:00:00',1,'MACMRA70A20H335L','a');
-/*!40000 ALTER TABLE `richiesta` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `utente`
@@ -205,16 +145,6 @@ CREATE TABLE `utente` (
   PRIMARY KEY (`cf`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `utente`
---
-
-LOCK TABLES `utente` WRITE;
-/*!40000 ALTER TABLE `utente` DISABLE KEYS */;
-INSERT INTO `utente` VALUES ('BNCMRA70A20H501B','Matteo','Bianchi','1970-01-20',2,'email@email.it','12345'),('MACMRA70A20H335L','Maria','Verdi','2001-05-17',1,'ist@email.it','ciaociao'),('MRZMTA70A20H409H','Giorgio','Morandi','1970-01-28',0,'gino@email.eu','ciao'),('MRZMTT12J78F345K','Eugenia','Para','2004-01-09',0,'eu@gmail.com','dafult1'),('RSSMTA70A20H409H','Luca','Rossi','2000-02-02',0,'ute@email.it','ciao');
-/*!40000 ALTER TABLE `utente` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -225,4 +155,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-04 21:13:27
+-- Dump completed on 2024-02-14 13:08:39

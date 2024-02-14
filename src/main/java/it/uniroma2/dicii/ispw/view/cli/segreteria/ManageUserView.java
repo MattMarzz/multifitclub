@@ -48,7 +48,7 @@ public class ManageUserView extends TemplateView {
     }
 
     private void insertUsr() {
-        UtenteBean ub = null;;
+        UtenteBean ub = null;
         try {
             ub = memberForm();
         } catch (IOException e) {

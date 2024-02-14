@@ -1,6 +1,7 @@
 package it.uniroma2.dicii.ispw.view.cli;
 
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
+import it.uniroma2.dicii.ispw.utils.LoggerManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,10 +19,10 @@ public abstract class TemplateView {
     public abstract int userChoice();
     public abstract void control();
 
-    public TemplateView() {
+    protected TemplateView() {
     }
 
-    public TemplateView(UtenteBean usrBean) {
+    protected TemplateView(UtenteBean usrBean) {
         this.usrBean = usrBean;
     }
 
@@ -100,22 +101,13 @@ public abstract class TemplateView {
                     String valueString = String.valueOf(getter.invoke(item));
                     maxWidth = Math.max(maxWidth, valueString.length());
                 } catch (Exception e) {
-                    throw new RuntimeException();
+                    LoggerManager.logSevereException(e.getMessage(), e);
                 }
             }
             columnWidths.add(maxWidth);
         }
 
-        // print table header
-        for (int i = 0; i < headers.size(); i++) {
-            System.out.printf("\033[35m%-" + columnWidths.get(i) + "s ", headers.get(i));
-        }
-        System.out.println();
-
-        for (int width : columnWidths) {
-            System.out.print("-".repeat(width) + " ");
-        }
-        System.out.println("\033[0m");
+        printTableHeader(headers, columnWidths);
 
         // rows
         for (T item : list) {
@@ -129,6 +121,18 @@ public abstract class TemplateView {
             }
             System.out.println();
         }
+    }
+
+    private void printTableHeader(List<String> headers, List<Integer> columnWidths) {
+        for (int i = 0; i < headers.size(); i++) {
+            System.out.printf("\033[35m%-" + columnWidths.get(i) + "s ", headers.get(i));
+        }
+        System.out.println();
+
+        for (int width : columnWidths) {
+            System.out.print("-".repeat(width) + " ");
+        }
+        System.out.println("\033[0m");
     }
 
     private static List<Method> filterGetters(Method[] methods) {
