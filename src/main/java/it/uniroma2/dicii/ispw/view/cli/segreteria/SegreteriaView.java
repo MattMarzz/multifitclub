@@ -5,7 +5,6 @@ import it.uniroma2.dicii.ispw.controller.LoginController;
 import it.uniroma2.dicii.ispw.utils.Observer;
 import it.uniroma2.dicii.ispw.view.cli.TemplateView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SegreteriaView extends TemplateView implements Observer {
