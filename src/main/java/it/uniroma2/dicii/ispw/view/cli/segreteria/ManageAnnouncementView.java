@@ -44,6 +44,7 @@ public class ManageAnnouncementView extends TemplateView {
                 case 1 -> getAnnouncements();
                 case 2 -> publishAnnouncement();
                 case 3 -> cond = false;
+                default -> System.out.println("Riprova");
             }
         }
     }

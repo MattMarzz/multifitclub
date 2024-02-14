@@ -43,6 +43,7 @@ public class ManageRequestView extends TemplateView {
                 case 1 -> getAllRequests();
                 case 2 -> replyRequest();
                 case 3 -> cond = false;
+                default -> System.out.println("Riprova");
             }
         }
     }

@@ -14,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SchedulingView extends TemplateView {
 
@@ -46,6 +45,7 @@ public class SchedulingView extends TemplateView {
                 case 1 -> getActivities();
                 case 2 -> insertLesson();
                 case 3 -> cond = false;
+                default -> System.out.println("Riprova");
             }
         }
     }
@@ -88,7 +88,7 @@ public class SchedulingView extends TemplateView {
 
             weekDays = Arrays.stream(daysArray)
                     .map(SchedulingView::capitalizeFirstLetter)
-                    .collect(Collectors.toList());
+                    .toList();
 
             isValid = VALID_WEEK_DAYS.containsAll(weekDays);
 

@@ -41,6 +41,7 @@ public class ManageCourseView extends TemplateView {
                 case 3 -> getLessonsByCourse();
                 case 4 -> removeCourse();
                 case 5 -> cond = false;
+                default -> System.out.println("Riprova");
             }
         }
     }

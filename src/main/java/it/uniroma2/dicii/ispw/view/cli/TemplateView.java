@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public abstract class TemplateView {
     protected UtenteBean usrBean;
@@ -138,7 +137,7 @@ public abstract class TemplateView {
     private static List<Method> filterGetters(Method[] methods) {
         return Arrays.stream(methods)
                 .filter(m -> m.getName().startsWith("get") && m.getParameterCount() == 0)
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }

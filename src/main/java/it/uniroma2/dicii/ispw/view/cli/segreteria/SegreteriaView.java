@@ -24,8 +24,9 @@ public class SegreteriaView extends TemplateView implements Observer {
     @Override
     public void control() {
         int choice;
+        boolean running = true;
 
-        while (true) {
+        while (running) {
             choice = this.userChoice();
             switch (choice) {
                 case 1 -> manageUserView.control();
@@ -37,10 +38,12 @@ public class SegreteriaView extends TemplateView implements Observer {
                     LoginController controller = new LoginController();
                     controller.detachObserver(usrBean, this);
                     controller.logout(usrBean);
-                    System.exit(0);
+                    running = false;
                 }
             }
         }
+
+        System.exit(0);
     }
 
     @Override

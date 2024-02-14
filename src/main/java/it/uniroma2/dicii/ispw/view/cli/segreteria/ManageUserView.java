@@ -42,6 +42,7 @@ public class ManageUserView extends TemplateView {
                 case 3 -> getEnrollments();
                 case 4 -> getTeachings();
                 case 5 -> cond = false;
+                default -> System.out.println("Riprova");
 
             }
         }
