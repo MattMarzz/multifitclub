@@ -40,7 +40,7 @@ public class AddUserController implements Initializable {
         Ruolo[] ruoli = Ruolo.values();
         roleIn.getItems().addAll(ruoli);
         //set default pwd
-        pwdIn.setText("dafault1");
+        pwdIn.setText("default1");
     }
 
     @FXML
@@ -49,7 +49,7 @@ public class AddUserController implements Initializable {
         String res = "Ops... Qualcosa è andato storto!";
         if (cfIn.getText().isBlank() || nameIn.getText().isBlank() || surnameIn.getText().isBlank() || dateIn.getValue() == null ||
             emailIn.getText().isBlank() || roleIn.getValue() == null) {
-            PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", "Riempire tutti i campi.");
+            PageHelper.launchAlert(null, Alert.AlertType.ERROR, "Errore", "Riempire tutti i campi.");
         } else {
             utenteBean.setCf(cfIn.getText());
             utenteBean.setName(nameIn.getText());
@@ -62,10 +62,10 @@ public class AddUserController implements Initializable {
             try {
                 res = gestioneUtentiController.insertUtente(utenteBean);
             } catch (InvalidDataException e) {
-                PageHelper.launchAlert(Alert.AlertType.ERROR, "Errore", e.getMessage());
+                PageHelper.launchAlert(null,Alert.AlertType.ERROR, "Errore", e.getMessage());
             }
         }
-        PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Info", res);
+        PageHelper.launchAlert(null, Alert.AlertType.INFORMATION, "Info", res);
         cleanFields();
     }
 

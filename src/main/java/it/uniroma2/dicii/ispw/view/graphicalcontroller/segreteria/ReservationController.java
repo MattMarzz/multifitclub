@@ -62,7 +62,7 @@ public class ReservationController implements Initializable {
             try {
                 communicationController.forwardCommunication(AuthenticatedUser.getUtenteBean(), cb, TypesOfCommunications.ROOM_REQUEST);
             } catch (ItemNotFoundException | InvalidDataException e) {
-                PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
+                PageHelper.launchAlert(null, Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
             }
 
             loadReservationRequest();
@@ -84,7 +84,7 @@ public class ReservationController implements Initializable {
             try {
                 communicationController.forwardCommunication(AuthenticatedUser.getUtenteBean(), cb, TypesOfCommunications.ROOM_REQUEST);
             } catch (ItemNotFoundException | InvalidDataException e) {
-                PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
+                PageHelper.launchAlert(null, Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
             }
 
             loadReservationRequest();

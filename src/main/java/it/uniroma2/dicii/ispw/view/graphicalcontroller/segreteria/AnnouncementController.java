@@ -68,7 +68,7 @@ public class AnnouncementController implements Initializable {
             try {
                 communicationController.forwardCommunication(AuthenticatedUser.getUtenteBean(), cb, TypesOfCommunications.ANNOUNCEMENT);
             } catch (ItemNotFoundException | InvalidDataException e) {
-                PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
+                PageHelper.launchAlert(null, Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
             }
 
             loadTable();

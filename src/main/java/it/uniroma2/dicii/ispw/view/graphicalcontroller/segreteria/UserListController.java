@@ -100,7 +100,7 @@ public class UserListController implements Initializable {
             corsoBeanObservableListEnroll.addAll(gestioneUtentiController.getEnrollmentsByUtente(utenteBean));
         } catch (Exception e) {
             LoggerManager.logSevereException(e.getMessage(), e);
-            PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, "Impossibile trovare le iscrizione dell'utente " + utenteBean.getName());
+            PageHelper.launchAlert(null, Alert.AlertType.ERROR, PageHelper.ERROR, "Impossibile trovare le iscrizione dell'utente " + utenteBean.getName());
         }
 
         enrollmentList.setCellFactory(param -> new ListCell<CorsoBean>() {
@@ -132,7 +132,7 @@ public class UserListController implements Initializable {
         try {
             corsoBeanObservableListTeach.addAll(gestioneUtentiController.getTeachingByUtente(utenteBean));
         } catch (ItemNotFoundException e) {
-            PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR,  e.getMessage());
+            PageHelper.launchAlert(null, Alert.AlertType.ERROR, PageHelper.ERROR,  e.getMessage());
         }
 
         teachingList.setCellFactory(param -> new ListCell<CorsoBean>() {
@@ -221,7 +221,7 @@ public class UserListController implements Initializable {
         try {
             gestioneUtentiController.removeEnrollmentByUtente(utenteBean, corsoBean);
         } catch (ItemNotFoundException e) {
-            PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
+            PageHelper.launchAlert(null, Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
         }
         loadEnrollmentsList(utenteBean);
         loadAvailableCourse(utenteBean);
@@ -244,7 +244,7 @@ public class UserListController implements Initializable {
             gestioneUtentiController.addEnrollmentToUtente(utenteBean, corsoBean);
         } catch (Exception e) {
             LoggerManager.logSevereException("Errore in fase di registrazione dell'iscrizione", e);
-            PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, "Inserimento non riuscito!");
+            PageHelper.launchAlert(null, Alert.AlertType.ERROR, PageHelper.ERROR, "Inserimento non riuscito!");
         }
         loadEnrollmentsList(utenteBean);
         loadAvailableCourse(utenteBean);
@@ -342,11 +342,11 @@ public class UserListController implements Initializable {
         try {
             esito = gestioneUtentiController.updateUtente(utenteBean);
         } catch (Exception e) {
-            PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
+            PageHelper.launchAlert(null, Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
         }
 
         if(!esito.isEmpty()) {
-            PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Modifica effettuata", esito);
+            PageHelper.launchAlert(null, Alert.AlertType.INFORMATION, "Modifica effettuata", esito);
             loadUsersListTable();
         }
 

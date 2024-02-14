@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -53,8 +54,12 @@ public class PageHelper {
     }
 
 
-    public static void launchAlert(Alert.AlertType alertType, String title, String msg) {
+    public static void launchAlert(Stage owner, Alert.AlertType alertType, String title, String msg) {
         Alert alert = new Alert(alertType);
+        if(owner != null) {
+            alert.initOwner(owner);
+            alert.initModality(Modality.WINDOW_MODAL);
+        }
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(msg);

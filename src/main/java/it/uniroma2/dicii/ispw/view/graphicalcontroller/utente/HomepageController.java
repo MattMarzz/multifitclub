@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.sql.Time;
 import java.time.LocalDate;
@@ -105,7 +106,7 @@ public class HomepageController extends AuthenticatedUser {
     public void update(String... msg) {
         Platform.runLater(() -> {
             if(msg.length != 0) {
-                PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Notifica", msg[0]);
+                PageHelper.launchAlert((Stage)nameIn.getScene().getWindow(), Alert.AlertType.INFORMATION, "Notifica", msg[0]);
 
                 //load lessons
                 loadAllLessons();

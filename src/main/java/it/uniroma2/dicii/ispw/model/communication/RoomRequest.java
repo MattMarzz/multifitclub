@@ -13,6 +13,7 @@ import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class RoomRequest extends CommunicationBase implements Serializable {
     private int reqId = -1;
@@ -69,6 +70,10 @@ public class RoomRequest extends CommunicationBase implements Serializable {
 
         if(client != null)
             client.sendRoomRequestNotification(this);
+    }
+
+    public boolean isAlreadyPassed() {
+        return this.getWhen().before(new Date());
     }
 
     public Timestamp getWhen() {

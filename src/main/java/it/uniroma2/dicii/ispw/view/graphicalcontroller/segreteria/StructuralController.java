@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 
 public class StructuralController extends AuthenticatedUser{
@@ -96,7 +97,7 @@ public class StructuralController extends AuthenticatedUser{
     public void update(String... msg) {
         Platform.runLater(() -> {
             if(msg.length != 0)
-                PageHelper.launchAlert(Alert.AlertType.INFORMATION, "Notifica", msg[0]);
+                PageHelper.launchAlert((Stage)nameLbl.getScene().getWindow(), Alert.AlertType.INFORMATION, "Notifica", msg[0]);
         });
 
     }

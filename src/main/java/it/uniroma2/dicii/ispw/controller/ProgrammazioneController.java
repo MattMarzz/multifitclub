@@ -140,6 +140,9 @@ public class ProgrammazioneController {
             roomRequests.removeIf(rr -> !rr.getStatus().equals(RoomRequestStatus.ACCEPTED));
         }
 
+        //check that the date has not passed
+        roomRequests.removeIf(RoomRequest::isAlreadyPassed);
+
         lezioneList = getLessonFromReservation(roomRequests);
         return lezioneList;
     }

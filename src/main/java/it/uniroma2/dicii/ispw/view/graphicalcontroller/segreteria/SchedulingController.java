@@ -83,7 +83,7 @@ public class SchedulingController implements Initializable {
                 try {
                     new ProgrammazioneController().insertLezioni(lb, AuthenticatedUser.getUtenteBean());
                 } catch (ItemNotFoundException | InvalidDataException | ItemAlreadyExistsException e) {
-                    PageHelper.launchAlert(Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
+                    PageHelper.launchAlert(null, Alert.AlertType.ERROR, PageHelper.ERROR, e.getMessage());
                 } finally {
                     clearAll();
                 }
