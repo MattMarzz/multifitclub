@@ -6,16 +6,12 @@ import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.enums.TypesOfPersistenceLayer;
 import it.uniroma2.dicii.ispw.exception.InvalidDataException;
 import it.uniroma2.dicii.ispw.exception.ItemNotFoundException;
-import it.uniroma2.dicii.ispw.utils.DateParser;
-import it.uniroma2.dicii.ispw.utils.LoginManager;
+import it.uniroma2.dicii.ispw.utils.*;
 import it.uniroma2.dicii.ispw.notification.Client;
 import it.uniroma2.dicii.ispw.model.utente.Utente;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDAO;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDBMS;
 import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
-import it.uniroma2.dicii.ispw.utils.EmailValidator;
-import it.uniroma2.dicii.ispw.utils.LoggerManager;
-import it.uniroma2.dicii.ispw.view.graphicalcontroller.AuthenticatedUser;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -68,7 +64,7 @@ public class LoginController {
 
     }
 
-    public void attachObserver(UtenteBean ub, AuthenticatedUser controller) {
+    public void attachObserver(UtenteBean ub, Observer view) {
         Utente u = null;
         try {
             u = new GestioneUtentiController().getUtenteByCf(ub.getCf());
@@ -77,9 +73,9 @@ public class LoginController {
         }
         Client c = LoginManager.getInstance().getHashMap().get(u);
         if(c != null)
-            c.attach(controller);
+            c.attach(view);
     }
-    public void detachObserver(UtenteBean ub, AuthenticatedUser controller) {
+    public void detachObserver(UtenteBean ub, Observer view) {
         Utente u = null;
         try {
             u = new GestioneUtentiController().getUtenteByCf(ub.getCf());
@@ -88,7 +84,7 @@ public class LoginController {
         }
         Client c = LoginManager.getInstance().getHashMap().get(u);
         if(c != null)
-            c.detach(controller);
+            c.detach(view);
     }
 
     public void logout(UtenteBean ub) {

@@ -37,7 +37,7 @@
                                     <Label layoutX="14.0" layoutY="174.0" styleClass="fg-default" text="Nome" />
                                     <TextField fx:id="surnameIn" layoutX="243.0" layoutY="199.0" prefHeight="25.0" prefWidth="177.0" />
                                     <Label layoutX="243.0" layoutY="174.0" prefHeight="17.0" prefWidth="68.0" styleClass="fg-defaul" text="Cognome" />
-                                    <TextField fx:id="cfIn" layoutX="14.0" layoutY="271.0" prefHeight="25.0" prefWidth="177.0" />
+                                    <TextField fx:id="cfIn" editable="false" layoutX="14.0" layoutY="271.0" prefHeight="25.0" prefWidth="177.0" />
                                     <Label layoutX="14.0" layoutY="246.0" prefHeight="17.0" prefWidth="105.0" styleClass="fg-default" text="Codice Fiscale" />
                                     <DatePicker fx:id="dateIn" layoutX="243.0" layoutY="271.0" prefHeight="25.0" prefWidth="177.0" />
                                     <Label layoutX="243.0" layoutY="246.0" prefHeight="17.0" prefWidth="105.0" styleClass="fg-default" text="Data di Nascita" />

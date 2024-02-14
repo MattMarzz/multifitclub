@@ -6,7 +6,6 @@ import it.uniroma2.dicii.ispw.bean.LoginBean;
 import it.uniroma2.dicii.ispw.bean.UtenteBean;
 import it.uniroma2.dicii.ispw.controller.LoginController;
 import it.uniroma2.dicii.ispw.controller.ProgrammazioneController;
-import it.uniroma2.dicii.ispw.enums.Ruolo;
 import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,12 +51,11 @@ public class LoginViewController implements Initializable {
 
                 if (utenteBean != null) {
                     //navigate to new page
-                    if (utenteBean.getRuolo().equals(Ruolo.SEGRETERIA)) {
-                        PageHelper.changeScene(event, "views/segreteria/structure.fxml", "Dashboard", utenteBean);
-                    } else {
-                        PageHelper.changeScene(event, "views/utente/homepage.fxml", "Homepage", utenteBean);
+                    switch (utenteBean.getRuolo()) {
+                        case SEGRETERIA -> PageHelper.changeScene(event, "views/segreteria/structure.fxml", "Dashboard", utenteBean);
+                        case ISTRUTTORE -> PageHelper.changeScene(event, "views/utente/homepage.fxml", "Homepage", utenteBean);
+                        case UTENTE -> handleError("utente work in progress...");
                     }
-                    
                 } else {
                     handleError("Credenziali errate!");
                 }

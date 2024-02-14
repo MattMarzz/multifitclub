@@ -40,7 +40,7 @@ public class AddUserController implements Initializable {
         Ruolo[] ruoli = Ruolo.values();
         roleIn.getItems().addAll(ruoli);
         //set default pwd
-        pwdIn.setText("dafult1");
+        pwdIn.setText("dafault1");
     }
 
     @FXML

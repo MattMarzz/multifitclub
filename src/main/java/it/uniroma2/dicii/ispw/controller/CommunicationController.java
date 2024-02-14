@@ -14,9 +14,6 @@ import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import it.uniroma2.dicii.ispw.utils.LoginManager;
 import it.uniroma2.dicii.ispw.notification.Client;
 import it.uniroma2.dicii.ispw.model.utente.Utente;
-import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDAO;
-import it.uniroma2.dicii.ispw.model.utente.dao.UtenteDBMS;
-import it.uniroma2.dicii.ispw.model.utente.dao.UtenteFS;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,18 +21,15 @@ import java.util.List;
 import java.util.Map;
 
 public class CommunicationController {
-    private UtenteDAO utenteDAO;
     private AnnouncementDAO announcementDAO;
     private RoomRequestDAO roomRequestDAO;
 
     public CommunicationController() {
         if(App.getPersistenceLayer().equals(TypesOfPersistenceLayer.JDBC)) {
-            utenteDAO = new UtenteDBMS();
             announcementDAO = new AnnouncementDBMS();
             roomRequestDAO = new RoomRequestDBMS();
         } else {
             try {
-                utenteDAO = new UtenteFS();
                 announcementDAO = new AnnouncementFS();
                 roomRequestDAO = new RoomRequestFS();
             } catch (IOException e) {
@@ -45,7 +39,7 @@ public class CommunicationController {
     }
 
     public void forwardCommunication(UtenteBean utenteBean, CommunicationBean communicationBean, TypesOfCommunications toc) throws ItemNotFoundException, InvalidDataException {
-        Utente u = utenteDAO.getUtenteByCf(utenteBean.getCf());
+        Utente u = new GestioneUtentiController().getUtenteByCf(utenteBean.getCf());
         Map<Utente, Client> hm = LoginManager.getInstance().getHashMap();
 
         if(communicationBean.getId() == -1) {

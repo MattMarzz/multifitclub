@@ -16,7 +16,7 @@ public class Client extends Subject {
     private BufferedWriter bufferedWriter;
     private Utente utente;
     private static final String NEW_ANN = "Nuovo annuncio da";
-    private static final String NEW_REQ = "Nuovo richiesta da";
+    private static final String NEW_REQ = "Nuova richiesta da";
     private static final String REQ_RESPONSE = "Hai ricevuto una risposta!";
     private static final String NEW_ACT = "Nuove attività inserite";
 

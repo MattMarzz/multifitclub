@@ -51,12 +51,12 @@ public class CorsoFS implements CorsoDAO {
 
         } catch (Exception e) {
             LoggerManager.logSevereException(ConstantMsg.ERROR_OPENING_FILE, e);
-            throw new ItemNotFoundException("Utente non esistente.");
+            throw new ItemNotFoundException("Corso non esistente.");
         } finally {
             CSVManager.closeCsvReader(csvReader);
         }
 
-        if(c == null) throw new ItemNotFoundException("Utente non esistente");
+        if(c == null) throw new ItemNotFoundException("Corso non esistente");
 
         return c;
     }

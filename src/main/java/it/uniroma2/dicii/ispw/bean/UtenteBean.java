@@ -29,6 +29,11 @@ public class UtenteBean {
         this.ruolo = ruolo;
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
     public String getEmail() {
         return email;
     }

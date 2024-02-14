@@ -93,7 +93,7 @@ public class SchedulingController implements Initializable {
     }
 
     private void clearAll() {
-        loadPrgrammation();
+        loadprgrammation();
         loadCourses();
         hourErr.setText("");
         info.setText("");
@@ -102,7 +102,7 @@ public class SchedulingController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadCourses();
-        loadPrgrammation();
+        loadprgrammation();
         daysList.getItems().addAll("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
         daysList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
@@ -116,7 +116,7 @@ public class SchedulingController implements Initializable {
         }
     }
 
-    private void loadPrgrammation() {
+    private void loadprgrammation() {
         List<LezioneBean> lezioneBeanList = new ProgrammazioneController().getAllLezioni();
         ObservableList<LezioneBean> lezioneBeanObservableList = FXCollections.observableArrayList();
         lezioneBeanObservableList.addAll(lezioneBeanList);

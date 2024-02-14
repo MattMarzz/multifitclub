@@ -113,7 +113,7 @@ class TestLezioneFS {
 
     void startTheAppForPersistenceLayer() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         App application = new App();
-        Method prvPersistenceLayer = App.class.getDeclaredMethod("setPersistenceLayer");
+        Method prvPersistenceLayer = App.class.getDeclaredMethod("setPersistenceLayerAndUi");
         prvPersistenceLayer.setAccessible(true);
         prvPersistenceLayer.invoke(application);
     }
