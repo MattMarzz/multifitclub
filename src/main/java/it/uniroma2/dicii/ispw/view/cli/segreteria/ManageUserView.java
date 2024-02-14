@@ -16,19 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManageUserView extends TemplateView {
-
-    @Override
-    public int userChoice() {
-        printHeader("Gestione Utenti");
-        List<String> options = new ArrayList<>();
-        options.add("Inserisci utente");
-        options.add("Visualizza utenti");
-        options.add("Visualizza iscrizioni utente");
-        options.add("Visualizza insegnamenti utente");
-        options.add("Indietro");
-        return operationMenu("Che operazione desideri effettuare?", options);
-    }
-
     @Override
     public void control() {
         int choice;
@@ -46,6 +33,17 @@ public class ManageUserView extends TemplateView {
 
             }
         }
+    }
+
+    @Override
+    public List<String> getOptions() {
+        return List.of("Inserisci utente", "Visualizza utenti", "Visualizza iscrizioni utente",
+                    "Visualizza insegnamenti utente", "Indietro");
+    }
+
+    @Override
+    public String getHeader() {
+        return "Gestione Utenti";
     }
 
     private void insertUsr() {

@@ -23,16 +23,6 @@ public class ManageRequestView extends TemplateView {
     }
 
     @Override
-    public int userChoice() {
-        printHeader("Gestione Annunci");
-        List<String> options = new ArrayList<>();
-        options.add("Visualizza richieste sala");
-        options.add("Rispondi ad una richiesta");
-        options.add("Indietro");
-        return operationMenu("Che operazione desideri effettuare?", options);
-    }
-
-    @Override
     public void control() {
         int choice;
         boolean cond = true;
@@ -46,6 +36,16 @@ public class ManageRequestView extends TemplateView {
                 default -> System.out.println("Riprova");
             }
         }
+    }
+
+    @Override
+    public List<String> getOptions() {
+        return List.of("Visualizza richieste sla", "Rispondi ad una richiesta", "Indietro");
+    }
+
+    @Override
+    public String getHeader() {
+        return "Gestione Richiesta Sala";
     }
 
     private void getAllRequests() {

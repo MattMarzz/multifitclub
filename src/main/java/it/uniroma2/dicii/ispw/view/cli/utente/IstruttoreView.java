@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class IstruttoreView extends TemplateView implements Observer {
@@ -29,18 +28,15 @@ public class IstruttoreView extends TemplateView implements Observer {
         new LoginController().attachObserver(usrBean, this);
     }
 
+    @Override
+    public List<String> getOptions() {
+        return List.of("Visualizza Annunci", "Visualizza i tuoi impegni",
+                "Visualizza programmazione", "Visualizza tue prenotazioni", "Richiedi nuova prenotazione", "Esci");
+    }
 
     @Override
-    public int userChoice() {
-        printHeader("ISTRUTTORE PANEL");
-        List<String> options = new ArrayList<>();
-        options.add("Visulizza Annunci");
-        options.add("Visualizza i tuoi impegni");
-        options.add("Visualizza programmazione");
-        options.add("Viualizza tue prenotazioni");
-        options.add("Richiedi nuova prenotazione");
-        options.add("Esci");
-        return operationMenu("Come vuoi procedere? ", options);
+    public String getHeader() {
+        return "ISTRUTTORE PANEL";
     }
 
     @Override

@@ -14,9 +14,15 @@ import java.util.Scanner;
 
 public abstract class TemplateView {
     protected UtenteBean usrBean;
-
-    public abstract int userChoice();
     public abstract void control();
+    protected abstract List<String> getOptions();
+    protected abstract String getHeader();
+
+    public int userChoice() {
+        printHeader(getHeader());
+        List<String> options = getOptions();
+        return operationMenu("Come vuoi procedere? ", options);
+    }
 
     protected TemplateView() {
     }

@@ -10,7 +10,6 @@ import it.uniroma2.dicii.ispw.utils.LoggerManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LoginView extends TemplateView{
@@ -34,6 +33,16 @@ public class LoginView extends TemplateView{
 
     }
 
+    @Override
+    public List<String> getOptions() {
+        return List.of("Riprova", "Esci");
+    }
+
+    @Override
+    public String getHeader() {
+        return "LOGIN";
+    }
+
     public LoginBean show() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         printHeader("Benvenuto nel sistema di login");
@@ -45,14 +54,6 @@ public class LoginView extends TemplateView{
         String pwd = reader.readLine();
 
         return new LoginBean(email, pwd);
-    }
-
-    @Override
-    public int userChoice() {
-        List<String> options = new ArrayList<>();
-        options.add("Riprova");
-        options.add("Esci");
-        return operationMenu("Come vuoi procedere?", options);
     }
 
     public UtenteBean getUsrBean() {

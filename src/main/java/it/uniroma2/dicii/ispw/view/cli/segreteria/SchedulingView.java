@@ -25,16 +25,6 @@ public class SchedulingView extends TemplateView {
     }
 
     @Override
-    public int userChoice() {
-        printHeader("Programmazione");
-        List<String> options = new ArrayList<>();
-        options.add("Visualizza programmazione");
-        options.add("Inserisci lezioni");
-        options.add("Indietro");
-        return operationMenu("Che operazione desideri effettuare?", options);
-    }
-
-    @Override
     public void control() {
         int choice;
         boolean cond = true;
@@ -48,6 +38,16 @@ public class SchedulingView extends TemplateView {
                 default -> System.out.println("Riprova");
             }
         }
+    }
+
+    @Override
+    public List<String> getOptions() {
+        return List.of("Visualizza programmazione", "Inserisci lezioni", "indietro");
+    }
+
+    @Override
+    public String getHeader() {
+        return "Programmazione";
     }
 
     private void getActivities() {

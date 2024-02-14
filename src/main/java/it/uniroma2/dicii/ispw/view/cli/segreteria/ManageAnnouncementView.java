@@ -14,23 +14,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManageAnnouncementView extends TemplateView {
 
     public ManageAnnouncementView(UtenteBean usrBean) {
         super(usrBean);
-    }
-
-    @Override
-    public int userChoice() {
-        printHeader("Gestione Annunci");
-        List<String> options = new ArrayList<>();
-        options.add("Visualizza annunci");
-        options.add("Pubblica annuncio");
-        options.add("Indietro");
-        return operationMenu("Che operazione desideri effettuare?", options);
     }
 
     @Override
@@ -47,6 +36,16 @@ public class ManageAnnouncementView extends TemplateView {
                 default -> System.out.println("Riprova");
             }
         }
+    }
+
+    @Override
+    public List<String> getOptions() {
+        return List.of("Visualizza annunci", "Pubblica annuncio", "Indietro");
+    }
+
+    @Override
+    public String getHeader() {
+        return "Gestione Annunci";
     }
 
     private void getAnnouncements() {

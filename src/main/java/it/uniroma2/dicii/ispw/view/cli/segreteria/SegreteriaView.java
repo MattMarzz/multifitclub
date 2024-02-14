@@ -48,18 +48,15 @@ public class SegreteriaView extends TemplateView implements Observer {
     }
 
     @Override
-    public int userChoice() {
-        printHeader("SEGRETERIA ADMINISTRATION PANEL");
-        List<String> options = new ArrayList<>();
-        options.add("Gestione Utenti");
-        options.add("Gestione Corsi");
-        options.add("Programmazione");
-        options.add("Gestione Annunci");
-        options.add("Gestione Prenotazioni");
-        options.add("Esci");
-        return operationMenu("Seleziona una categoria: ", options);
+    public List<String> getOptions() {
+        return List.of("Gestione Utenti", "Gestione Corsi", "Programmazione", "Gestione Annunci",
+                "Gestione Prenotazioni", "Esci");
     }
 
+    @Override
+    public String getHeader() {
+        return "SEGRETERIA ADMINISTRATION PANEL";
+    }
 
     @Override
     public void update(String... msg) {

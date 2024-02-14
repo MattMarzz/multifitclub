@@ -12,22 +12,9 @@ import it.uniroma2.dicii.ispw.view.cli.TemplateView;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManageCourseView extends TemplateView {
-    @Override
-    public int userChoice() {
-        printHeader("Gestione Corsi");
-        List<String> options = new ArrayList<>();
-        options.add("Inserisci corso");
-        options.add("Visualizza corsi");
-        options.add("Visualizza lezioni del corso");
-        options.add("Elimina corso");
-        options.add("Indietro");
-        return operationMenu("Che operazione desideri effettuare?", options);
-    }
-
     @Override
     public void control() {
         int choice;
@@ -44,6 +31,17 @@ public class ManageCourseView extends TemplateView {
                 default -> System.out.println("Riprova");
             }
         }
+    }
+
+    @Override
+    public List<String> getOptions() {
+        return List.of("Inserisci corso", "Visualizza corsi", "Visualizza lezioni del corso",
+                "Elimina corso", "Indietro");
+    }
+
+    @Override
+    public String getHeader() {
+        return "Gestione Corsi";
     }
 
     private void insertCourse() {
