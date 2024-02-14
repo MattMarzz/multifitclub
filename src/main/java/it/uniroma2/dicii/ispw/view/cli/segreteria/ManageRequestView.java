@@ -59,26 +59,24 @@ public class ManageRequestView extends TemplateView {
         int status = 0;
         boolean isValid = false;
 
-        try {
-            while (!isValid) {
-                try {
-                    id = Integer.parseInt(getDesiredIn("Richiesta sala", "Inserisci l'id della richiesta: "));
+         while (!isValid) {
+             try {
+                 id = Integer.parseInt(getDesiredIn("Richiesta sala", "Inserisci l'id della richiesta: "));
 
-                    System.out.print("1->Accetta, 2->Rifiuta: ");
-                    status = Integer.parseInt(reader.readLine());
+                 System.out.print("1->Accetta, 2->Rifiuta: ");
+                 status = Integer.parseInt(reader.readLine());
 
-                    isValid = true;
-                } catch (NumberFormatException e) {
-                    System.out.println("Errore: devi inserire un numero intero.");
-                }
-            }
+                 isValid = true;
+             } catch (IOException | NumberFormatException e) {
+                    System.out.println("Errore: inserire un numero intero.");
+             }
+         }
 
+         try {
             cb.setId(id);
             cb.setStatus(RoomRequestStatus.getStatus(status));
             new CommunicationController().forwardCommunication(this.usrBean, cb, TypesOfCommunications.ROOM_REQUEST);
 
-        } catch (IOException e) {
-            System.out.println("Impossibile gestire l'input");
         } catch (ItemNotFoundException | InvalidDataException e) {
             LoggerManager.logSevereException(e.getMessage(), e);
         }

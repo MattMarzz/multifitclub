@@ -40,6 +40,7 @@ public class SegreteriaView extends TemplateView implements Observer {
                     controller.logout(usrBean);
                     running = false;
                 }
+                default -> System.out.println("Riprova");
             }
         }
 

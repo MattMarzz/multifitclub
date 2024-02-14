@@ -59,7 +59,7 @@ public class SchedulingView extends TemplateView {
 
         try {
             lb.setCorso(getDesiredIn("Corso","Inserisci il nome del corso per il quale si vogliono aggiungere lezioni: " ));
-            lb = lessonForm(lb);
+            lessonForm(lb);
         } catch (IOException e) {
             System.out.println("ATTENZIONE: formato dati non valido");
         }
@@ -73,7 +73,7 @@ public class SchedulingView extends TemplateView {
         }
     }
 
-    private LezioneBean lessonForm(LezioneBean lb) throws IOException {
+    private void lessonForm(LezioneBean lb) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         printHeader("Inserisci informazioni lezioni");
@@ -112,7 +112,6 @@ public class SchedulingView extends TemplateView {
             lb.setOra(null);
         }
 
-        return lb;
     }
 
     private static String capitalizeFirstLetter(String str) {
