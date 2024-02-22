@@ -33,7 +33,7 @@ public class ServerNotification {
 
                 Thread thread = new Thread(clientHandler);
                 thread.start();
-                connections++;
+                increaseConn();
                 if(connections >= MAX_CONNECTONS) break;
             }
         } catch (IOException e) {
@@ -42,6 +42,9 @@ public class ServerNotification {
         }
     }
 
+    private static synchronized void increaseConn() {
+        connections += 1;
+    }
     public static synchronized void decreaseConn() {
         connections -= 1;
     }
