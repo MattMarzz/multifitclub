@@ -95,6 +95,7 @@ public class LoginController {
             LoggerManager.logSevere(e.getMessage());
         }
         Map<Utente, Client> hm = LoginManager.getInstance().getHashMap();
+        hm.get(u).exit();
         hm.remove(u);
     }
 

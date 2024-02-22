@@ -9,8 +9,8 @@ import java.net.Socket;
 public class ServerNotification {
     private final ServerSocket serverSocket;
     private static final int PORT = 1234;
-    //private int connections = 0;
-    //private static final int MAX_CONNECTONS = 1000;
+    private static int connections = 0;
+    private static final int MAX_CONNECTONS = 1000;
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(PORT);
@@ -33,13 +33,17 @@ public class ServerNotification {
 
                 Thread thread = new Thread(clientHandler);
                 thread.start();
-                //connections++;
-                //if(connections >= MAX_CONNECTONS) break;
+                connections++;
+                if(connections >= MAX_CONNECTONS) break;
             }
         } catch (IOException e) {
             LoggerManager.logSevere(e.getMessage());
             closeServerSocket();
         }
+    }
+
+    public static synchronized void decreaseConn() {
+        connections -= 1;
     }
 
     public void closeServerSocket() {

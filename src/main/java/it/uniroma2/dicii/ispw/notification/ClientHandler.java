@@ -22,6 +22,7 @@ public class ClientHandler implements Runnable{
     private static final String NEW_REQ = "Nuova richiesta da";
     private static final String REQ_RESPONSE = "Hai ricevuto una risposta!";
     private static final String NEW_ACT = "Nuove attività inserite";
+    private static final String EXIT = "Exit";
 
     public ClientHandler(Socket socket) {
         try {
@@ -60,6 +61,8 @@ public class ClientHandler implements Runnable{
                     personalNotification(recipient, messageFromClient.substring(0, REQ_RESPONSE.length()));
                 } else if (messageFromClient.startsWith(NEW_ACT)) {
                     reloadProg();
+                } else if (messageFromClient.startsWith(EXIT)) {
+                    exit();
                 }
             } catch (IOException e) {
                 closeEverything(socket, bufferedReader, bufferedWriter);
@@ -138,6 +141,11 @@ public class ClientHandler implements Runnable{
                 closeEverything(socket, bufferedReader, bufferedWriter);
             }
         }
+    }
+
+    public void exit() {
+        ServerNotification.decreaseConn();
+        closeEverything(socket, bufferedReader, bufferedWriter);
     }
 
     public void removeClientHandler() {
