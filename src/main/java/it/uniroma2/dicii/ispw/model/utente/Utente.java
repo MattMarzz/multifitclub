@@ -65,11 +65,13 @@ public class Utente implements Serializable {
 
     public void sendCommunication(TypesOfCommunications toc, CommunicationBean comBean, Client client) {
         CommunicationBase communicationBase;
+        CommunicationFactory factory= new CommunicationFactory();
+
         if(toc.equals(TypesOfCommunications.ANNOUNCEMENT)) {
-            communicationBase = new CommunicationFactory().createAnnouncement(this.cf, comBean.getTitle(), comBean.getText(), comBean.getDate());
+            communicationBase = factory.createAnnouncement(this.cf, comBean.getTitle(), comBean.getText(), comBean.getDate());
         } else {
             ReservationInfo resInfo = new ReservationInfo(comBean.getWhen(), comBean.getRoom());
-            communicationBase = new CommunicationFactory().createRoomRequest(this.cf, comBean.getId(), comBean.getTitle(), comBean.getText(),
+            communicationBase = factory.createRoomRequest(this.cf, comBean.getId(), comBean.getTitle(), comBean.getText(),
                     comBean.getDate(), resInfo, comBean.getStatus());
         }
         communicationBase.sendCommunication(client);
